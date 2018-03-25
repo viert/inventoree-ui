@@ -1,7 +1,7 @@
 <template>
   <tr>
     <td class="ModelList_Select">
-      <i class="fa fa-folder-o"></i>
+      <fa-checkbox :checked="group.selected" :click="toggleSelected" />
     </td>
     <td>
       <router-link to="viewLink">{{ group.name }}</router-link>
@@ -22,6 +22,7 @@
 <script>
 import Tag from '@/components/Common/Tag'
 import CustomField from '@/components/Common/CustomField'
+import FaCheckbox from '@/components/Common/FaCheckbox'
 export default {
   props: {
     group: {
@@ -31,7 +32,8 @@ export default {
   },
   components: {
     Tag,
-    CustomField
+    CustomField,
+    FaCheckbox
   },
   computed: {
     viewLink () {
@@ -39,6 +41,11 @@ export default {
     },
     allTagsSorted () {
       return this.group.all_tags.slice().sort()
+    }
+  },
+  methods: {
+    toggleSelected () {
+      this.$emit('toggle-select', this.group)
     }
   }
 }

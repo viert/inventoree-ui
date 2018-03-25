@@ -14,7 +14,7 @@
         <thead>
           <tr>
             <th class="ModelList_Select">
-              <i class="fa fa-folder-o"></i>
+              <i class="fa fa-check-square-o"></i>
             </th>
             <th>Name</th>
             <th>Project</th>
@@ -24,10 +24,35 @@
           </tr>
         </thead>
         <tbody>
-          <group-list-item :group="group" v-for="group in groups" :key="group.id"></group-list-item>
+          <group-list-item
+            :group="group"
+            v-for="group in groups"
+            :key="group.id"
+            @toggle-select="groupToggleSelected" />
         </tbody>
       </table>
     </main>
+    <aside v-if="selectedGroups.length > 0" class="SelectPanel">
+      <h2 class="ContentHeader_Title">Mass actions</h2>
+      <ul class="ListSelected">
+        <li class="ListSelected_Item" v-for="sgroup in selectedGroups" :key="sgroup._id">{{sgroup.name}}</li>
+      </ul>
+      <div class="Form">
+        <div class="Form_Field">
+          <label class="Form_FieldLabel">Move groups to project</label>
+          <div class="input-group">
+            <input class="form-control" placeholder="Project Name" type="text">
+            <div class="input-group-append">
+              <button class="btn btn-outline-primary">Move</button>
+            </div>
+          </div>
+        </div>
+        <div class="Form_Field">
+          <label class="Form_FieldLabel">Delete Groups</label>
+          <button class="btn btn-danger">Delete</button>
+        </div>
+      </div>
+    </aside>
   </div>
 </template>
 
@@ -50,7 +75,9 @@ export default {
     return {
       page,
       totalPages,
-      groups: []
+      groups: [],
+      selectedGroups: [],
+      selectedGroupsMap: {}
     }
   },
   created () {
@@ -62,9 +89,23 @@ export default {
         .then(response => {
           this.page = response.data.page
           this.totalPages = response.data.total_pages
-          this.groups = response.data.data
+          this.groups = response.data.data.map(item => {
+            item.selected = false
+            return item
+          })
         })
         .catch(err => { console.log(err) })
+    },
+
+    groupToggleSelected (group) {
+      group.selected = !group.selected
+      if (group.selected) {
+        this.$set(this.selectedGroupsMap, group._id, group)
+        this.selectedGroups.push(group)
+      } else {
+        this.$delete(this.selectedGroupsMap, group._id)
+        this.selectedGroups = this.selectedGroups.filter(item => item._id !== group._id)
+      }
     },
 
     filterChanged (e) {

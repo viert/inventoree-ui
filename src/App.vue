@@ -224,4 +224,31 @@ table.ModelList > tbody > tr:hover > td { background-color: #f3f3fc; }
 .Card_TagList .Tag {
   margin-right: 4px;
 }
+
+.ListSelected {
+    padding: 0;
+    margin: 16px 0;
+    list-style: none;
+}
+
+.ListSelected_Item {
+    position: relative;
+    margin-left: 14px;
+    line-height: 1.1em;
+    cursor: pointer;
+}
+
+.ListSelected_Item:before {
+    content: "\f00d";
+    position: absolute;
+    left: -14px;
+    font-size: 90%;
+    font-family: FontAwesome;
+}
+
+.ListSelected_Item:hover {
+    color: red;
+    text-decoration: line-through;
+}
+
 </style>
