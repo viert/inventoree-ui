@@ -1,7 +1,7 @@
 <template>
   <tr>
     <td class="ModelList_Select">
-      <fa-checkbox :checked="group._selected" :click="toggleSelected" />
+      <fa-checkbox :checked="group._selected" @trigger="toggleSelected" />
     </td>
     <td>
       <router-link to="viewLink">{{ group.name }}</router-link>
@@ -46,6 +46,7 @@ export default {
   methods: {
     toggleSelected () {
       this.$emit('toggle-select', this.group)
+      this.$emit('start-selection')
     }
   }
 }

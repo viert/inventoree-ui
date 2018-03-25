@@ -1,17 +1,14 @@
 <template>
-  <i :class="checkboxClass" @click="click"></i>
+  <i :class="checkboxClass" @mousedown="handleMouseDown" @mouseover="handleMouseOver"></i>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   props: {
     checked: {
       type: Boolean,
       default: false
-    },
-    click: {
-      type: Function,
-      required: true
     }
   },
   computed: {
@@ -20,6 +17,17 @@ export default {
         'fa': true,
         'fa-check-square-o': this.checked,
         'fa-square-o': !this.checked
+      }
+    },
+    ...mapState(['selectMode'])
+  },
+  methods: {
+    handleMouseDown (e) {
+      this.$emit('trigger', e)
+    },
+    handleMouseOver (e) {
+      if (this.selectMode) {
+        this.$emit('trigger', e)
       }
     }
   }

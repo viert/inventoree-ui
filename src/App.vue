@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" @mouseup="stopSelection">
     <div v-if="auth.state === 'authenticating'">Loading</div>
     <login-page v-else-if="auth.state == 'logged out'"></login-page>
     <layout v-else/>
@@ -37,6 +37,13 @@ export default {
         this.$store.commit('setAppInfo', response.data.conductor_info)
       })
       .catch(err => { console.log(err) })
+  },
+  methods: {
+    stopSelection () {
+      if (this.$store.state.selectMode) {
+        this.$store.commit('setSelectMode', false)
+      }
+    }
   }
 }
 </script>
@@ -249,6 +256,10 @@ table.ModelList > tbody > tr:hover > td { background-color: #f3f3fc; }
 .ListSelected_Item:hover {
     color: red;
     text-decoration: line-through;
+}
+
+.NoSelect {
+  user-select: none;
 }
 
 </style>

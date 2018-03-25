@@ -11,7 +11,8 @@ const store = new Vuex.Store({
       authUrl: null
     },
     appInfo: { },
-    appInfoLoaded: false
+    appInfoLoaded: false,
+    selectMode: false
   },
   getters: {
     authState (state) {
@@ -31,6 +32,9 @@ const store = new Vuex.Store({
     setAppInfo (state, info) {
       state.appInfo = info
       state.appInfoLoaded = true
+    },
+    setSelectMode (state, mode) {
+      state.selectMode = mode
     }
   }
 })

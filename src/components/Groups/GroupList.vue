@@ -1,5 +1,5 @@
 <template>
-  <div class="PageContent">
+  <div class="PageContent" :class="{'NoSelect': selectMode}">
     <main class="PageMain">
       <div class="ContentHeader">
         <h2 class="ContentHeader_Title">Group List</h2>
@@ -14,7 +14,7 @@
         <thead>
           <tr>
             <th class="ModelList_Select">
-              <fa-checkbox :checked="allSelected" :click="toggleAll" />
+              <fa-checkbox :checked="allSelected" @trigger="toggleAll" />
             </th>
             <th>Name</th>
             <th>Project</th>
@@ -25,10 +25,11 @@
         </thead>
         <tbody>
           <group-list-item
-            :group="group"
             v-for="group in items"
+            :group="group"
             :key="group.id"
-            @toggle-select="toggleItem" />
+            @toggle-select="toggleItem"
+            @start-selection="startSelection" />
         </tbody>
       </table>
     </main>
@@ -63,6 +64,7 @@ import FilterField from '@/components/Common/FilterField'
 import FaCheckbox from '@/components/Common/FaCheckbox'
 import FilteredDataMixin from '@/mixins/FilteredDataMixin'
 import MassSelect from '@/mixins/MassSelect'
+import { mapState } from 'vuex'
 
 export default {
   name: 'GroupList',
@@ -86,6 +88,9 @@ export default {
   created () {
     this.loadData()
   },
+  computed: {
+    ...mapState(['selectMode'])
+  },
   methods: {
     loadData () {
       return Api.Groups.List(this.page, this.filter)
@@ -99,10 +104,13 @@ export default {
         })
         .catch(err => { console.log(err) })
     },
-
     filterChanged (e) {
       this.filter = e.target.value
       this.filterDirty = true
+      this.$router.replace({query: {_page: this.page, _filter: this.filter}})
+    },
+    startSelection () {
+      this.$store.commit('setSelectMode', true)
     }
   }
 }
