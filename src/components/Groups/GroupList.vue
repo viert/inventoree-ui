@@ -4,11 +4,11 @@
       <div class="ContentHeader">
         <h2 class="ContentHeader_Title">Group List</h2>
         <div class="ContentHeader_Buttons">
-          <button class="btn btn-success btn-sm text-uppercase">
+          <router-link to="/groups/++/edit" class="btn btn-success btn-sm text-uppercase">
             <i class="fa fa-plus"></i> Create
-          </button>
+          </router-link>
         </div>
-        <!-- <FilterField onChange={this.filterChange} value={filter}/> -->
+        <filter-field :change="filterChanged" :value="filter" />
       </div>
       <table class="ModelList">
         <thead>
@@ -24,7 +24,7 @@
           </tr>
         </thead>
         <tbody>
-
+          <group-list-item :group="group" v-for="group in groups" :key="group.id"></group-list-item>
         </tbody>
       </table>
     </main>
@@ -32,8 +32,46 @@
 </template>
 
 <script>
-export default {
+import Api from '@/api'
+import GroupListItem from './GroupListItem'
+import FilterField from '@/components/Common/FilterField'
+import FilteredDataMixin from '@/mixins/FilteredDataMixin'
 
+export default {
+  name: 'GroupList',
+  mixins: [FilteredDataMixin],
+  components: {
+    GroupListItem,
+    FilterField
+  },
+  data () {
+    let page = this.$route.query._page || 1
+    let totalPages = 0
+    return {
+      page,
+      totalPages,
+      groups: []
+    }
+  },
+  created () {
+    this.loadData()
+  },
+  methods: {
+    loadData () {
+      return Api.Groups.List(this.page, this.filter)
+        .then(response => {
+          this.page = response.data.page
+          this.totalPages = response.data.total_pages
+          this.groups = response.data.data
+        })
+        .catch(err => { console.log(err) })
+    },
+
+    filterChanged (e) {
+      this.filter = e.target.value
+      this.filterDirty = true
+    }
+  }
 }
 </script>
 

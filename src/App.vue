@@ -10,7 +10,7 @@
 import { mapState } from 'vuex'
 import LoginPage from '@/components/Page/LoginPage'
 import Layout from '@/components/Page/Layout'
-import axios from 'axios'
+import Api from '@/api'
 
 export default {
   name: 'App',
@@ -22,7 +22,7 @@ export default {
     ...mapState(['auth'])
   },
   created () {
-    axios.get('/api/v1/account/me')
+    Api.Account.Me()
       .then(response => {
         this.$store.commit('setUser', response.data.data)
         this.$store.commit('setAuthState', 'authenticated')
@@ -32,7 +32,7 @@ export default {
           this.$store.commit('setAuthState', 'logged out')
         }
       })
-    axios.get('/api/v1/open/app')
+    Api.Open.AppInfo()
       .then(response => {
         this.$store.commit('setAppInfo', response.data.conductor_info)
       })
@@ -124,11 +124,6 @@ a:hover {
 
 .ContentHeader_Buttons .btn {
   font-weight: bold;
-}
-
-.ContentHeader_SearchField {
-  width: 300px;
-  margin-left: 20px;
 }
 
 table.ModelList {
