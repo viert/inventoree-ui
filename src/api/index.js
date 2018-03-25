@@ -15,6 +15,22 @@ const Api = {
       ]
       let url = `/api/v1/groups/?_fields=${fields.join(',')}&_page=${page}&_filter=${filter}`
       return axios.get(url)
+    },
+    Get: (groupName) => {
+      let fields = [
+        '_id',
+        'name',
+        'project_name',
+        'custom_fields',
+        'tags',
+        'all_tags',
+        'all_custom_fields',
+        'description',
+        'children',
+        'hosts'
+      ]
+      let url = `/api/v1/groups/${groupName}?_fields=${fields.join(',')}`
+      return axios.get(url)
     }
   },
   Hosts: {

@@ -262,4 +262,126 @@ table.ModelList > tbody > tr:hover > td { background-color: #f3f3fc; }
   user-select: none;
 }
 
+.Pagination {
+    margin: 30px auto 0;
+    display: flex;
+    justify-content: space-around;
+}
+
+.page-link, .page-item.disabled .page-link {
+    background: white;
+    border: 1px solid #ddd;
+    color: black;
+}
+
+.page-item.disabled .page-link {
+    color: #999;
+}
+
+.page-link:hover {
+    background: #999;
+}
+
+.page-item:not(:first-child) .page-link {
+    border-left: none;
+}
+
+.page-item.active .page-link {
+    background: #18BC9C;
+    color: white;
+}
+
+.Form_Buttons {
+
+}
+
+.DatacenterTree {
+
+}
+
+.DatacenterTree_Item {
+    list-style: none;
+    position: relative;
+}
+
+.DatacenterTree_Item--root {
+    font-weight: 700;
+}
+
+.DatacenterTree_Item::before {
+    position: absolute;
+    display: block;
+    content: "\f0f7";
+    font-family: FontAwesome;
+    left: -16px;
+}
+
+.DatacenterTree_Item--Sub::before {
+    content: "\f233";
+    left: -18px;
+}
+
+.DatacenterTree_Item--root::before {
+    content: "\f0ac";
+    font-weight: 300;
+    left: -18px;
+}
+
+.RelationsList {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.RelationsList_Item {
+    line-height: 1.1rem;
+}
+
+.Card h3 {
+    text-transform: none;
+}
+
+.CardHeader {
+    border-bottom: 1px solid #eee;
+    margin-bottom: 20px;
+}
+
+.Project::before,
+.Group::before,
+.Host::before,
+.Datacenter::before,
+.User::before {
+    font-family: FontAwesome;
+    padding-right: 0.2em;
+    position: relative;
+    top: 0.04em;
+}
+
+.Project::before {
+    content: "\f0f2";
+    top: 0;
+}
+
+.Group::before {
+    content: "\f114";
+}
+
+.Host::before {
+    content: "\f109";
+}
+
+.Datacenter::before {
+    content: "\f0f7";
+    top: -0.08em;
+}
+
+.User::before {
+    content: "\f007";
+}
+
+.Datacenter.Datacenter--Sub::before {
+    content: "\f233";
+    top: 0.04em;
+}
+
 </style>
