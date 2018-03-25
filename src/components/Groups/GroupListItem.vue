@@ -1,7 +1,7 @@
 <template>
   <tr>
     <td class="ModelList_Select">
-      <fa-checkbox :checked="group.selected" :click="toggleSelected" />
+      <fa-checkbox :checked="group._selected" :click="toggleSelected" />
     </td>
     <td>
       <router-link to="viewLink">{{ group.name }}</router-link>

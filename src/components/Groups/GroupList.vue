@@ -14,7 +14,7 @@
         <thead>
           <tr>
             <th class="ModelList_Select">
-              <i class="fa fa-check-square-o"></i>
+              <fa-checkbox :checked="allSelected" :click="toggleAll" />
             </th>
             <th>Name</th>
             <th>Project</th>
@@ -26,16 +26,16 @@
         <tbody>
           <group-list-item
             :group="group"
-            v-for="group in groups"
+            v-for="group in items"
             :key="group.id"
-            @toggle-select="groupToggleSelected" />
+            @toggle-select="toggleItem" />
         </tbody>
       </table>
     </main>
-    <aside v-if="selectedGroups.length > 0" class="SelectPanel">
+    <aside v-if="itemsSelected.length > 0" class="SelectPanel">
       <h2 class="ContentHeader_Title">Mass actions</h2>
       <ul class="ListSelected">
-        <li class="ListSelected_Item" v-for="sgroup in selectedGroups" :key="sgroup._id">{{sgroup.name}}</li>
+        <li class="ListSelected_Item" v-for="sgroup in itemsSelected" :key="sgroup._id">{{sgroup.name}}</li>
       </ul>
       <div class="Form">
         <div class="Form_Field">
@@ -60,24 +60,27 @@
 import Api from '@/api'
 import GroupListItem from './GroupListItem'
 import FilterField from '@/components/Common/FilterField'
+import FaCheckbox from '@/components/Common/FaCheckbox'
 import FilteredDataMixin from '@/mixins/FilteredDataMixin'
+import MassSelect from '@/mixins/MassSelect'
 
 export default {
   name: 'GroupList',
-  mixins: [FilteredDataMixin],
+  mixins: [
+    MassSelect,
+    FilteredDataMixin
+  ],
   components: {
     GroupListItem,
-    FilterField
+    FilterField,
+    FaCheckbox
   },
   data () {
     let page = this.$route.query._page || 1
     let totalPages = 0
     return {
       page,
-      totalPages,
-      groups: [],
-      selectedGroups: [],
-      selectedGroupsMap: {}
+      totalPages
     }
   },
   created () {
@@ -89,23 +92,12 @@ export default {
         .then(response => {
           this.page = response.data.page
           this.totalPages = response.data.total_pages
-          this.groups = response.data.data.map(item => {
-            item.selected = false
+          this.items = response.data.data.map(item => {
+            item._selected = this.shouldBeSelected(item)
             return item
           })
         })
         .catch(err => { console.log(err) })
-    },
-
-    groupToggleSelected (group) {
-      group.selected = !group.selected
-      if (group.selected) {
-        this.$set(this.selectedGroupsMap, group._id, group)
-        this.selectedGroups.push(group)
-      } else {
-        this.$delete(this.selectedGroupsMap, group._id)
-        this.selectedGroups = this.selectedGroups.filter(item => item._id !== group._id)
-      }
     },
 
     filterChanged (e) {
