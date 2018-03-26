@@ -4,7 +4,7 @@
       <div v-for="msg in messages" :key="msg.id" class="alert" :class="msg | msgClass">
         <b v-if="msg.prefix">{{msg.prefix}}</b>
         {{ msg.text }}
-        <a class="close" @click="forceRemove(msg.id)">
+        <a class="close" @click="removeMessage(msg.id)">
           <span aria-hidden="true">&times;</span>
         </a>
       </div>
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 const messageClasses = {
   alert: 'danger',
@@ -27,9 +27,7 @@ export default {
     ...mapState(['messages'])
   },
   methods: {
-    forceRemove (msgId) {
-      this.$store.dispatch('removeMessage', msgId)
-    }
+    ...mapActions(['removeMessage'])
   },
   filters: {
     msgClass (msg) {

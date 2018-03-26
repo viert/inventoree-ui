@@ -58,27 +58,23 @@ export const DefaultFields = {
 
 const Api = {
   Groups: {
-    List: (page, filter, fields) => {
-      if (!fields) { fields = DefaultFields.Groups.List }
+    List: (page, filter, fields = DefaultFields.Groups.List) => {
       let url = `/api/v1/groups/?_fields=${fields.join(',')}&_page=${page}&_filter=${filter}`
       return wrap(axios.get(url))
     },
-    Get: (groupName, fields) => {
-      if (!fields) { fields = DefaultFields.Groups.Get }
+    Get: (groupName, fields = DefaultFields.Groups.Get) => {
       let url = `/api/v1/groups/${groupName}?_fields=${fields.join(',')}`
       return wrap(axios.get(url))
     }
   },
   Hosts: {
-    List: (page, filter, fields) => {
-      if (!fields) { fields = DefaultFields.Hosts.List }
+    List: (page, filter, fields = DefaultFields.Hosts.List) => {
       let url = `/api/v1/hosts/?_fields=${fields.join(',')}&_page=${page}&_filter=${filter}`
       return wrap(axios.get(url))
     }
   },
   Projects: {
-    List: (page, filter, fields) => {
-      if (!fields) { fields = DefaultFields.Projects.List }
+    List: (page, filter, fields = DefaultFields.Projects.List) => {
       let url = `/api/v1/projects/?_fields=${fields.join(',')}&_page=${page}&_filter=${filter}`
       return wrap(axios.get(url))
     }
