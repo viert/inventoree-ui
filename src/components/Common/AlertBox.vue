@@ -4,9 +4,9 @@
       <div v-for="msg in messages" :key="msg.id" class="alert" :class="msg | msgClass">
         <b v-if="msg.prefix">{{msg.prefix}}</b>
         {{ msg.text }}
-        <button type="button" class="close" @click="forceRemove(msg.id)">
+        <a class="close" @click="forceRemove(msg.id)">
           <span aria-hidden="true">&times;</span>
-        </button>
+        </a>
       </div>
     </transition-group>
   </div>
@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     forceRemove (msgId) {
-      this.$store.commit('removeMessage', msgId)
+      this.$store.dispatch('removeMessage', msgId)
     }
   },
   filters: {
