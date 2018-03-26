@@ -1,8 +1,9 @@
 <template>
   <div id="app" @mouseup="stopSelection">
     <div v-if="auth.state === 'authenticating'">Loading</div>
-    <login-page v-else-if="auth.state == 'logged out'"></login-page>
+    <login-page v-else-if="auth.state == 'login'"></login-page>
     <layout v-else/>
+    <alert-box />
   </div>
 </template>
 
@@ -10,13 +11,16 @@
 import { mapState } from 'vuex'
 import LoginPage from '@/components/Page/LoginPage'
 import Layout from '@/components/Page/Layout'
+import AlertBox from '@/components/Common/AlertBox'
+import ErrorHandler from '@/errors/ErrorHandler'
 import Api from '@/api'
 
 export default {
   name: 'App',
   components: {
     LoginPage,
-    Layout
+    Layout,
+    AlertBox
   },
   computed: {
     ...mapState(['auth'])
@@ -27,11 +31,7 @@ export default {
         this.$store.commit('setUser', response.data.data)
         this.$store.commit('setAuthState', 'authenticated')
       })
-      .catch(err => {
-        if (err.response && err.response.data && err.response.data.state === 'logged out') {
-          this.$store.commit('setAuthState', 'logged out')
-        }
-      })
+      .catch(ErrorHandler)
     Api.Open.AppInfo()
       .then(response => {
         this.$store.commit('setAppInfo', response.data.conductor_info)
