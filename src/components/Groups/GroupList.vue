@@ -102,7 +102,6 @@ export default {
             return item
           })
         })
-        .catch(err => { console.log(err) })
     },
     filterChanged (e) {
       this.filter = e.target.value

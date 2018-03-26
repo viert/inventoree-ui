@@ -13,6 +13,9 @@
               <li><a href="/">Action Log</a></li>
           </ul>
       </nav>
+      <div v-if="isLoading" class="PageHeader_LoadSpinner">
+        <i class="fa fa-spin fa-spinner"></i>
+      </div>
       <div class="PageHeader_Account">
           <div class="PageHeader_Account_Avatar">
               <img class="PageHeader_Account_Avatar_Pic" src="/avatar.png" alt="avatar"/>
@@ -22,8 +25,11 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
-
+  computed: {
+    ...mapGetters(['isLoading'])
+  }
 }
 </script>
 
@@ -89,6 +95,12 @@ export default {
     width: 36px;
     height: 36px;
     box-sizing: content-box;
+}
+.PageHeader_LoadSpinner {
+  width: 40px;
+  height: 36px;
+  color: white;
+  font-size: 26px;
 }
 .PageHeader_Account_Avatar {
     border: 2px solid white;

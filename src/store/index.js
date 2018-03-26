@@ -7,6 +7,7 @@ const DEFAULT_ALERT_TTL = 5000
 const store = new Vuex.Store({
   state: {
     messages: [],
+    loadRequests: [],
     auth: {
       state: 'authenticating',
       user: null,
@@ -23,9 +24,18 @@ const store = new Vuex.Store({
     },
     currentUser (state) {
       return state.auth.user
+    },
+    isLoading (state) {
+      return state.loadRequests.length > 0
     }
   },
   mutations: {
+    addLoadRequest (state, rq) {
+      state.loadRequests.push(rq)
+    },
+    removeLoadRequest (state, rqId) {
+      state.loadRequests = state.loadRequests.filter(item => item.id !== rqId)
+    },
     setAuthState (state, payload) {
       state.auth.state = payload
     },

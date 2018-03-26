@@ -12,7 +12,6 @@ import { mapState } from 'vuex'
 import LoginPage from '@/components/Page/LoginPage'
 import Layout from '@/components/Page/Layout'
 import AlertBox from '@/components/Common/AlertBox'
-import ErrorHandler from '@/errors/ErrorHandler'
 import Api from '@/api'
 
 export default {
@@ -31,12 +30,10 @@ export default {
         this.$store.commit('setUser', response.data.data)
         this.$store.commit('setAuthState', 'authenticated')
       })
-      .catch(ErrorHandler)
     Api.Open.AppInfo()
       .then(response => {
         this.$store.commit('setAppInfo', response.data.conductor_info)
       })
-      .catch(err => { console.log(err) })
   },
   methods: {
     stopSelection () {
