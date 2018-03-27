@@ -2,8 +2,8 @@
   <picker
     inputClass="form-control"
     inputPickedClass="is-valid"
-    placeholder="Project Name"
-    :suggestions="projects"
+    placeholder="Group Name"
+    :suggestions="groups"
     :value="filter"
     :getValue="getValue"
     :getIndex="getIndex"
@@ -21,16 +21,16 @@ export default {
   },
   data () {
     return {
-      projects: [],
+      groups: [],
       filter: ''
     }
   },
   methods: {
     inputChanged (newVal) {
       this.filter = newVal
-      Api.Projects.List(1, newVal, ['_id', 'name'], 5)
+      Api.Groups.List(1, newVal, ['_id', 'name'], 5)
         .then(response => {
-          this.projects = response.data.data
+          this.groups = response.data.data
         })
     },
     getValue (s) {
@@ -45,7 +45,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

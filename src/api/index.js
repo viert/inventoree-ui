@@ -40,6 +40,8 @@ export const DefaultFields = {
       'datacenter_name',
       'custom_fields',
       'tags',
+      'all_tags',
+      'all_custom_fields',
       'description',
       'group_name'
     ]
@@ -53,13 +55,20 @@ export const DefaultFields = {
       'root_email',
       'description'
     ]
+  },
+  Datacenters: {
+    List: [
+      '_id',
+      'name'
+    ]
   }
 }
 
 const Api = {
   Groups: {
-    List: (page, filter, fields = DefaultFields.Groups.List) => {
+    List: (page, filter, fields = DefaultFields.Groups.List, limit = null) => {
       let url = `/api/v1/groups/?_fields=${fields.join(',')}&_page=${page}&_filter=${filter}`
+      if (limit) { url += `&_limit=${limit}` }
       return wrap(axios.get(url))
     },
     Get: (groupName, fields = DefaultFields.Groups.Get) => {
@@ -68,14 +77,23 @@ const Api = {
     }
   },
   Hosts: {
-    List: (page, filter, fields = DefaultFields.Hosts.List) => {
+    List: (page, filter, fields = DefaultFields.Hosts.List, limit = null) => {
       let url = `/api/v1/hosts/?_fields=${fields.join(',')}&_page=${page}&_filter=${filter}`
+      if (limit) { url += `&_limit=${limit}` }
       return wrap(axios.get(url))
     }
   },
   Projects: {
-    List: (page, filter, fields = DefaultFields.Projects.List) => {
+    List: (page, filter, fields = DefaultFields.Projects.List, limit = null) => {
       let url = `/api/v1/projects/?_fields=${fields.join(',')}&_page=${page}&_filter=${filter}`
+      if (limit) { url += `&_limit=${limit}` }
+      return wrap(axios.get(url))
+    }
+  },
+  Datacenters: {
+    List: (page, filter, fields = DefaultFields.Datacenters.List, limit = null) => {
+      let url = `/api/v1/datacenters/?_fields=${fields.join(',')}&_page=${page}&_filter=${filter}`
+      if (limit) { url += `&_limit=${limit}` }
       return wrap(axios.get(url))
     }
   },
