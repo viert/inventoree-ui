@@ -170,26 +170,6 @@ table.ModelList > tbody > tr:hover > td { background-color: #f3f3fc; }
   text-align: center !important;
 }
 
-.Project::before, .Group::before, .Host::before {
-  font-family: FontAwesome;
-  padding-right: 0.2em;
-  position: relative;
-  top: 0.04em;
-}
-
-.Project::before {
-  content: "\f0f2";
-  top: 0;
-}
-
-.Group::before {
-  content: "\f114";
-}
-
-.Host::before {
-  content: "\f109";
-}
-
 .Card h3 {
   text-transform: none;
 }
