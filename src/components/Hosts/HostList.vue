@@ -33,6 +33,10 @@
             @start-selection="startSelection" />
         </tbody>
       </table>
+      <pagination
+        :current="page"
+        :total="totalPages"
+        @page="pageChanged" />
     </main>
     <aside v-if="itemsSelected.length > 0" class="SelectPanel">
       <h2 class="ContentHeader_Title">Mass actions</h2>
@@ -76,6 +80,7 @@ import Api from '@/api'
 import FaCheckbox from '@/components/Common/FaCheckbox'
 import HostListItem from './HostListItem'
 import GroupPicker from '@/components/Picker/GroupPicker'
+import Pagination from '@/components/common/Pagination'
 import DatacenterPicker from '@/components/Picker/DatacenterPicker'
 import FilteredDataMixin from '@/mixins/FilteredDataMixin'
 import MassSelect from '@/mixins/MassSelect'
@@ -90,10 +95,11 @@ export default {
     HostListItem,
     FaCheckbox,
     GroupPicker,
-    DatacenterPicker
+    DatacenterPicker,
+    Pagination
   },
   data () {
-    let page = this.$route.query._page || 1
+    let page = parseInt(this.$route.query._page) || 1
     let totalPages = 0
     return {
       page,
@@ -121,6 +127,11 @@ export default {
       this.filter = e.target.value
       this.filterDirty = true
       this.$router.replace({query: {_page: this.page, _filter: this.filter}})
+    },
+    pageChanged (page) {
+      this.page = page
+      this.$router.replace({query: {_page: this.page, _filter: this.filter}})
+      this.loadData()
     },
     startSelection () {
       this.$store.commit('setSelectMode', true)
