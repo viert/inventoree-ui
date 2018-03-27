@@ -5,12 +5,12 @@
       </div>
       <nav class="PageHeader_Mainmenu">
           <ul class="PageHeader_Mainmenu_List">
-              <li><a href="/">Datacenters</a></li>
-              <li><a href="/projects">Projects</a></li>
-              <li><a href="/groups">Groups</a></li>
-              <li><a href="/hosts">Hosts</a></li>
-              <li><a href="/users">Users</a></li>
-              <li><a href="/">Action Log</a></li>
+              <li><router-link to="/datacenters">Datacenters</router-link></li>
+              <li><router-link to="/projects">Projects</router-link></li>
+              <li><router-link to="/groups">Groups</router-link></li>
+              <li><router-link to="/hosts">Hosts</router-link></li>
+              <li><router-link to="/users">Users</router-link></li>
+              <li><router-link to="/actions">Action Log</router-link></li>
           </ul>
       </nav>
       <div v-if="isLoading" class="PageHeader_LoadSpinner">
