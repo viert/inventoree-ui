@@ -16,7 +16,7 @@
         v-for="(suggestion, i) in suggestions"
         :class="{ active: i === selectIndex }"
         :key="getIndex(suggestion)"
-        @click="pickItem"
+        @mousedown="pickItem"
         @mouseover="selectIndex = i">
         {{ getValue(suggestion) }}
       </li>
@@ -56,15 +56,15 @@ export default {
       this.picked = false
       this.inputValue = e.target.value
       this.typedValue = e.target.value
+      this.showSuggestions = true
       this.$emit('change', e.target.value)
+      this.$emit('clear')
     },
     inputFocus () {
       this.showSuggestions = true
     },
     inputBlur () {
-      setTimeout(() => {
-        this.showSuggestions = false
-      }, 150)
+      this.showSuggestions = false
     },
     moveCursor (amount) {
       let si = this.selectIndex + amount
@@ -104,7 +104,7 @@ export default {
   data () {
     return {
       inputValue: '',
-      selectIndex: 0,
+      selectIndex: -1,
       showSuggestions: false,
       typedValue: '',
       picked: false

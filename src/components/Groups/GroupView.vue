@@ -18,7 +18,7 @@
       <div class="PageContentContainer PageContentContainer--Half">
         <div class="Card">
           <div class="CardHeader">
-            <h3 class="Group">{{ group.name }}</h3>
+            <h3><group :name="group.name" :link="false" /></h3>
             <div class="Card_Field">{{ group.description }}</div>
           </div>
           <div class="row">
@@ -45,16 +45,16 @@
             <div class="col-sm-7">
               <div class="Card_Field">
                 <label class="Card_FieldLabel">Project</label>
-                <div class="Project"><a href="#">{{ group.project_name }}</a></div>
+                <div><project :name="group.project_name" /></div>
               </div>
               <div class="Card_Field">
                 <label class="Card_FieldLabel">Children</label>
                 <ul class="RelationsList">
                   <li
                     v-for="child in group.children"
-                    class="RelationsList_Item Group"
+                    class="RelationsList_Item"
                     :key="child._id">
-                    <a href="#">{{ child.name }}</a>
+                    <group :name="child.name" />
                   </li>
                 </ul>
               </div>

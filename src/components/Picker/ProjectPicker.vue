@@ -41,7 +41,6 @@ export default {
     },
     dataPicked (data) {
       this.$emit('pick', data)
-      this.picked = true
     }
   }
 }
