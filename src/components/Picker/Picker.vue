@@ -65,6 +65,14 @@ export default {
     },
     inputBlur () {
       this.showSuggestions = false
+      if (!this.picked) {
+        console.log('matching...')
+        let match = this.suggestions.find(item => this.getValue(item).toLowerCase() === this.inputValue.toLowerCase())
+        if (match) {
+          this.$emit('pick', match)
+          this.picked = true
+        }
+      }
     },
     moveCursor (amount) {
       let si = this.selectIndex + amount
