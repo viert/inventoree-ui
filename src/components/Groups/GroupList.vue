@@ -27,7 +27,7 @@
           <group-list-item
             v-for="group in items"
             :group="group"
-            :key="group.id"
+            :key="group._id"
             @toggle-select="toggleItem"
             @start-selection="startSelection" />
         </tbody>
@@ -60,7 +60,6 @@
 <script>
 import Api from '@/api'
 import GroupListItem from './GroupListItem'
-import FilterField from '@/components/Common/FilterField'
 import FaCheckbox from '@/components/Common/FaCheckbox'
 import ProjectPicker from '@/components/Picker/ProjectPicker'
 import FilteredDataMixin from '@/mixins/FilteredDataMixin'
@@ -75,7 +74,6 @@ export default {
   ],
   components: {
     GroupListItem,
-    FilterField,
     FaCheckbox,
     ProjectPicker
   },
@@ -84,11 +82,9 @@ export default {
     let totalPages = 0
     return {
       page,
-      totalPages
+      totalPages,
+      destProject: null
     }
-  },
-  created () {
-    this.loadData()
   },
   computed: {
     ...mapState(['selectMode'])
@@ -114,7 +110,7 @@ export default {
       this.$store.commit('setSelectMode', true)
     },
     projectPicked (project) {
-      console.log('picked project', project)
+      this.destProject = project
     }
   }
 }

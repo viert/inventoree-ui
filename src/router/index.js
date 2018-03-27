@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import GroupList from '@/components/Groups/GroupList'
 import GroupView from '@/components/Groups/GroupView'
 import ProjectList from '@/components/Projects/ProjectList'
+import HostList from '@/components/Hosts/HostList'
 
 Vue.use(Router)
 
@@ -22,6 +23,11 @@ export default new Router({
       path: '/projects',
       name: 'project_list',
       component: ProjectList
+    },
+    {
+      path: '/hosts',
+      name: 'host_list',
+      component: HostList
     },
     {
       path: '*',

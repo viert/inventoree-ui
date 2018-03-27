@@ -145,6 +145,16 @@ table.ModelList > tbody > tr > td {
   padding-right: 4px;
 }
 
+table.ModelList > thead > tr > th:first-child:not(.ModelList_Select),
+table.ModelList > tbody > tr > td:first-child:not(.ModelList_Select) {
+  padding-left: 12px;
+}
+
+table.ModelList > thead > tr > th:last-child,
+table.ModelList > tbody > tr > td:last-child {
+  padding-right: 12px;
+}
+
 table.ModelList > thead > tr > th {
   background: #444;
   padding-top: 8px;
@@ -321,44 +331,6 @@ table.ModelList > tbody > tr:hover > td { background-color: #f3f3fc; }
 .CardHeader {
     border-bottom: 1px solid #eee;
     margin-bottom: 20px;
-}
-
-.Project::before,
-.Group::before,
-.Host::before,
-.Datacenter::before,
-.User::before {
-    font-family: FontAwesome;
-    padding-right: 0.2em;
-    position: relative;
-    top: 0.04em;
-}
-
-.Project::before {
-    content: "\f0f2";
-    top: 0;
-}
-
-.Group::before {
-    content: "\f114";
-}
-
-.Host::before {
-    content: "\f109";
-}
-
-.Datacenter::before {
-    content: "\f0f7";
-    top: -0.08em;
-}
-
-.User::before {
-    content: "\f007";
-}
-
-.Datacenter.Datacenter--Sub::before {
-    content: "\f233";
-    top: 0.04em;
 }
 
 </style>

@@ -4,7 +4,7 @@
       <fa-checkbox :checked="group._selected" @trigger="toggleSelected" />
     </td>
     <td>
-      <router-link :to="viewLink">{{ group.name }}</router-link>
+      <group :name="group.name" :icon="false" />
     </td>
     <td>
       {{group.project_name}}

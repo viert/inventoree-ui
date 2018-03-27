@@ -1,5 +1,5 @@
 <template>
-  <span class="Host">
+  <span :class="{ Host: icon }">
     <router-link v-if="link" :to="hostLink">{{ fqdn }}</router-link>
     <span v-else>{{ fqdn }}</span>
   </span>
@@ -9,6 +9,10 @@
 export default {
   props: {
     link: {
+      type: Boolean,
+      default: true
+    },
+    icon: {
       type: Boolean,
       default: true
     },

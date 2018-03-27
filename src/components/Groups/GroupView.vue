@@ -109,12 +109,22 @@ export default {
       return `/groups/${this.group.name}/clone`
     }
   },
+  methods: {
+    loadData () {
+      let { groupName } = this.$route.params
+      Api.Groups.Get(groupName)
+        .then(response => {
+          this.group = response.data.data[0]
+        })
+    }
+  },
   created () {
-    let { groupName } = this.$route.params
-    Api.Groups.Get(groupName)
-      .then(response => {
-        this.group = response.data.data[0]
-      })
+    this.loadData()
+  },
+  watch: {
+    '$route.params.groupName' () {
+      this.loadData()
+    }
   }
 }
 </script>

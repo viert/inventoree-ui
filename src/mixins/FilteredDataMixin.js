@@ -8,6 +8,7 @@ const FilteredDataMixin = {
     }
   },
   created () {
+    this.loadData()
     this._tm = setInterval(this.updateData, 200)
   },
   beforeDestroy () {

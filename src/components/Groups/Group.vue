@@ -1,5 +1,5 @@
 <template>
-  <span class="Group">
+  <span :class="{ Group: icon }">
     <router-link v-if="link" :to="groupLink">{{ name }}</router-link>
     <span v-else>{{ name }}</span>
   </span>
@@ -9,6 +9,10 @@
 export default {
   props: {
     link: {
+      type: Boolean,
+      default: true
+    },
+    icon: {
       type: Boolean,
       default: true
     },

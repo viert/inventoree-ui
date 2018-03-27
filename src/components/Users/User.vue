@@ -1,6 +1,6 @@
 <template>
-  <span :class="{ Project: icon }">
-    <router-link v-if="link" :to="projectLink">{{ name }}</router-link>
+  <span :class="{ User: icon }">
+    <router-link v-if="link" :to="userLink">{{ username }}</router-link>
     <span v-else>{{ name }}</span>
   </span>
 </template>
@@ -16,25 +16,25 @@ export default {
       type: Boolean,
       default: true
     },
-    name: {
+    username: {
       type: String,
       required: true
     }
   },
   computed: {
-    projectLink () {
-      return `/projects/${this.name}`
+    userLink () {
+      return `/users/${this.username}`
     }
   }
 }
 </script>
 
 <style>
-.Project::before {
-  font-family: FontAwesome;
-  padding-right: 0.2em;
-  position: relative;
-  content: "\f0f2";
-  top: 0;
+.User::before {
+    font-family: FontAwesome;
+    padding-right: 0.2em;
+    position: relative;
+    top: 0.04em;
+    content: "\f007";
 }
 </style>

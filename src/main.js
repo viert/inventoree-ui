@@ -7,10 +7,16 @@ import store from './store'
 import Group from '@/components/Groups/Group'
 import Host from '@/components/Hosts/Host'
 import Project from '@/components/Projects/Project'
+import User from '@/components/Users/User'
+import Datacenter from '@/components/Datacenters/Datacenter'
+import FilterField from '@/components/Common/FilterField'
 
 Vue.component('group', Group)
 Vue.component('project', Project)
 Vue.component('host', Host)
+Vue.component('user', User)
+Vue.component('datacenter', Datacenter)
+Vue.component('filter-field', FilterField)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
