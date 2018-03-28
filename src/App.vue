@@ -201,10 +201,6 @@ table.ModelList > tbody > tr:hover > td { background-color: #f3f3fc; }
   margin-bottom: 16px;
 }
 
-.Form_Field--CFE .row {
-  margin-bottom: 8px;
-}
-
 .Form_Field .btn {
   text-transform: uppercase;
   font-weight: bold;

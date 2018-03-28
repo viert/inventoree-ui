@@ -8,7 +8,11 @@
     :pickedItem="group"
     :getValue="getValue"
     :getIndex="getIndex"
+    :isSelected="isSelected"
+    :multi="multi"
     @change="inputChanged"
+    @add="dataAdded"
+    @remove="dataRemoved"
     @pick="dataPicked" />
 </template>
 
@@ -21,6 +25,13 @@ export default {
     group: {
       type: Object,
       default: null
+    },
+    multi: {
+      type: Boolean,
+      default: false
+    },
+    isSelected: {
+      type: Function
     }
   },
   components: {
@@ -48,6 +59,12 @@ export default {
     },
     dataPicked (data) {
       this.$emit('pick', data)
+    },
+    dataAdded (data) {
+      this.$emit('add', data)
+    },
+    dataRemoved (data) {
+      this.$emit('remove', data)
     }
   }
 }

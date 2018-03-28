@@ -114,6 +114,8 @@ export default {
   margin-right: 8px;
   overflow-wrap: normal;
   line-height: 1.5em;
+  position: relative;
+  top: -1px;
 }
 
 </style>

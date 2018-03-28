@@ -27,15 +27,23 @@
               </div>
               <div class="Form_Field">
                 <label class="Form_FieldLabel">Group</label>
-                <group-picker :group="host.group" />
+                <group-picker :group="host.group" @pick="groupPicked" />
               </div>
               <div class="Form_Field">
                 <label class="Form_FieldLabel">Datacenter</label>
-                <datacenter-picker :datacenter="host.datacenter" />
+                <datacenter-picker :datacenter="host.datacenter" @pick="datacenterPicked" />
               </div>
               <div class="Form_Field">
                 <label class="Form_FieldLabel">Tags</label>
                 <tag-editor :tags="host.tags" @add="addTag" @remove="removeTag" />
+              </div>
+              <div class="Form_Field Form_Field--CFE">
+                <label class="Form_FieldLabel">Custom Fields</label>
+                <custom-field-editor :fields="host.custom_fields" @change="cfChange" />
+              </div>
+              <div class="Form_Buttons">
+                <button type="submit" class="btn btn-primary" @click="handleSave">Save</button>
+                <confirm-button class="btn btn-danger" @confirm="handleDestroy">Destroy</confirm-button>
               </div>
             </div>
           </div>
@@ -50,6 +58,7 @@ import Api from '@/api'
 import GroupPicker from '@/components/Picker/GroupPicker'
 import DatacenterPicker from '@/components/Picker/DatacenterPicker'
 import TagEditor from '@/components/Common/TagEditor'
+import CustomFieldEditor from '@/components/Common/CustomFieldEditor/CustomFieldEditor'
 
 export default {
   props: {
@@ -65,11 +74,13 @@ export default {
   components: {
     GroupPicker,
     DatacenterPicker,
-    TagEditor
+    TagEditor,
+    CustomFieldEditor
   },
   data () {
     return {
       host: {
+        _id: null,
         fqdn: '',
         description: '',
         tags: [],
@@ -90,7 +101,8 @@ export default {
         'custom_fields',
         'description'
       ]
-      Api.Hosts.Get(this.$route.params.hostName, editorFields)
+      let { hostName } = this.$route.params
+      Api.Hosts.Get(hostName, editorFields)
         .then(response => {
           this.host = response.data.data[0]
         })
@@ -102,6 +114,46 @@ export default {
     },
     removeTag (tag) {
       this.host.tags = this.host.tags.filter(i => i !== tag)
+    },
+    groupPicked (group) {
+      this.host.group = group
+    },
+    datacenterPicked (dc) {
+      this.host.datacenter = dc
+    },
+    cfChange (fields) {
+      this.host.custom_fields = fields
+    },
+    handleSave () {
+      let { _id, fqdn, datacenter, group, description } = this.host
+      let payload = {
+        fqdn,
+        tags: [...this.host.tags],
+        custom_fields: [...this.host.custom_fields],
+        description,
+        group_id: group ? group._id : null,
+        datacenter_id: datacenter ? datacenter._id : null
+      }
+      if (this.create || this.clone) {
+        Api.Hosts.Create(payload)
+          .then(() => {
+            this.$store.dispatch('info', `Host ${payload.fqdn} successfully created`)
+            this.$router.push('/hosts')
+          })
+      } else {
+        Api.Hosts.Update(_id, payload)
+          .then(() => {
+            this.$store.dispatch('info', `Host ${payload.fqdn} successfully updated`)
+            this.$router.push('/hosts')
+          })
+      }
+    },
+    handleDestroy () {
+      Api.Hosts.Delete(this.host._id)
+        .then(() => {
+          this.$store.dispatch('info', `Host ${this.host.fqdn} successfully deleted`)
+          this.$router.push('/hosts')
+        })
     }
   },
   computed: {
@@ -111,7 +163,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

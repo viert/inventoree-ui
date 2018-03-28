@@ -11,10 +11,10 @@
       :class="inputClassComputed"
       :placeholder="placeholder"
       type="text" />
-    <ul v-if="showSuggestionsComputed" class="autosuggest">
+    <ul v-if="showSuggestionsComputed" class="autosuggest" :class="{ 'autosuggest-multi': multi }">
       <li
         v-for="(suggestion, i) in suggestions"
-        :class="{ active: i === selectIndex }"
+        :class="{ active: i === selectIndex, selected: multi && isSelected(suggestion) }"
         :key="getIndex(suggestion)"
         @mousedown="pickItem"
         @mouseover="selectIndex = i">
@@ -39,6 +39,10 @@ export default {
       type: Function,
       required: true
     },
+    isSelected: {
+      type: Function,
+      default: () => { console.error('isSelected prop is required in "multi" mode of picker') }
+    },
     inputClass: {
       type: String,
       default: ''
@@ -53,6 +57,10 @@ export default {
     pickedItem: {
       type: Object,
       default: null
+    },
+    multi: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
@@ -68,9 +76,11 @@ export default {
       this.showSuggestions = true
     },
     inputBlur () {
-      this.showSuggestions = false
-      if (!this.picked) {
-        let match = this.suggestions.find(item => this.getValue(item).toLowerCase() === this.inputValue.toLowerCase())
+      if (!this.multi) {
+        this.showSuggestions = false
+      }
+      if (!this.picked && !this.multi) {
+        let match = this.suggestions.find(item => this.getValue(item).toLowerCase() === this.typedValue.toLowerCase())
         if (match) {
           this.$emit('pick', match)
           this.picked = true
@@ -86,16 +96,26 @@ export default {
       }
       this.selectIndex = si
     },
-    pickItem () {
+    pickItem (e) {
       if (this.selectIndex < 0 || this.selectIndex >= this.suggestions.length) {
         return
       }
       let item = this.suggestions[this.selectIndex]
-      this.$emit('pick', item)
-      this.inputValue = this.getValue(item)
-      this.typedValue = this.inputValue
-      this.showSuggestions = false
-      this.picked = true
+
+      if (!this.multi) {
+        this.$emit('pick', item)
+        this.inputValue = this.getValue(item)
+        this.typedValue = this.inputValue
+        this.showSuggestions = false
+        this.picked = true
+      } else {
+        if (this.isSelected(item)) {
+          this.$emit('remove', item)
+        } else {
+          this.$emit('add', item)
+        }
+        this.showSuggestions = true
+      }
     }
   },
   watch: {
@@ -187,6 +207,21 @@ ul.autosuggest > li {
   padding: 6px 12px;
   background-color: white;
   cursor: pointer;
+}
+
+ul.autosuggest.autosuggest-multi > li {
+  padding-left: 24px;
+  position: relative;
+}
+
+ul.autosuggest.autosuggest-multi > li.selected::before {
+  display: block;
+  font-family: FontAwesome;
+  position: absolute;
+  left: 7px;
+  top: 10px;
+  content: '\f00c';
+  font-size: 0.7em;
 }
 
 ul.autosuggest > li.active {

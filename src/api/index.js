@@ -96,6 +96,18 @@ const Api = {
     Get: (hostName, fields = DefaultFields.Hosts.Get) => {
       let url = `/api/v1/hosts/${hostName}?_fields=${fields.join(',')}`
       return wrap(axios.get(url))
+    },
+    Update: (hostName, payload) => {
+      let url = `/api/v1/hosts/${hostName}`
+      return wrap(axios.put(url, payload))
+    },
+    Create: (payload) => {
+      let url = `/api/v1/hosts/`
+      return wrap(axios.post(url, payload))
+    },
+    Delete: (hostName) => {
+      let url = `/api/v1/hosts/${hostName}`
+      return wrap(axios.delete(url))
     }
   },
   Projects: {
