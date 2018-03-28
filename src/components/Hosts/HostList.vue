@@ -2,7 +2,7 @@
   <div class="PageContent" :class="{'NoSelect': selectMode}">
     <main class="PageMain">
       <div class="ContentHeader">
-        <h2 class="ContentHeader_Title">Group List</h2>
+        <h2 class="ContentHeader_Title">Host List</h2>
         <div class="ContentHeader_Buttons">
           <router-link to="/hosts/++/edit" class="btn btn-success btn-sm text-uppercase">
             <i class="fa fa-plus"></i> Create

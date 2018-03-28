@@ -1,12 +1,12 @@
 <template>
   <nav aria-label="Page navigation" class="Pagination">
-    <ul class="pagination" v-if="total > 1">
+    <ul class="pagination" v-if="total > 1 || current > total">
       <li
         v-for="page in pages"
         :key="page.id"
         :class="{ 'page-item': true, 'active': page.page === current, disabled: page.disabled }">
         <a class="page-link" @click.prevent="pageClick(page)" v-if="page.id === 'prev'">&larr;</a>
-        <a class="page-link" @click.prevent="pageClick(page)" v-else-if="page.id === 'prev'">&rarr;</a>
+        <a class="page-link" @click.prevent="pageClick(page)" v-else-if="page.id === 'next'">&rarr;</a>
         <a class="page-link" @click.prevent="pageClick(page)" v-else>{{page.page}}</a>
       </li>
     </ul>
@@ -49,19 +49,6 @@ export default {
   computed: {
     pages () {
       let { current, total, spread } = this
-      console.log(current, total)
-      if (current < 1) {
-        current = 1
-        this.$emit('page', 1)
-      } else if (current > total) {
-        if (total > 0) {
-          current = total
-          this.$emit('page', current)
-        } else if (current !== 1) {
-          current = 1
-          this.$emit('page', current)
-        }
-      }
 
       // always show the first page
       let result = [
