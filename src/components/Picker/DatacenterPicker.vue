@@ -7,6 +7,7 @@
     :value="filter"
     :getValue="getValue"
     :getIndex="getIndex"
+    :pickedItem="datacenter"
     @change="inputChanged"
     @pick="dataPicked" />
 </template>
@@ -16,6 +17,12 @@ import Picker from './Picker'
 import Api from '@/api'
 
 export default {
+  props: {
+    datacenter: {
+      type: Object,
+      default: null
+    }
+  },
   components: {
     Picker
   },

@@ -5,6 +5,7 @@
     placeholder="Group Name"
     :suggestions="groups"
     :value="filter"
+    :pickedItem="group"
     :getValue="getValue"
     :getIndex="getIndex"
     @change="inputChanged"
@@ -16,6 +17,12 @@ import Picker from './Picker'
 import Api from '@/api'
 
 export default {
+  props: {
+    group: {
+      type: Object,
+      default: null
+    }
+  },
   components: {
     Picker
   },

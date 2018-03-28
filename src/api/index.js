@@ -44,6 +44,17 @@ export const DefaultFields = {
       'all_custom_fields',
       'description',
       'group_name'
+    ],
+    Get: [
+      '_id',
+      'fqdn',
+      'datacenter_name',
+      'custom_fields',
+      'tags',
+      'all_tags',
+      'all_custom_fields',
+      'description',
+      'group_name'
     ]
   },
   Projects: {
@@ -80,6 +91,10 @@ const Api = {
     List: (page, filter, fields = DefaultFields.Hosts.List, limit = null) => {
       let url = `/api/v1/hosts/?_fields=${fields.join(',')}&_page=${page}&_filter=${filter}`
       if (limit) { url += `&_limit=${limit}` }
+      return wrap(axios.get(url))
+    },
+    Get: (hostName, fields = DefaultFields.Hosts.Get) => {
+      let url = `/api/v1/hosts/${hostName}?_fields=${fields.join(',')}`
       return wrap(axios.get(url))
     }
   },

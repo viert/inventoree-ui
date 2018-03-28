@@ -1,5 +1,5 @@
 <template>
-  <div class="input-group-wrap">
+  <div class="input-group-wrap" :class="{ picked: picked }">
     <input
       :value="inputValue"
       @input="inputValueChanged"
@@ -49,6 +49,10 @@ export default {
     },
     placeholder: {
       default: ''
+    },
+    pickedItem: {
+      type: Object,
+      default: null
     }
   },
   methods: {
@@ -66,7 +70,6 @@ export default {
     inputBlur () {
       this.showSuggestions = false
       if (!this.picked) {
-        console.log('matching...')
         let match = this.suggestions.find(item => this.getValue(item).toLowerCase() === this.inputValue.toLowerCase())
         if (match) {
           this.$emit('pick', match)
@@ -107,15 +110,22 @@ export default {
       } else {
         this.inputValue = this.getValue(this.suggestions[si])
       }
+    },
+    pickedItem (newVal) {
+      if (newVal) {
+        this.inputValue = this.getValue(newVal)
+        this.typedValue = this.getValue(newVal)
+        this.picked = true
+      }
     }
   },
   data () {
     return {
-      inputValue: '',
+      inputValue: this.pickedItem ? this.getValue(this.pickedItem) : '',
       selectIndex: -1,
       showSuggestions: false,
-      typedValue: '',
-      picked: false
+      typedValue: this.pickedItem ? this.getValue(this.pickedItem) : '',
+      picked: this.pickedItem !== null
     }
   },
   computed: {
@@ -134,15 +144,28 @@ export default {
 </script>
 
 <style>
-.input-group .input-group-wrap {
-  flex: 1 1 auto;
-  width: 1px;
+.input-group-wrap {
   position: relative;
 }
 
-.input-group-wrap input {
+.input-group .input-group-wrap {
+  flex: 1 1 auto;
+  width: 1px;
+}
+
+.input-group .input-group-wrap input {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
+}
+
+.input-group-wrap.picked::after{
+  display: block;
+  font-family: FontAwesome;
+  position: absolute;
+  right: 7px;
+  top: 7px;
+  content: '\f00c';
+  color: #18bc9c;
 }
 
 .input-group-wrap + .input-group-append {

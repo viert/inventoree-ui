@@ -100,7 +100,7 @@ export default {
   },
   data () {
     let page = parseInt(this.$route.query._page) || 1
-    let totalPages = 0
+    let totalPages = 1
     return {
       page,
       totalPages,
