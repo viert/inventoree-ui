@@ -35,7 +35,7 @@
               </div>
               <div class="Form_Field">
                 <label class="Form_FieldLabel">Tags</label>
-                <input class="form-control" type="text" />
+                <tag-editor :tags="host.tags" @add="addTag" @remove="removeTag" />
               </div>
             </div>
           </div>
@@ -49,6 +49,7 @@
 import Api from '@/api'
 import GroupPicker from '@/components/Picker/GroupPicker'
 import DatacenterPicker from '@/components/Picker/DatacenterPicker'
+import TagEditor from '@/components/Common/TagEditor'
 
 export default {
   props: {
@@ -63,7 +64,8 @@ export default {
   },
   components: {
     GroupPicker,
-    DatacenterPicker
+    DatacenterPicker,
+    TagEditor
   },
   data () {
     return {
@@ -92,6 +94,14 @@ export default {
         .then(response => {
           this.host = response.data.data[0]
         })
+    }
+  },
+  methods: {
+    addTag (tag) {
+      this.host.tags.push(tag)
+    },
+    removeTag (tag) {
+      this.host.tags = this.host.tags.filter(i => i !== tag)
     }
   },
   computed: {
