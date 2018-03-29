@@ -1,6 +1,7 @@
 <template>
   <div class="input-group-wrap" :class="{ picked: picked }">
     <input
+      ref="autosuggestInput"
       :value="inputValue"
       @input="inputValueChanged"
       @focus="inputFocus"
@@ -8,6 +9,7 @@
       @keydown.down="moveCursor(1)"
       @keydown.up="moveCursor(-1)"
       @keydown.enter="pickItem"
+      @keydown.esc="handleEscape"
       :class="inputClassComputed"
       :placeholder="placeholder"
       type="text" />
@@ -75,8 +77,21 @@ export default {
     inputFocus () {
       this.showSuggestions = true
     },
+    handleEscape () {
+      if (this.multi) {
+        this.showSuggestions = false
+        this.inputBlur()
+      }
+    },
     inputBlur () {
-      if (!this.multi) {
+      if (this.multi) {
+        if (this.justPicked) {
+          this.justPicked = false
+          this.$refs.autosuggestInput.focus()
+        } else {
+          this.showSuggestions = false
+        }
+      } else {
         this.showSuggestions = false
       }
       if (!this.picked && !this.multi) {
@@ -100,8 +115,12 @@ export default {
       if (this.selectIndex < 0 || this.selectIndex >= this.suggestions.length) {
         return
       }
-      let item = this.suggestions[this.selectIndex]
 
+      if (e.type === 'mousedown') {
+        this.justPicked = true
+      }
+
+      let item = this.suggestions[this.selectIndex]
       if (!this.multi) {
         this.$emit('pick', item)
         this.inputValue = this.getValue(item)
