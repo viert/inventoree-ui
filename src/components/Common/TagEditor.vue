@@ -103,6 +103,7 @@ export default {
   box-shadow: none !important;
   display: inline-block;
   background-color: transparent;
+  padding: 0;
 }
 
 .TagEditor .Tag {

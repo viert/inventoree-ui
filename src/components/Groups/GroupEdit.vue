@@ -135,7 +135,7 @@ export default {
       this.group.tags.push(tag)
     },
     removeTag (tag) {
-      this.group.tags = this.host.tags.filter(i => i !== tag)
+      this.group.tags = this.group.tags.filter(i => i !== tag)
     },
     projectPicked (project) {
       this.group.project = project
