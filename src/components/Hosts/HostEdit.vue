@@ -60,6 +60,16 @@ import DatacenterPicker from '@/components/Picker/DatacenterPicker'
 import TagEditor from '@/components/Common/TagEditor'
 import CustomFieldEditor from '@/components/Common/CustomFieldEditor/CustomFieldEditor'
 
+const editorFields = [
+  '_id',
+  'fqdn',
+  'datacenter',
+  'group',
+  'tags',
+  'custom_fields',
+  'description'
+]
+
 export default {
   props: {
     create: {
@@ -91,24 +101,28 @@ export default {
     }
   },
   created () {
-    if (!this.create) {
-      let editorFields = [
-        '_id',
-        'fqdn',
-        'datacenter',
-        'group',
-        'tags',
-        'custom_fields',
-        'description'
-      ]
-      let { hostName } = this.$route.params
-      Api.Hosts.Get(hostName, editorFields)
-        .then(response => {
-          this.host = response.data.data[0]
-        })
-    }
+    this.reload()
   },
   methods: {
+    reload () {
+      if (!this.create) {
+        let { hostName } = this.$route.params
+        Api.Hosts.Get(hostName, editorFields)
+          .then(response => {
+            this.host = response.data.data[0]
+          })
+      } else {
+        this.host = {
+          _id: null,
+          fqdn: '',
+          description: '',
+          tags: [],
+          custom_fields: [],
+          group: null,
+          datacenter: null
+        }
+      }
+    },
     addTag (tag) {
       this.host.tags.push(tag)
     },
@@ -159,6 +173,11 @@ export default {
   computed: {
     cloneLink () {
       return `/hosts/${this.$route.params.hostName}/clone`
+    }
+  },
+  watch: {
+    '$route.params.hostName' () {
+      this.reload()
     }
   }
 }
