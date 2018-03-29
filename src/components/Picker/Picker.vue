@@ -13,7 +13,7 @@
       :class="inputClassComputed"
       :placeholder="placeholder"
       type="text" />
-    <ul v-if="showSuggestionsComputed" class="autosuggest" :class="{ 'autosuggest-multi': multi }">
+    <ul v-if="showSuggestionsComputed" class="autosuggest" :class="{ 'autosuggest-multi': multi, 'autosuggest-inline': inline }">
       <li
         v-for="(suggestion, i) in suggestions"
         :class="{ active: i === selectIndex, selected: multi && isSelected(suggestion) }"
@@ -61,6 +61,10 @@ export default {
       default: null
     },
     multi: {
+      type: Boolean,
+      default: false
+    },
+    inline: {
       type: Boolean,
       default: false
     }
@@ -144,10 +148,12 @@ export default {
       }
     },
     selectIndex (si) {
-      if (si === -1) {
-        this.inputValue = this.typedValue
-      } else {
-        this.inputValue = this.getValue(this.suggestions[si])
+      if (!this.multi) {
+        if (si === -1) {
+          this.inputValue = this.typedValue
+        } else {
+          this.inputValue = this.getValue(this.suggestions[si])
+        }
       }
     },
     pickedItem (newVal) {
@@ -220,6 +226,10 @@ ul.autosuggest {
   margin-top: 4px;
   padding: 0;
   z-index: 9999;
+}
+
+ul.autosuggest.autosuggest-inline {
+  position: relative;
 }
 
 ul.autosuggest > li {

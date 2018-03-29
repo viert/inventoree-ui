@@ -52,10 +52,14 @@
                     <label class="Form_FieldLabel">Children</label>
                     <group-picker
                       :multi="true"
+                      :inline="true"
                       :isSelected="isSelected"
                       @add="addChild"
                       @remove="removeChild" />
                   </div>
+                  <ul class="ListSelected">
+                    <li @click="removeChild(cgroup)" class="ListSelected_Item" v-for="cgroup in group.children" :key="cgroup._id">{{cgroup.name}}</li>
+                  </ul>
                 </div>
                 <div class="col-sm-6">
                 </div>

@@ -10,6 +10,7 @@
     :getIndex="getIndex"
     :isSelected="isSelected"
     :multi="multi"
+    :inline="inline"
     @change="inputChanged"
     @add="dataAdded"
     @remove="dataRemoved"
@@ -32,6 +33,10 @@ export default {
     },
     isSelected: {
       type: Function
+    },
+    inline: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
