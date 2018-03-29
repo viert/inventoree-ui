@@ -12,9 +12,10 @@
     :multi="multi"
     :inline="inline"
     @change="inputChanged"
-    @add="dataAdded"
-    @remove="dataRemoved"
-    @pick="dataPicked" />
+    @add="$emit('add', $event)"
+    @remove="$emit('remove', $event)"
+    @clear="$emit('clear', $event)"
+    @pick="$emit('pick', $event)" />
 </template>
 
 <script>
@@ -61,15 +62,6 @@ export default {
     },
     getIndex (s) {
       return s._id
-    },
-    dataPicked (data) {
-      this.$emit('pick', data)
-    },
-    dataAdded (data) {
-      this.$emit('add', data)
-    },
-    dataRemoved (data) {
-      this.$emit('remove', data)
     }
   }
 }

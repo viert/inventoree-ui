@@ -9,7 +9,8 @@
     :getIndex="getIndex"
     :pickedItem="datacenter"
     @change="inputChanged"
-    @pick="dataPicked" />
+    @pick="$emit('pick', $event)"
+    @clear="$emit('clear', $event)" />
 </template>
 
 <script>
@@ -45,9 +46,6 @@ export default {
     },
     getIndex (s) {
       return s._id
-    },
-    dataPicked (data) {
-      this.$emit('pick', data)
     }
   }
 }

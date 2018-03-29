@@ -9,7 +9,8 @@
     :getIndex="getIndex"
     :pickedItem="project"
     @change="inputChanged"
-    @pick="dataPicked" />
+    @clear="$emit('clear')"
+    @pick="$emit('pick', $event)" />
 </template>
 
 <script>
@@ -45,9 +46,6 @@ export default {
     },
     getIndex (s) {
       return s._id
-    },
-    dataPicked (data) {
-      this.$emit('pick', data)
     }
   }
 }

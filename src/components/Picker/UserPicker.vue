@@ -2,10 +2,10 @@
   <picker
     inputClass="form-control"
     inputPickedClass="is-valid"
-    placeholder="Group Name"
-    :suggestions="groups"
+    placeholder="Username"
+    :suggestions="users"
     :value="filter"
-    :pickedItem="group"
+    :pickedItem="user"
     :getValue="getValue"
     :getIndex="getIndex"
     :isSelected="isSelected"
@@ -15,7 +15,7 @@
     @add="$emit('add', $event)"
     @remove="$emit('remove', $event)"
     @clear="$emit('clear', $event)"
-    @pick="$emit('pick', $event)"/>
+    @pick="$emit('pick', $event)" />
 </template>
 
 <script>
@@ -24,7 +24,7 @@ import Api from '@/api'
 
 export default {
   props: {
-    group: {
+    user: {
       type: Object,
       default: null
     },
@@ -45,20 +45,20 @@ export default {
   },
   data () {
     return {
-      groups: [],
+      users: [],
       filter: ''
     }
   },
   methods: {
     inputChanged (newVal) {
       this.filter = newVal
-      Api.Groups.List(1, newVal, ['_id', 'name'], 5)
+      Api.Users.List(1, newVal, ['_id', 'username'], 5)
         .then(response => {
-          this.groups = response.data.data
+          this.users = response.data.data
         })
     },
     getValue (s) {
-      return s.name
+      return s.username
     },
     getIndex (s) {
       return s._id

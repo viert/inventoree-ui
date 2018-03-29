@@ -80,7 +80,7 @@ import Api from '@/api'
 import FaCheckbox from '@/components/Common/FaCheckbox'
 import HostListItem from './HostListItem'
 import GroupPicker from '@/components/Picker/GroupPicker'
-import Pagination from '@/components/common/Pagination'
+import Pagination from '@/components/Common/Pagination'
 import DatacenterPicker from '@/components/Picker/DatacenterPicker'
 import FilteredDataMixin from '@/mixins/FilteredDataMixin'
 import MassSelect from '@/mixins/MassSelect'
@@ -99,11 +99,7 @@ export default {
     Pagination
   },
   data () {
-    let page = parseInt(this.$route.query._page) || 1
-    let totalPages = 1
     return {
-      page,
-      totalPages,
       destProject: null,
       destDatacenter: null
     }
@@ -122,16 +118,6 @@ export default {
             return item
           })
         })
-    },
-    filterChanged (e) {
-      this.filter = e.target.value
-      this.filterDirty = true
-      this.$router.replace({query: {_page: this.page, _filter: this.filter}})
-    },
-    pageChanged (page) {
-      this.page = page
-      this.$router.replace({query: {_page: this.page, _filter: this.filter}})
-      this.loadData()
     },
     startSelection () {
       this.$store.commit('setSelectMode', true)

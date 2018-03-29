@@ -77,6 +77,16 @@ export const DefaultFields = {
       'members'
     ]
   },
+  Users: {
+    List: [
+      '_id',
+      'username',
+      'first_name',
+      'last_name',
+      'email',
+      'avatar_url'
+    ]
+  },
   Datacenters: {
     List: [
       '_id',
@@ -134,7 +144,7 @@ const Api = {
       return wrap(axios.put(url, payload))
     },
     Create: (payload) => {
-      let url = `/api/v1/hosts/`
+      let url = '/api/v1/hosts/'
       return wrap(axios.post(url, payload))
     },
     Delete: (hostName) => {
@@ -150,6 +160,33 @@ const Api = {
     },
     Get: (projectName, fields = DefaultFields.Projects.Get) => {
       let url = `/api/v1/projects/${projectName}?_fields=${fields.join(',')}`
+      return wrap(axios.get(url))
+    },
+    Update: (projectName, payload, fields = DefaultFields.Projects.Get) => {
+      let url = `/api/v1/projects/${projectName}?_fields=${fields.join(',')}`
+      return wrap(axios.put(url, payload))
+    },
+    Create: (payload, fields = DefaultFields.Projects.Get) => {
+      let url = `/api/v1/projects/?_fields=${fields.join(',')}`
+      return wrap(axios.post(url, payload))
+    },
+    SetMembers: (projectName, memberIds, fields = DefaultFields.Projects.Get) => {
+      let url = `/api/v1/projects/${projectName}/set_members?_fields=${fields.join(',')}`
+      return wrap(axios.post(url, { member_ids: memberIds }))
+    },
+    Delete: (projectName) => {
+      let url = `/api/v1/projects/${projectName}`
+      return wrap(axios.delete(url))
+    },
+    ChangeOwner: (projectName, ownerId) => {
+      let url = `/api/v1/projects/${projectName}/switch_owner`
+      return wrap(axios.post(url, { owner_id: ownerId }))
+    }
+  },
+  Users: {
+    List: (page, filter, fields = DefaultFields.Users.List, limit = null) => {
+      let url = `/api/v1/users/?_fields=${fields.join(',')}&_page=${page}&_filter=${filter}`
+      if (limit) { url += `&_limit=${limit}` }
       return wrap(axios.get(url))
     }
   },

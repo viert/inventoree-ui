@@ -1,9 +1,13 @@
 
 const FilteredDataMixin = {
   data () {
+    let page = this.$route.query._page || 1
+    let totalPages = 0
     return {
       filter: this.$route.query._filter || '',
       filterDirty: false,
+      page,
+      totalPages,
       _tm: null
     }
   },
@@ -26,6 +30,16 @@ const FilteredDataMixin = {
             }
           })
       }
+    },
+    filterChanged (e) {
+      this.filter = e.target.value
+      this.filterDirty = true
+      this.$router.replace({query: {_page: this.page, _filter: this.filter}})
+    },
+    pageChanged (page) {
+      this.page = page
+      this.$router.replace({query: {_page: this.page, _filter: this.filter}})
+      this.loadData()
     }
   }
 }

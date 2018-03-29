@@ -27,28 +27,29 @@
             :key="project._id" />
         </tbody>
       </table>
-
+      <pagination
+        :current="page"
+        :total="totalPages"
+        @page="pageChanged" />
     </main>
   </div>
 </template>
 
 <script>
 import FilteredDataMixin from '@/mixins/FilteredDataMixin'
+import Pagination from '@/components/Common/Pagination'
 import ProjectListItem from './ProjectListItem'
 import Api from '@/api'
 
 export default {
   data () {
-    let page = this.$route.query._page || 1
-    let totalPages = 0
     return {
-      page,
-      totalPages,
       items: []
     }
   },
   components: {
-    ProjectListItem
+    ProjectListItem,
+    Pagination
   },
   mixins: [
     FilteredDataMixin
