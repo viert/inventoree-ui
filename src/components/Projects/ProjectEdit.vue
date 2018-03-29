@@ -214,7 +214,7 @@ export default {
     }
   },
   watch: {
-    '$route.params.groupName' () {
+    '$route.params.projectName' () {
       this.reload()
     }
   }
