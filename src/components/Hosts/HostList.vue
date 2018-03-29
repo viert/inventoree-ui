@@ -41,7 +41,7 @@
     <aside v-if="itemsSelected.length > 0" class="SelectPanel">
       <h2 class="ContentHeader_Title">Mass actions</h2>
       <ul class="ListSelected">
-        <li class="ListSelected_Item" v-for="shost in itemsSelected" :key="shost._id">{{shost.fqdn}}</li>
+        <li @click="deselectItem(shost)" class="ListSelected_Item" v-for="shost in itemsSelected" :key="shost._id">{{shost.fqdn}}</li>
       </ul>
       <div class="Form">
         <div class="Form_Field">

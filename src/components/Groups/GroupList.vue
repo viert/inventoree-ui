@@ -36,7 +36,7 @@
     <aside v-if="itemsSelected.length > 0" class="SelectPanel">
       <h2 class="ContentHeader_Title">Mass actions</h2>
       <ul class="ListSelected">
-        <li class="ListSelected_Item" v-for="sgroup in itemsSelected" :key="sgroup._id">{{sgroup.name}}</li>
+        <li @click="deselectItem(sgroup)" class="ListSelected_Item" v-for="sgroup in itemsSelected" :key="sgroup._id">{{sgroup.name}}</li>
       </ul>
       <div class="Form">
         <div class="Form_Field">
