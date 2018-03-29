@@ -161,6 +161,10 @@ export default {
         this.inputValue = this.getValue(newVal)
         this.typedValue = this.getValue(newVal)
         this.picked = true
+      } else {
+        this.inputValue = ''
+        this.typedValue = ''
+        this.picked = false
       }
     }
   },

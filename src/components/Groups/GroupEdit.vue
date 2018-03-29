@@ -43,7 +43,7 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-7 offset-sm-1">
+          <div v-if="!create && !clone" class="col-sm-7 offset-sm-1">
             <h5>Relations</h5>
             <div class="Form">
               <div class="row">
@@ -58,10 +58,35 @@
                       @remove="removeChild" />
                   </div>
                   <ul class="ListSelected">
-                    <li @click="removeChild(cgroup)" class="ListSelected_Item" v-for="cgroup in group.children" :key="cgroup._id">{{cgroup.name}}</li>
+                    <li
+                      v-for="cgroup in group.children"
+                      :key="cgroup._id"
+                      @click="removeChild(cgroup)"
+                      class="ListSelected_Item">
+                      {{cgroup.name}}
+                    </li>
                   </ul>
                 </div>
                 <div class="col-sm-6">
+                  <div class="Form_Field">
+                    <label class="Form_FieldLabel">Hosts</label>
+                    <host-picker
+                      :multi="true"
+                      :inline="true"
+                      :isSelected="isHostSelected"
+                      @add="addHost"
+                      @remove="removeHost" />
+                  </div>
+                  <ul class="ListSelected">
+                    <li @click="removeHost(chost)" class="ListSelected_Item" v-for="chost in group.hosts" :key="chost._id">{{chost.fqdn}}</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="Form_Buttons">
+                    <button type="submit" class="btn btn-primary" @click="handleSaveRelations">Save Changes</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -76,8 +101,20 @@
 import Api from '@/api'
 import ProjectPicker from '@/components/Picker/ProjectPicker'
 import GroupPicker from '@/components/Picker/GroupPicker'
+import HostPicker from '@/components/Picker/HostPicker'
 import TagEditor from '@/components/Common/TagEditor'
 import CustomFieldEditor from '@/components/Common/CustomFieldEditor/CustomFieldEditor'
+
+const editorFields = [
+  '_id',
+  'name',
+  'description',
+  'children',
+  'hosts',
+  'tags',
+  'custom_fields',
+  'project'
+]
 
 export default {
   props: {
@@ -93,6 +130,7 @@ export default {
   components: {
     ProjectPicker,
     GroupPicker,
+    HostPicker,
     TagEditor,
     CustomFieldEditor
   },
@@ -108,33 +146,44 @@ export default {
         custom_fields: [],
         project: null
       },
-      childrenMap: {}
+      childrenMap: {},
+      hostMap: {}
     }
   },
   created () {
-    if (!this.create) {
-      let editorFields = [
-        '_id',
-        'name',
-        'description',
-        'children',
-        'hosts',
-        'tags',
-        'custom_fields',
-        'project'
-      ]
-      let { groupName } = this.$route.params
-      Api.Groups.Get(groupName, editorFields)
-        .then(response => {
-          this.group = response.data.data[0]
-          this.childrenMap = this.group.children.reduce((acc, i) => {
-            acc[i._id] = i
-            return acc
-          }, {})
-        })
-    }
+    this.reload()
   },
   methods: {
+    reload () {
+      if (!this.create) {
+        let { groupName } = this.$route.params
+        Api.Groups.Get(groupName, editorFields)
+          .then(response => {
+            this.group = response.data.data[0]
+            this.childrenMap = this.group.children.reduce((acc, i) => {
+              acc[i._id] = i
+              return acc
+            }, {})
+            this.hostMap = this.group.hosts.reduce((acc, i) => {
+              acc[i._id] = i
+              return acc
+            }, {})
+          })
+      } else {
+        this.group = {
+          _id: null,
+          name: '',
+          description: '',
+          children: [],
+          hosts: [],
+          tags: [],
+          custom_fields: [],
+          project: null
+        }
+        this.childrenMap = {}
+        this.hostMap = {}
+      }
+    },
     addTag (tag) {
       this.group.tags.push(tag)
     },
@@ -148,13 +197,57 @@ export default {
       this.group.custom_fields = fields
     },
     handleSave () {
-
+      let { name, description, tags } = this.group
+      let payload = {
+        name,
+        description,
+        tags,
+        custom_fields: this.group.custom_fields,
+        project_id: this.group.project._id
+      }
+      if (this.create || this.clone) {
+        Api.Groups.Create(payload)
+          .then(response => {
+            let { name } = payload
+            this.$store.dispatch('info', `Group ${name} has been created, you can now add group's relations`)
+            this.$router.push(`/groups/${name}`)
+          })
+      } else {
+        Api.Groups.Update(this.group._id, payload, editorFields)
+          .then(response => {
+            this.$store.dispatch('info', `Group ${name} has been updated, be sure to save group's relations if you made any changes`)
+          })
+      }
     },
     handleDestroy () {
-
+      Api.Groups.Delete(this.group._id)
+        .then(() => {
+          this.$store.dispatch('info', `Group ${this.group.name} has been deleted successfully`)
+          this.$router.push('/groups')
+        })
+    },
+    handleSaveRelations () {
+      let childIds = this.group.children.map(i => i._id)
+      let hostIds = this.group.hosts.map(i => i._id)
+      let { _id } = this.group
+      Api.Groups.SetChildren(_id, childIds, ['children'])
+        .then(response => {
+          let { children } = response.data.data
+          this.group.children = children
+          this.$store.dispatch('info', `Group's children have been successfully updated`)
+        })
+      Api.Groups.SetHosts(_id, hostIds, ['hosts'])
+        .then(response => {
+          let { hosts } = response.data.data
+          this.group.hosts = hosts
+          this.$store.dispatch('info', `Group's hosts have been successfully updated`)
+        })
     },
     isSelected (item) {
       return item._id in this.childrenMap
+    },
+    isHostSelected (item) {
+      return item._id in this.hostMap
     },
     addChild (child) {
       this.group.children.push(child)
@@ -163,11 +256,24 @@ export default {
     removeChild (child) {
       this.group.children = this.group.children.filter(i => i._id !== child._id)
       this.$delete(this.childrenMap, child._id)
+    },
+    addHost (host) {
+      this.group.hosts.push(host)
+      this.$set(this.hostMap, host._id, host)
+    },
+    removeHost (host) {
+      this.group.hosts = this.group.hosts.filter(i => i._id !== host._id)
+      this.$delete(this.hostMap, host._id)
     }
   },
   computed: {
     cloneLink () {
       return `/groups/${this.$route.params.groupName}/clone`
+    }
+  },
+  watch: {
+    '$route.params.groupName' () {
+      this.reload()
     }
   }
 }

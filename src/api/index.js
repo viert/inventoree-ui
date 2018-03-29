@@ -85,6 +85,28 @@ const Api = {
     Get: (groupName, fields = DefaultFields.Groups.Get) => {
       let url = `/api/v1/groups/${groupName}?_fields=${fields.join(',')}`
       return wrap(axios.get(url))
+    },
+    Create: (payload, fields = DefaultFields.Groups.Get) => {
+      let url = `/api/v1/groups/?_fields=${fields.join(',')}`
+      return wrap(axios.post(url, payload))
+    },
+    Update: (groupName, payload, fields = DefaultFields.Groups.Get) => {
+      let url = `/api/v1/groups/${groupName}?_fields=${fields.join(',')}`
+      return wrap(axios.put(url, payload))
+    },
+    SetChildren: (groupName, childIds, fields = DefaultFields.Groups.Get) => {
+      let url = `/api/v1/groups/${groupName}/set_children?_fields=${fields.join(',')}`
+      let payload = { child_ids: childIds }
+      return wrap(axios.put(url, payload))
+    },
+    SetHosts: (groupName, hostIds, fields = DefaultFields.Groups.Get) => {
+      let url = `/api/v1/groups/${groupName}/set_hosts?_fields=${fields.join(',')}`
+      let payload = { host_ids: hostIds }
+      return wrap(axios.put(url, payload))
+    },
+    Delete: (groupName) => {
+      let url = `/api/v1/groups/${groupName}`
+      return wrap(axios.delete(url))
     }
   },
   Hosts: {
