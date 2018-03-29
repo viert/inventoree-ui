@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import GroupList from '@/components/Groups/GroupList'
 import GroupView from '@/components/Groups/GroupView'
 import ProjectList from '@/components/Projects/ProjectList'
+import ProjectView from '@/components/Projects/ProjectView'
 import HostList from '@/components/Hosts/HostList'
 import HostView from '@/components/Hosts/HostView'
 import HostEdit from '@/components/Hosts/HostEdit'
@@ -23,9 +24,41 @@ export default new Router({
       component: GroupView
     },
     {
+      path: '/groups/++/edit',
+      name: 'group_create',
+      component: GroupEdit,
+      props: {
+        clone: false,
+        create: true
+      }
+    },
+    {
+      path: '/groups/:groupName/edit',
+      name: 'group_edit',
+      component: GroupEdit,
+      props: {
+        clone: false,
+        create: false
+      }
+    },
+    {
+      path: '/groups/:groupName/clone',
+      name: 'group_clone',
+      component: GroupEdit,
+      props: {
+        clone: true,
+        create: false
+      }
+    },
+    {
       path: '/projects',
       name: 'project_list',
       component: ProjectList
+    },
+    {
+      path: '/projects/:projectName',
+      name: 'project_view',
+      component: ProjectView
     },
     {
       path: '/hosts',
@@ -59,33 +92,6 @@ export default new Router({
       path: '/hosts/:hostName/clone',
       name: 'host_clone',
       component: HostEdit,
-      props: {
-        clone: true,
-        create: false
-      }
-    },
-    {
-      path: '/groups/++/edit',
-      name: 'group_create',
-      component: GroupEdit,
-      props: {
-        clone: false,
-        create: true
-      }
-    },
-    {
-      path: '/groups/:groupName/edit',
-      name: 'group_edit',
-      component: GroupEdit,
-      props: {
-        clone: false,
-        create: false
-      }
-    },
-    {
-      path: '/groups/:groupName/clone',
-      name: 'group_clone',
-      component: GroupEdit,
       props: {
         clone: true,
         create: false

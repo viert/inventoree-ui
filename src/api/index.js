@@ -65,6 +65,16 @@ export const DefaultFields = {
       'email',
       'root_email',
       'description'
+    ],
+    Get: [
+      '_id',
+      'name',
+      'owner',
+      'email',
+      'root_email',
+      'description',
+      'groups_count',
+      'members'
     ]
   },
   Datacenters: {
@@ -136,6 +146,10 @@ const Api = {
     List: (page, filter, fields = DefaultFields.Projects.List, limit = null) => {
       let url = `/api/v1/projects/?_fields=${fields.join(',')}&_page=${page}&_filter=${filter}`
       if (limit) { url += `&_limit=${limit}` }
+      return wrap(axios.get(url))
+    },
+    Get: (projectName, fields = DefaultFields.Projects.Get) => {
+      let url = `/api/v1/projects/${projectName}?_fields=${fields.join(',')}`
       return wrap(axios.get(url))
     }
   },
