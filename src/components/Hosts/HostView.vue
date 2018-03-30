@@ -4,7 +4,7 @@
       <div class="ContentHeader">
         <h2 class="ContentHeader_Title">View Host</h2>
         <div class="ContentHeader_Buttons">
-          <router-link :to="editLink" class="btn btn-primary btn-sm text-uppercase">
+          <router-link :to="editLink" v-if="host.modification_allowed" class="btn btn-primary btn-sm text-uppercase">
             <i class="fa fa-edit"></i> Edit
           </router-link>
           <router-link :to="cloneLink" class="btn btn-success btn-sm text-uppercase">
@@ -79,6 +79,7 @@ export default {
         custom_fields: [],
         all_custom_fields: [],
         group_name: null,
+        modification_allowed: false,
         datacenter_name: null
       }
     }

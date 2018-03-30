@@ -4,7 +4,7 @@
       <div class="ContentHeader">
         <h2 class="ContentHeader_Title">View Group</h2>
         <div class="ContentHeader_Buttons">
-          <router-link :to="editLink" class="btn btn-primary btn-sm text-uppercase">
+          <router-link :to="editLink" v-if="group.modification_allowed" class="btn btn-primary btn-sm text-uppercase">
             <i class="fa fa-edit"></i> Edit
           </router-link>
           <router-link :to="cloneLink" class="btn btn-success btn-sm text-uppercase">
@@ -97,7 +97,8 @@ export default {
         all_tags: [],
         tags: [],
         all_custom_fields: [],
-        custom_fields: []
+        custom_fields: [],
+        modification_allowed: false
       }
     }
   },

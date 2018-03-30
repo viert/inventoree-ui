@@ -4,7 +4,7 @@
       <div class="ContentHeader">
         <h2 class="ContentHeader_Title">View Project</h2>
         <div class="ContentHeader_Buttons">
-          <router-link :to="editLink" class="btn btn-primary btn-sm text-uppercase">
+          <router-link v-if="project.modification_allowed" :to="editLink" class="btn btn-primary btn-sm text-uppercase">
             <i class="fa fa-edit"></i> Edit
           </router-link>
           <router-link to="/projects/++/edit" class="btn btn-success btn-sm text-uppercase">
@@ -72,6 +72,7 @@ export default {
         members: [],
         email: '',
         root_email: '',
+        modification_allowed: false,
         groups_count: 0
       }
     }
@@ -79,9 +80,6 @@ export default {
   computed: {
     editLink () {
       return `/projects/${this.project.name}/edit`
-    },
-    cloneLink () {
-      return `/projects/${this.project.name}/clone`
     }
   },
   methods: {

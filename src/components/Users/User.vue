@@ -1,7 +1,7 @@
 <template>
   <span :class="{ User: icon }">
     <router-link v-if="link" :to="userLink">{{ username }}</router-link>
-    <span v-else>{{ name }}</span>
+    <span v-else>{{ username }}</span>
   </span>
 </template>
 

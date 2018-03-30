@@ -30,6 +30,7 @@ export const DefaultFields = {
       'all_custom_fields',
       'description',
       'children',
+      'modification_allowed',
       'hosts'
     ]
   },
@@ -53,6 +54,7 @@ export const DefaultFields = {
       'tags',
       'all_tags',
       'all_custom_fields',
+      'modification_allowed',
       'description',
       'group_name'
     ]
@@ -73,6 +75,7 @@ export const DefaultFields = {
       'email',
       'root_email',
       'description',
+      'modification_allowed',
       'groups_count',
       'members'
     ]
@@ -84,7 +87,18 @@ export const DefaultFields = {
       'first_name',
       'last_name',
       'email',
-      'avatar_url'
+      'supervisor'
+    ],
+    Get: [
+      '_id',
+      'username',
+      'first_name',
+      'last_name',
+      'email',
+      'supervisor',
+      'modification_allowed',
+      'projects_owned',
+      'projects_included_into'
     ]
   },
   Datacenters: {
@@ -187,6 +201,10 @@ const Api = {
     List: (page, filter, fields = DefaultFields.Users.List, limit = null) => {
       let url = `/api/v1/users/?_fields=${fields.join(',')}&_page=${page}&_filter=${filter}`
       if (limit) { url += `&_limit=${limit}` }
+      return wrap(axios.get(url))
+    },
+    Get: (userName, fields = DefaultFields.Users.Get) => {
+      let url = `/api/v1/users/${userName}?_fields=${fields.join(',')}`
       return wrap(axios.get(url))
     }
   },

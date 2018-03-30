@@ -2,9 +2,9 @@
   <div class="PageContent">
     <main class="PageMain">
       <div class="ContentHeader">
-        <h2 class="ContentHeader_Title">Project List</h2>
+        <h2 class="ContentHeader_Title">User List</h2>
         <div class="ContentHeader_Buttons">
-          <router-link to="/projects/++/edit" class="btn btn-success btn-sm text-uppercase">
+          <router-link to="/users/++/edit" class="btn btn-success btn-sm text-uppercase">
             <i class="fa fa-plus"></i> Create
           </router-link>
         </div>
@@ -13,18 +13,17 @@
       <table class="ModelList">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Owner</th>
+            <th>Username</th>
+            <th>Full Name</th>
             <th>Email</th>
-            <th>Root Email</th>
-            <th>Description</th>
+            <th>Supervisor</th>
           </tr>
         </thead>
         <tbody>
-          <project-list-item
-            v-for="project in items"
-            :project="project"
-            :key="project._id" />
+          <user-list-item
+            v-for="user in items"
+            :user="user"
+            :key="user._id" />
         </tbody>
       </table>
       <pagination
@@ -38,7 +37,7 @@
 <script>
 import FilteredDataMixin from '@/mixins/FilteredDataMixin'
 import Pagination from '@/components/Common/Pagination'
-import ProjectListItem from './ProjectListItem'
+import UserListItem from './UserListItem'
 import Api from '@/api'
 
 export default {
@@ -48,7 +47,7 @@ export default {
     }
   },
   components: {
-    ProjectListItem,
+    UserListItem,
     Pagination
   },
   mixins: [
@@ -56,7 +55,7 @@ export default {
   ],
   methods: {
     loadData () {
-      return Api.Projects.List(this.page, this.filter)
+      return Api.Users.List(this.page, this.filter)
         .then(response => {
           this.items = response.data.data
           this.page = response.data.page
