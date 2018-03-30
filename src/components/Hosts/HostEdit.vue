@@ -12,9 +12,9 @@
           </router-link>
         </div>
       </div>
-      <div class="PageContentContainer PageContentContainer--Half">
+      <div class="PageContentContainer" :class="{ 'PageContentContainer--Half': !clone && !create }">
         <div class="row">
-          <div class="col-sm-12">
+          <div :class="{ 'col-sm-12': !clone && !create, 'col-sm-4': clone || create }">
             <h5>Properties</h5>
             <div class="Form">
               <div class="Form_Field">
@@ -47,6 +47,35 @@
               </div>
             </div>
           </div>
+          <div class="col-sm-7 offset-sm-1" v-if="clone || create">
+            <div v-if="hostList.length === 0">
+              <h5>How to create multiple host records</h5>
+              <p>
+                You can create multiple records in one step. To do it use hostname patterns instead of fqdn.
+                Available patterns are described below:
+              </p>
+              <p>
+                <pre style="display: inline">[<span style="color: red">VAL1</span>-<span style="color: red">VAL2</span>]</pre> will interpolate
+                from VAL1 to VAL2, i.e. [0-9] will produce 0,1,2,3,...,9
+              </p>
+              <p>
+                <pre style="display: inline">[<span style="color: red">VAL1</span>,<span style="color: red">VAL2</span>,<span style="color: red">VAL3</span>]</pre>
+                will produce a sequence, i.e. [0,3,8,b] will produce 0,3,8,b
+              </p>
+              <p>
+                Combining those you can produce long and complex list of hostnames in a flexible way.
+                Try typing something like <pre style="display: inline">srv[00-12][a,b,f].example.com</pre> and see the result
+              </p>
+            </div>
+            <div v-else>
+              <h5>Multiple host records will be created</h5>
+              <ul class="RelationsList">
+                <li class="RelationsList_Item" v-for="hostname in hostList" :key="hostname">
+                  <host :fqdn="hostname" :link="false"/>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </main>
@@ -59,6 +88,7 @@ import GroupPicker from '@/components/Picker/GroupPicker'
 import DatacenterPicker from '@/components/Picker/DatacenterPicker'
 import TagEditor from '@/components/Common/TagEditor'
 import CustomFieldEditor from '@/components/Common/CustomFieldEditor/CustomFieldEditor'
+import { hasValidPatterns, expandPattern } from '@/lib/Permutation'
 
 const editorFields = [
   '_id',
@@ -97,7 +127,8 @@ export default {
         custom_fields: [],
         group: null,
         datacenter: null
-      }
+      },
+      hostList: []
     }
   },
   created () {
@@ -141,7 +172,6 @@ export default {
     handleSave () {
       let { _id, fqdn, datacenter, group, description } = this.host
       let payload = {
-        fqdn,
         tags: [...this.host.tags],
         custom_fields: [...this.host.custom_fields],
         description,
@@ -149,12 +179,23 @@ export default {
         datacenter_id: datacenter ? datacenter._id : null
       }
       if (this.create || this.clone) {
+        if (this.hostList.length > 0) {
+          payload.fqdn_pattern = fqdn
+        } else {
+          payload.fqdn = fqdn
+        }
         Api.Hosts.Create(payload)
-          .then(() => {
-            this.$store.dispatch('info', `Host ${payload.fqdn} successfully created`)
+          .then((response) => {
+            if (payload.fqdn) {
+              this.$store.dispatch('info', `Host ${payload.fqdn} successfully created`)
+            } else {
+              let createdHostnames = response.data.data.map(h => h.fqdn)
+              this.$store.dispatch('info', `Hosts successfully created: ${createdHostnames.join(', ')}`)
+            }
             this.$router.push('/hosts')
           })
       } else {
+        payload.fqdn = fqdn
         Api.Hosts.Update(_id, payload)
           .then(() => {
             this.$store.dispatch('info', `Host ${payload.fqdn} successfully updated`)
@@ -178,6 +219,25 @@ export default {
   watch: {
     '$route.params.hostName' () {
       this.reload()
+    },
+    'host.fqdn' (fqdn) {
+      if (this.clone || this.create) {
+        if (hasValidPatterns(fqdn)) {
+          let i = 0
+          let hosts = []
+          for (var host of expandPattern(fqdn)) {
+            hosts.push(host)
+            i++
+            if (i === 20) {
+              hosts.push('...')
+              break
+            }
+          }
+          this.hostList = hosts
+        } else {
+          this.hostList = []
+        }
+      }
     }
   }
 }

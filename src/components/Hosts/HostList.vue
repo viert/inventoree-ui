@@ -47,16 +47,16 @@
         <div class="Form_Field">
           <label class="Form_FieldLabel">Move hosts to group</label>
           <div class="input-group">
-            <group-picker @pick="groupPicked" />
+            <group-picker @pick="destGroup = $event" @clear="destGroup = null" />
             <div class="input-group-append">
-              <button class="btn btn-outline-primary">Move</button>
+              <button @click="massMoveToGroup" class="btn btn-outline-primary">Move</button>
             </div>
           </div>
         </div>
         <div class="Form_Field">
           <label class="Form_FieldLabel">Move hosts to datacenter</label>
           <div class="input-group">
-            <datacenter-picker @pick="datacenterPicked" />
+            <datacenter-picker @pick="destDatacenter = $event" @clear="destDatacenter = null" />
             <div class="input-group-append">
               <button class="btn btn-outline-primary">Move</button>
             </div>
@@ -64,11 +64,11 @@
         </div>
         <div class="Form_Field">
           <label class="Form_FieldLabel">Detach From Groups</label>
-          <button class="btn btn-danger">Detach</button>
+          <confirm-button @confirm="massDetach" class="btn btn-danger">Detach</confirm-button>
         </div>
         <div class="Form_Field">
           <label class="Form_FieldLabel">Delete Hosts</label>
-          <button class="btn btn-danger">Delete</button>
+          <confirm-button @confirm="massDelete" class="btn btn-danger">Delete</confirm-button>
         </div>
       </div>
     </aside>
@@ -100,7 +100,7 @@ export default {
   },
   data () {
     return {
-      destProject: null,
+      destGroup: null,
       destDatacenter: null
     }
   },
@@ -122,11 +122,37 @@ export default {
     startSelection () {
       this.$store.commit('setSelectMode', true)
     },
-    groupPicked (project) {
-      this.destGroup = project
+    massDelete () {
+      let hostIds = this.itemsSelected.map(item => item._id)
+      Api.Hosts.MassDelete(hostIds)
+        .then(() => {
+          this.$store.dispatch('info', 'Hosts were deleted successfully')
+          this.clearSelection()
+          this.loadData()
+        })
     },
-    datacenterPicked (dc) {
-      this.destDatacenter = dc
+    massDetach () {
+      let hostIds = this.itemsSelected.map(item => item._id)
+      Api.Hosts.MassDetach(hostIds)
+        .then(() => {
+          this.$store.dispatch('info', 'Hosts were detached from their groups successfully')
+          this.clearSelection()
+          this.loadData()
+        })
+    },
+    massMoveToGroup () {
+      if (!this.destGroup) {
+        this.$store.dispatch('error', 'Please select a group to move hosts to')
+        return
+      }
+      let hostIds = this.itemsSelected.map(item => item._id)
+      Api.Hosts.MassMove(hostIds, this.destGroup._id)
+        .then(() => {
+          this.$store.dispatch('info', `Hosts were moved to group ${this.destGroup.name}`)
+          this.destGroup = null
+          this.clearSelection()
+          this.loadData()
+        })
     }
   }
 }

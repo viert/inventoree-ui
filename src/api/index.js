@@ -164,6 +164,16 @@ const Api = {
     Delete: (hostName) => {
       let url = `/api/v1/hosts/${hostName}`
       return wrap(axios.delete(url))
+    },
+    MassDelete: (hostIds) => {
+      let payload = { host_ids: hostIds }
+      let url = '/api/v1/hosts/mass_delete'
+      return wrap(axios.post(url, payload))
+    },
+    MassMove: (hostIds, groupId) => {
+      let payload = { host_ids: hostIds, group_id: groupId }
+      let url = '/api/v1/hosts/mass_move'
+      return wrap(axios.post(url, payload))
     }
   },
   Projects: {

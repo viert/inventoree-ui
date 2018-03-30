@@ -29,6 +29,10 @@ const MassSelect = {
     shouldBeSelected (i) {
       return i._id in this.itemsSelectedMap
     },
+    clearSelection () {
+      this.itemsSelected = []
+      this.itemsSelectedMap = {}
+    },
     toggleAll () {
       if (this.allSelected) {
         this.items.forEach(i => {
