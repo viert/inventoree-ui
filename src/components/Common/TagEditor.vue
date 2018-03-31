@@ -13,7 +13,7 @@
       @keydown.tab="tabHandler"
       @keydown.delete="backspaceHandler"
       @focus="focused = true"
-      @blur="focused = false" />
+      @blur="onBlur" />
   </div>
 </template>
 
@@ -38,6 +38,10 @@ export default {
     Tag
   },
   methods: {
+    onBlur (e) {
+      this.focused = false
+      this.addTag(e)
+    },
     removeTag (tag) {
       this.$emit('remove', tag)
     },
