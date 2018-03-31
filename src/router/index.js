@@ -7,6 +7,7 @@ import ProjectView from '@/components/Projects/ProjectView'
 import ProjectEdit from '@/components/Projects/ProjectEdit'
 import UserList from '@/components/Users/UserList'
 import UserView from '@/components/Users/UserView'
+import UserEdit from '@/components/Users/UserEdit'
 import HostList from '@/components/Hosts/HostList'
 import HostView from '@/components/Hosts/HostView'
 import HostEdit from '@/components/Hosts/HostEdit'
@@ -88,6 +89,22 @@ export default new Router({
       path: '/users/:userName',
       name: 'user_view',
       component: UserView
+    },
+    {
+      path: '/users/++/edit',
+      name: 'user_create',
+      component: UserEdit,
+      props: {
+        create: true
+      }
+    },
+    {
+      path: '/users/:userName/edit',
+      name: 'user_edit',
+      component: UserEdit,
+      props: {
+        create: false
+      }
     },
     {
       path: '/hosts',

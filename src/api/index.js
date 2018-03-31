@@ -216,6 +216,11 @@ const Api = {
     Get: (userName, fields = DefaultFields.Users.Get) => {
       let url = `/api/v1/users/${userName}?_fields=${fields.join(',')}`
       return wrap(axios.get(url))
+    },
+    ChangePassword: (userName, newPassword, confirmPassword) => {
+      let url = `/api/v1/users/${userName}/set_password`
+      let payload = { password: newPassword, confirm_password: confirmPassword }
+      return wrap(axios.post(url, payload))
     }
   },
   Datacenters: {
