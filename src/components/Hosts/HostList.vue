@@ -58,7 +58,7 @@
           <div class="input-group">
             <datacenter-picker @pick="destDatacenter = $event" @clear="destDatacenter = null" />
             <div class="input-group-append">
-              <button class="btn btn-outline-primary">Move</button>
+              <button @click="massMoveToDatacenter" class="btn btn-outline-primary">Move</button>
             </div>
           </div>
         </div>
@@ -150,6 +150,20 @@ export default {
         .then(() => {
           this.$store.dispatch('info', `Hosts were moved to group ${this.destGroup.name}`)
           this.destGroup = null
+          this.clearSelection()
+          this.loadData()
+        })
+    },
+    massMoveToDatacenter () {
+      if (!this.destDatacenter) {
+        this.$store.dispatch('error', 'Please select a datacenter to move hosts to')
+        return
+      }
+      let hostIds = this.itemsSelected.map(item => item._id)
+      Api.Hosts.MassSetDatacenter(hostIds, this.destDatacenter._id)
+        .then(() => {
+          this.$store.dispatch('info', `Hosts were moved to datacenter ${this.destDatacenter.name}`)
+          this.destDatacenter = null
           this.clearSelection()
           this.loadData()
         })
