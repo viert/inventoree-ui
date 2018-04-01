@@ -1,7 +1,7 @@
 
 const FilteredDataMixin = {
   data () {
-    let page = this.$route.query._page || 1
+    let page = this.$route.query._page ? parseInt(this.$route.query._page) : 1
     let totalPages = 0
     return {
       filter: this.$route.query._filter || '',
