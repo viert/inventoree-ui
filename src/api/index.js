@@ -217,10 +217,27 @@ const Api = {
       let url = `/api/v1/users/${userName}?_fields=${fields.join(',')}`
       return wrap(axios.get(url))
     },
+    Update: (userName, payload, fields = DefaultFields.Users.Get) => {
+      let url = `/api/v1/users/${userName}?_fields=${fields.join(',')}`
+      return wrap(axios.put(url, payload))
+    },
+    Create: (payload, fields = DefaultFields.Users.Get) => {
+      let url = '/api/v1/users/'
+      return wrap(axios.post(url, payload))
+    },
+    Delete: (userName) => {
+      let url = `/api/v1/users/${userName}`
+      return wrap(axios.delete(url))
+    },
     ChangePassword: (userName, newPassword, confirmPassword) => {
       let url = `/api/v1/users/${userName}/set_password`
       let payload = { password: newPassword, confirm_password: confirmPassword }
-      return wrap(axios.post(url, payload))
+      return wrap(axios.put(url, payload))
+    },
+    SetSupervisor: (userName, supervisor) => {
+      let url = `/api/v1/users/${userName}/set_supervisor`
+      let payload = { supervisor }
+      return wrap(axios.put(url, payload))
     }
   },
   Datacenters: {

@@ -134,8 +134,24 @@ export default {
       }
     },
     handleSave () {
+      let payload = {
+        username: this.user.username,
+        first_name: this.user.first_name,
+        last_name: this.user.last_name,
+        email: this.user.email
+      }
+      Api.Users.Update(this.user._id, payload)
+        .then(response => {
+          this.user = response.data.data
+          this.$store.dispatch('info', `User ${this.user.username} has been updated successfully`)
+        })
     },
     handleDestroy () {
+      Api.Users.Delete(this.user._id)
+        .then(() => {
+          this.$store.dispatch('info', `User ${this.user.username} has been deleted successfully`)
+          this.$router.push('/users')
+        })
     },
     handleChangePassword () {
       if (this.newPassword !== this.confirmPassword) {
@@ -150,6 +166,12 @@ export default {
         })
     },
     toggleSupervisor () {
+      let supervisor = !this.user.supervisor
+      Api.Users.SetSupervisor(this.user._id, supervisor)
+        .then(() => {
+          this.$store.dispatch('info', 'Supervisor permissions successfully ' + (supervisor ? 'granted' : 'revoked'))
+          this.user.supervisor = supervisor
+        })
     }
   },
   watch: {
