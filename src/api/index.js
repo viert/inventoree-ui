@@ -174,6 +174,11 @@ const Api = {
       let payload = { host_ids: hostIds, group_id: groupId }
       let url = '/api/v1/hosts/mass_move'
       return wrap(axios.post(url, payload))
+    },
+    MassSetDatacenter: (hostIds, datacenterId) => {
+      let payload = { host_ids: hostIds, datacenter_id: datacenterId }
+      let url = '/api/v1/hosts/mass_set_datacenter'
+      return wrap(axios.post(url, payload))
     }
   },
   Projects: {
