@@ -104,7 +104,8 @@ export const DefaultFields = {
   Datacenters: {
     List: [
       '_id',
-      'name'
+      'name',
+      'parent_id'
     ]
   }
 }
@@ -250,6 +251,9 @@ const Api = {
       let url = `/api/v1/datacenters/?_fields=${fields.join(',')}&_page=${page}&_filter=${filter}`
       if (limit) { url += `&_limit=${limit}` }
       return wrap(axios.get(url))
+    },
+    FullList: () => {
+      return wrap(axios.get('/api/v1/datacenters/?_nopaging=true'))
     }
   },
   Account: {

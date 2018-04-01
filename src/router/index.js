@@ -5,6 +5,7 @@ import GroupView from '@/components/Groups/GroupView'
 import ProjectList from '@/components/Projects/ProjectList'
 import ProjectView from '@/components/Projects/ProjectView'
 import ProjectEdit from '@/components/Projects/ProjectEdit'
+import DatacenterList from '@/components/Datacenters/DatacenterList'
 import UserList from '@/components/Users/UserList'
 import UserView from '@/components/Users/UserView'
 import UserEdit from '@/components/Users/UserEdit'
@@ -53,6 +54,11 @@ export default new Router({
         clone: true,
         create: false
       }
+    },
+    {
+      path: '/datacenters',
+      name: 'datacenter_list',
+      component: DatacenterList
     },
     {
       path: '/projects',

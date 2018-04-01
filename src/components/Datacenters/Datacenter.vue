@@ -1,5 +1,5 @@
 <template>
-  <span :class="{ Datacenter: icon, 'Datacenter--Sub': icon && sub }">
+  <span :class="{ Datacenter: icon, 'Datacenter--Root': icon && root, 'Datacenter--Sub': icon && sub }">
     <router-link v-if="link" :to="dcLink">{{ name }}</router-link>
     <span v-else>{{ name }}</span>
   </span>
@@ -20,6 +20,10 @@ export default {
       type: Boolean,
       default: false
     },
+    root: {
+      type: Boolean,
+      default: false
+    },
     name: {
       type: String,
       required: true
@@ -35,15 +39,19 @@ export default {
 
 <style>
 .Datacenter::before {
-    font-family: FontAwesome;
-    padding-right: 0.2em;
-    position: relative;
-    content: "\f0f7";
-    top: -0.08em;
+  font-family: FontAwesome;
+  padding-right: 0.2em;
+  position: relative;
+  content: "\f0f7";
+  top: -0.08em;
 }
 
 .Datacenter.Datacenter--Sub::before {
-    content: "\f233";
-    top: 0.04em;
+  content: "\f233";
+  top: 0.04em;
+}
+
+.Datacenter.Datacenter--Root::before {
+  content: "\f0ac";
 }
 </style>

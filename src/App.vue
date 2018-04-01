@@ -249,38 +249,6 @@ table.ModelList > tbody > tr:hover > td { background-color: #f3f3fc; }
 
 }
 
-.DatacenterTree {
-
-}
-
-.DatacenterTree_Item {
-    list-style: none;
-    position: relative;
-}
-
-.DatacenterTree_Item--root {
-    font-weight: 700;
-}
-
-.DatacenterTree_Item::before {
-    position: absolute;
-    display: block;
-    content: "\f0f7";
-    font-family: FontAwesome;
-    left: -16px;
-}
-
-.DatacenterTree_Item--Sub::before {
-    content: "\f233";
-    left: -18px;
-}
-
-.DatacenterTree_Item--root::before {
-    content: "\f0ac";
-    font-weight: 300;
-    left: -18px;
-}
-
 .RelationsList {
     padding: 0;
     margin: 0;
