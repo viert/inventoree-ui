@@ -14,16 +14,17 @@
         <button type="submit" class="btn btn-primary">Login</button>
       </div>
     </form>
-    <div class="LoginForm LoginForm-Alternative">
+    <div class="LoginForm LoginForm-Alternative" v-if="extAuth.authUrl">
       <div class="LoginForm_Buttons">
-        <button class="btn btn-secondary">Login via Sys.Mail.Ru</button>
+        <a :href="extAuth.authUrl" class="btn btn-secondary">{{extAuth.authText}}</a>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+import Api from '@/api'
+import { mapGetters } from 'vuex'
 
 export default {
   data () {
@@ -32,14 +33,17 @@ export default {
       password: ''
     }
   },
+  computed: {
+    ...mapGetters(['extAuth'])
+  },
   methods: {
     authenticate () {
       let { username, password } = this
-      axios.post('/api/v1/account/authenticate', { username, password })
+      Api.Account.Authenticate(username, password)
         .then(response => {
           this.$store.commit('setAuthState', 'authenticated')
+          this.$store.commit('setUser', response.data.data)
         })
-        .catch(err => { console.log(err) })
     }
   }
 

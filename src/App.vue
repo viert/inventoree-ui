@@ -25,20 +25,35 @@ export default {
     ...mapState(['auth'])
   },
   created () {
-    Api.Account.Me()
-      .then(response => {
-        this.$store.commit('setUser', response.data.data)
-        this.$store.commit('setAuthState', 'authenticated')
-      })
-    Api.Open.AppInfo()
-      .then(response => {
-        this.$store.commit('setAppInfo', response.data.conductor_info)
-      })
+    this.getAuthData()
+    this.getAppData()
   },
   methods: {
     stopSelection () {
       if (this.$store.state.selectMode) {
         this.$store.commit('setSelectMode', false)
+      }
+    },
+    getAuthData () {
+      Api.Account.Me()
+        .then(response => {
+          if (response) {
+            this.$store.commit('setUser', response.data.data)
+            this.$store.commit('setAuthState', 'authenticated')
+          }
+        })
+    },
+    getAppData () {
+      Api.Open.AppInfo()
+        .then(response => {
+          this.$store.commit('setAppInfo', response.data.conductor_info)
+        })
+    }
+  },
+  watch: {
+    '$store.state.auth.state' (newState) {
+      if (newState === 'authenticating') {
+        this.getAuthData()
       }
     }
   }

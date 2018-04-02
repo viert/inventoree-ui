@@ -1,34 +1,34 @@
 <template>
   <header class="PageHeader">
-      <div class="PageHeader_Brand">
-          <h1><router-link to="/">INVENTOREE</router-link></h1>
-      </div>
-      <nav class="PageHeader_Mainmenu">
-          <ul class="PageHeader_Mainmenu_List">
-              <li><router-link to="/datacenters">Datacenters</router-link></li>
-              <li><router-link to="/projects">Projects</router-link></li>
-              <li><router-link to="/groups">Groups</router-link></li>
-              <li><router-link to="/hosts">Hosts</router-link></li>
-              <li><router-link to="/users">Users</router-link></li>
-              <li><router-link to="/actions">Action Log</router-link></li>
-          </ul>
-      </nav>
-      <div v-if="isLoading" class="PageHeader_LoadSpinner">
-        <i class="fa fa-spin fa-spinner"></i>
-      </div>
-      <div class="PageHeader_Account">
-          <div class="PageHeader_Account_Avatar">
-              <img class="PageHeader_Account_Avatar_Pic" src="/avatar.png" alt="avatar"/>
-          </div>
-      </div>
+    <div class="PageHeader_Brand">
+      <h1><router-link to="/">INVENTOREE</router-link></h1>
+    </div>
+    <nav class="PageHeader_Mainmenu">
+      <ul class="PageHeader_Mainmenu_List">
+        <li><router-link to="/datacenters">Datacenters</router-link></li>
+        <li><router-link to="/projects">Projects</router-link></li>
+        <li><router-link to="/groups">Groups</router-link></li>
+        <li><router-link to="/hosts">Hosts</router-link></li>
+        <li><router-link to="/users">Users</router-link></li>
+      </ul>
+    </nav>
+    <div v-if="isLoading" class="PageHeader_LoadSpinner">
+      <i class="fa fa-spin fa-spinner"></i>
+    </div>
+    <account :user="currentUser" />
   </header>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import Account from './Account'
+
 export default {
+  components: {
+    Account
+  },
   computed: {
-    ...mapGetters(['isLoading'])
+    ...mapGetters(['isLoading', 'currentUser'])
   }
 }
 </script>
@@ -88,25 +88,10 @@ export default {
     text-transform: uppercase;
 }
 
-.PageHeader_Account {
-    display: flex;
-}
-.PageHeader_Account_Avatar, .PageHeader_Account_Avatar_Pic {
-    width: 36px;
-    height: 36px;
-    box-sizing: content-box;
-}
 .PageHeader_LoadSpinner {
   width: 40px;
   height: 36px;
   color: white;
   font-size: 26px;
-}
-.PageHeader_Account_Avatar {
-    border: 2px solid white;
-    border-radius: 50%;
-    overflow: hidden;
-    margin-right: 10px;
-    position: relative;
 }
 </style>

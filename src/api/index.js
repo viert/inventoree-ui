@@ -266,11 +266,29 @@ const Api = {
     Get: (dcName, fields = DefaultFields.Datacenters.Get) => {
       let url = `/api/v1/datacenters/${dcName}?_fields=${fields.join(',')}`
       return wrap(axios.get(url))
+    },
+    Create: (payload, fields = DefaultFields.Datacenters.Get) => {
+      let url = `/api/v1/datacenters/?_fields=${fields.join(',')}`
+      return wrap(axios.post(url, payload))
+    },
+    Update: (dcName, payload, fields = DefaultFields.Datacenters.Get) => {
+      let url = `/api/v1/datacenters/${dcName}?_fields=${fields.join(',')}`
+      return wrap(axios.put(url, payload))
+    },
+    Delete: (dcName) => {
+      let url = `/api/v1/datacenters/${dcName}`
+      return wrap(axios.delete(url))
     }
   },
   Account: {
     Me: () => {
       return wrap(axios.get('/api/v1/account/me'))
+    },
+    Logout: () => {
+      return wrap(axios.post('/api/v1/account/logout'))
+    },
+    Authenticate: (username, password) => {
+      return wrap(axios.post('/api/v1/account/authenticate', { username, password }))
     }
   },
   Open: {

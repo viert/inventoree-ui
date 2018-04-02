@@ -34,7 +34,7 @@ export default {
     font-family: FontAwesome;
     padding-right: 0.2em;
     position: relative;
-    top: 0.04em;
+    top: 0;
     content: "\f007";
 }
 </style>

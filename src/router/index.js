@@ -7,6 +7,7 @@ import ProjectView from '@/components/Projects/ProjectView'
 import ProjectEdit from '@/components/Projects/ProjectEdit'
 import DatacenterList from '@/components/Datacenters/DatacenterList'
 import DatacenterView from '@/components/Datacenters/DatacenterView'
+import DatacenterEdit from '@/components/Datacenters/DatacenterEdit'
 import UserList from '@/components/Users/UserList'
 import UserView from '@/components/Users/UserView'
 import UserEdit from '@/components/Users/UserEdit'
@@ -65,6 +66,33 @@ export default new Router({
       path: '/datacenters/:datacenterName',
       name: 'datacenter_view',
       component: DatacenterView
+    },
+    {
+      path: '/datacenters/++/edit',
+      name: 'datacenter_create',
+      component: DatacenterEdit,
+      props: {
+        create: true,
+        clone: false
+      }
+    },
+    {
+      path: '/datacenters/:datacenterName/edit',
+      name: 'datacenter_edit',
+      component: DatacenterEdit,
+      props: {
+        create: false,
+        clone: false
+      }
+    },
+    {
+      path: '/datacenters/:datacenterName/clone',
+      name: 'datacenter_clone',
+      component: DatacenterEdit,
+      props: {
+        create: false,
+        clone: true
+      }
     },
     {
       path: '/projects',

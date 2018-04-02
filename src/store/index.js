@@ -10,7 +10,7 @@ const store = new Vuex.Store({
     loadRequests: [],
     auth: {
       state: 'authenticating',
-      user: null,
+      user: {},
       authUrl: null,
       authText: null
     },
@@ -27,6 +27,10 @@ const store = new Vuex.Store({
     },
     isLoading (state) {
       return state.loadRequests.length > 0
+    },
+    extAuth (state) {
+      let { authUrl, authText } = state.auth
+      return { authUrl, authText }
     }
   },
   mutations: {
