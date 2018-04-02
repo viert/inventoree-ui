@@ -106,6 +106,14 @@ export const DefaultFields = {
       '_id',
       'name',
       'parent_id'
+    ],
+    Get: [
+      '_id',
+      'name',
+      'description',
+      'parent',
+      'root',
+      'children'
     ]
   }
 }
@@ -254,6 +262,10 @@ const Api = {
     },
     FullList: () => {
       return wrap(axios.get('/api/v1/datacenters/?_nopaging=true'))
+    },
+    Get: (dcName, fields = DefaultFields.Datacenters.Get) => {
+      let url = `/api/v1/datacenters/${dcName}?_fields=${fields.join(',')}`
+      return wrap(axios.get(url))
     }
   },
   Account: {
