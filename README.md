@@ -1,4 +1,4 @@
-# conductor-front-vue
+# Inventoree UI
 
 > A Vue.js project
 
