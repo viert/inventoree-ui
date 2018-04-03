@@ -46,7 +46,7 @@ export default {
     getAppData () {
       Api.Open.AppInfo()
         .then(response => {
-          this.$store.commit('setAppInfo', response.data.conductor_info)
+          this.$store.commit('setAppInfo', response.data.app_info)
         })
     }
   },
