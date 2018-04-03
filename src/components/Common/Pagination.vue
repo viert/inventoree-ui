@@ -1,6 +1,6 @@
 <template>
   <nav aria-label="Page navigation" class="Pagination">
-    <ul class="pagination" v-if="total > 1 || current > total">
+    <ul class="pagination" v-if="total > 1">
       <li
         v-for="page in pages"
         :key="page.id"
