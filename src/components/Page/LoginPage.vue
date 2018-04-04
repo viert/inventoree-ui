@@ -1,6 +1,6 @@
 <template>
   <div class="Login">
-    <h2 class="Login_Brand">Conductor</h2>
+    <h2 class="Login_Brand">Inventoree</h2>
     <form @submit.prevent="authenticate" class="LoginForm">
       <div class="LoginForm_Field">
         <label for="login">Login</label>
