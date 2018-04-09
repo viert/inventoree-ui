@@ -60,6 +60,7 @@ export default {
 .DatacenterTree {
   padding-left: 15px;
   list-style: none;
+  margin-bottom: 0;
 }
 
 .DatacenterTree_Item {
