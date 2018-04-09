@@ -1,13 +1,11 @@
 <template>
-  <div>
-    <transition-group name="scaley">
-      <custom-field-row
-        v-for="(field, i) in cFields"
-        :field="field"
-        :key="i"
-        @change="handleChange(i, $event)" />
-    </transition-group>
-  </div>
+  <transition-group name="scaley">
+    <custom-field-row
+      v-for="(field, i) in cFields"
+      :field="field"
+      :key="i"
+      @change="handleChange(i, $event)" />
+  </transition-group>
 </template>
 
 <script>
@@ -17,7 +15,7 @@ export default {
   props: {
     fields: {
       type: Array,
-      default: () => { return [] }
+      default: () => []
     }
   },
   components: {

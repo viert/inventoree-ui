@@ -56,7 +56,8 @@ export const DefaultFields = {
       'all_custom_fields',
       'modification_allowed',
       'description',
-      'group_name'
+      'group_name',
+      'aliases'
     ]
   },
   Projects: {

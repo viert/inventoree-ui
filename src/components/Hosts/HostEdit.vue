@@ -34,6 +34,10 @@
                 <datacenter-picker :datacenter="host.datacenter" @pick="datacenterPicked" />
               </div>
               <div class="Form_Field">
+                <label class="Form_FieldLabel">Aliases</label>
+                <list-editor :items="host.aliases" @change="aliasesChange" />
+              </div>
+              <div class="Form_Field">
                 <label class="Form_FieldLabel">Tags</label>
                 <tag-editor :tags="host.tags" @add="addTag" @remove="removeTag" />
               </div>
@@ -88,6 +92,7 @@ import GroupPicker from '@/components/Picker/GroupPicker'
 import DatacenterPicker from '@/components/Picker/DatacenterPicker'
 import TagEditor from '@/components/Common/TagEditor'
 import CustomFieldEditor from '@/components/Common/CustomFieldEditor/CustomFieldEditor'
+import ListEditor from '@/components/Common/ListEditor'
 import { hasValidPatterns, expandPattern } from '@/lib/Permutation'
 
 const editorFields = [
@@ -97,6 +102,7 @@ const editorFields = [
   'group',
   'tags',
   'custom_fields',
+  'aliases',
   'description'
 ]
 
@@ -115,7 +121,8 @@ export default {
     GroupPicker,
     DatacenterPicker,
     TagEditor,
-    CustomFieldEditor
+    CustomFieldEditor,
+    ListEditor
   },
   data () {
     return {
@@ -125,6 +132,7 @@ export default {
         description: '',
         tags: [],
         custom_fields: [],
+        aliases: [],
         group: null,
         datacenter: null
       },
@@ -149,6 +157,7 @@ export default {
           description: '',
           tags: [],
           custom_fields: [],
+          aliases: [],
           group: null,
           datacenter: null
         }
@@ -169,11 +178,15 @@ export default {
     cfChange (fields) {
       this.host.custom_fields = fields
     },
+    aliasesChange (aliases) {
+      this.host.aliases = aliases
+    },
     handleSave () {
       let { _id, fqdn, datacenter, group, description } = this.host
       let payload = {
         tags: [...this.host.tags],
         custom_fields: [...this.host.custom_fields],
+        aliases: [...this.host.aliases],
         description,
         group_id: group ? group._id : null,
         datacenter_id: datacenter ? datacenter._id : null
