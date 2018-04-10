@@ -1,5 +1,6 @@
 <template>
   <div class="PageHeader_Account">
+    <div class="PageHeader_Account_Username">{{ displayName }}</div>
     <div class="PageHeader_Account_Avatar" @mouseover="showPopover" @mouseout="hidePopover">
       <img v-if="user.avatar_url" class="PageHeader_Account_Avatar_Pic" :src="user.avatar_url" alt="avatar"/>
       <i class="fa fa-user" v-else></i>
@@ -41,6 +42,16 @@ export default {
       required: true
     }
   },
+  computed: {
+    displayName () {
+      let dn = ''
+      if (this.user.first_name && this.user.last_name) {
+        return `${this.user.first_name} ${this.user.last_name}`
+      } else {
+        return this.user.username
+      }
+    }
+  },
   methods: {
     logout () {
       Api.Account.Logout()
@@ -70,6 +81,11 @@ export default {
 .PageHeader_Account {
   display: flex;
   position: relative;
+}
+
+.PageHeader_Account_Username {
+  padding-right: 8px;
+  line-height: 40px;
 }
 
 .PageHeader_Account_Avatar, .PageHeader_Account_Avatar_Pic {
