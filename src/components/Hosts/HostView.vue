@@ -24,6 +24,12 @@
           <div class="row">
             <div class="col-sm-5">
               <div class="Card_Field">
+                <label class="Card_FieldLabel">Aliases</label>
+                <div v-for="alias in host.aliases" :key="alias">
+                  <host :link="false" :fqdn="alias" />
+                </div>
+              </div>
+              <div class="Card_Field">
                 <label class="Card_FieldLabel">Tags</label>
                 <div class="Card_TagList">
                   <tag
