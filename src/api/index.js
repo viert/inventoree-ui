@@ -328,6 +328,9 @@ const Api = {
         url += `&_limit=${limit}`
       }
       return wrap(axios.get(url))
+    },
+    ActionTypes: () => {
+      return wrap(axios.get('/api/v1/actions/action_types'))
     }
   }
 }
