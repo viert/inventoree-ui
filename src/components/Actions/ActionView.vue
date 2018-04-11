@@ -4,7 +4,7 @@
       <div class="ContentHeader">
         <h2 class="ContentHeader_Title">View User Action</h2>
       </div>
-      <div v-if="action.action_type !== null" class="PageContentContainer PageContentContainer--Half">
+      <div v-if="action.action_type !== null" class="PageContentContainer">
         <component
           :is="componentName"
           :action="action"
@@ -20,6 +20,8 @@ import ModelCreate from './Views/ModelCreate'
 import ModelDelete from './Views/ModelDelete'
 import ModelUpdate from './Views/ModelUpdate'
 import ModelMassMove from './Views/ModelMassMove'
+import ModelMassDelete from './Views/ModelMassDelete'
+import ModelMassSetDatacenter from './Views/ModelMassSetDatacenter'
 
 export default {
   data () {
@@ -33,7 +35,9 @@ export default {
     ModelCreate,
     ModelDelete,
     ModelUpdate,
-    ModelMassMove
+    ModelMassMove,
+    ModelMassDelete,
+    ModelMassSetDatacenter
   },
   created () {
     this.loadData()
@@ -55,7 +59,7 @@ export default {
       return this.action.action_type && this.action.action_type.slice(this.action.action_type.indexOf('_') + 1)
     },
     componentName () {
-      return 'model-' + this.modelAction.replace('_', '-')
+      return 'model-' + this.modelAction.replace(/_/g, '-')
     }
   },
   watch: {

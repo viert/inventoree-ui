@@ -5,11 +5,7 @@
       <div class="Card_Field">Invoked by <user :username="action.username" :link="false" />, {{ actionDatetime }}</div>
     </div>
     <div class="row">
-      <div class="col-sm-12">
-        <div class="Card_Field">
-          <label class="Card_FieldLabel">Status</label>
-          <span :class="{ 'text-danger': isFailure, 'text-success': isSuccess }">{{action.status}}</span>
-        </div>
+      <div class="col-sm-6">
         <div class="Card_Field">
           <label class="Card_FieldLabel">{{ model }}</label>
           <project v-if="model == 'project'" :name="action.computed.project_name" :link="false" />
@@ -19,6 +15,12 @@
           <div v-else-if="model == 'host'">
             <host style="display: block" v-for="fqdn in action.computed.host_fqdns" :key="fqdn" :fqdn="fqdn" :link="false" />
           </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="Card_Field">
+          <label class="Card_FieldLabel">Status</label>
+          <span :class="{ 'text-danger': isFailure, 'text-success': isSuccess }">{{action.status}}</span>
         </div>
         <div class="Card_Field">
           <label class="Card_FieldLabel">Request Details</label>
