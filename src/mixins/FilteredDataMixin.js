@@ -31,14 +31,23 @@ const FilteredDataMixin = {
           })
       }
     },
+    setQuery () {
+      let query = {
+        _page: this.page
+      }
+      if (this.filter) {
+        query._filter = this.filter
+      }
+      this.$router.replace({query})
+    },
     filterChanged (e) {
       this.filter = e.target.value
       this.filterDirty = true
-      this.$router.replace({query: {_page: this.page, _filter: this.filter}})
+      this.setQuery()
     },
     pageChanged (page) {
       this.page = page
-      this.$router.replace({query: {_page: this.page, _filter: this.filter}})
+      this.setQuery()
       this.loadData()
     }
   }

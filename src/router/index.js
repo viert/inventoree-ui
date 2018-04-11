@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import GroupList from '@/components/Groups/GroupList'
 import GroupView from '@/components/Groups/GroupView'
+import GroupEdit from '@/components/Groups/GroupEdit'
 import ProjectList from '@/components/Projects/ProjectList'
 import ProjectView from '@/components/Projects/ProjectView'
 import ProjectEdit from '@/components/Projects/ProjectEdit'
@@ -14,12 +15,17 @@ import UserEdit from '@/components/Users/UserEdit'
 import HostList from '@/components/Hosts/HostList'
 import HostView from '@/components/Hosts/HostView'
 import HostEdit from '@/components/Hosts/HostEdit'
-import GroupEdit from '@/components/Groups/GroupEdit'
+import ActionList from '@/components/Actions/ActionList'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+      path: '/actions',
+      name: 'action_list',
+      component: ActionList
+    },
     {
       path: '/groups',
       name: 'group_list',

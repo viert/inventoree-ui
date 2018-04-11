@@ -56,7 +56,7 @@ export default {
   ],
   methods: {
     loadData () {
-      return Api.Projects.List(this.page, this.filter)
+      Api.Projects.List(this.page, this.filter)
         .then(response => {
           this.items = response.data.data
           this.page = response.data.page

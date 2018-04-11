@@ -48,13 +48,13 @@
           <div class="input-group">
             <project-picker @pick="projectPicked" />
             <div class="input-group-append">
-              <button class="btn btn-outline-primary">Move</button>
+              <button @click="massMoveToProject" class="btn btn-outline-primary">Move</button>
             </div>
           </div>
         </div>
         <div class="Form_Field">
           <label class="Form_FieldLabel">Delete Groups</label>
-          <button class="btn btn-danger">Delete</button>
+          <confirm-button @confirm="massDelete" class="btn btn-danger">Delete</confirm-button>
         </div>
       </div>
     </aside>
@@ -108,6 +108,29 @@ export default {
     },
     projectPicked (project) {
       this.destProject = project
+    },
+    massMoveToProject () {
+      if (!this.destProject) {
+        this.$store.dispatch('error', 'Please select a project to move groups to')
+        return
+      }
+      let groupIds = this.itemsSelected.map(item => item._id)
+      Api.Groups.MassMove(groupIds, this.destProject._id)
+        .then(() => {
+          this.$store.dispatch('info', `Groups were moved to project ${this.destProject.name}`)
+          this.destProject = null
+          this.clearSelection()
+          this.loadData()
+        })
+    },
+    massDelete () {
+      let groupIds = this.itemsSelected.map(item => item._id)
+      Api.Groups.MassDelete(groupIds)
+        .then(() => {
+          this.$store.dispatch('info', `Groups were successfully deleted`)
+          this.clearSelection()
+          this.loadData()
+        })
     }
   }
 }
