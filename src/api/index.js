@@ -5,7 +5,14 @@ import ErrorHandler from '@/errors/ErrorHandler'
 const wrap = (axiosRequest) => {
   let reqId = new Date() / 1
   store.commit('addLoadRequest', { id: reqId, req: axiosRequest })
-  return axiosRequest.catch(ErrorHandler).finally(() => { store.commit('removeLoadRequest', reqId) })
+  return new Promise((resolve, reject) => {
+    axiosRequest
+      .then(response => {
+        resolve(response)
+      })
+      .catch(ErrorHandler)
+      .finally(() => { store.commit('removeLoadRequest', reqId) })
+  })
 }
 
 export const DefaultFields = {
@@ -134,7 +141,8 @@ export const DefaultFields = {
       'params',
       'username',
       'created_at',
-      'status'
+      'status',
+      'errors'
     ]
   }
 }
