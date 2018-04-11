@@ -16,6 +16,7 @@ import HostList from '@/components/Hosts/HostList'
 import HostView from '@/components/Hosts/HostView'
 import HostEdit from '@/components/Hosts/HostEdit'
 import ActionList from '@/components/Actions/ActionList'
+import ActionView from '@/components/Actions/ActionView'
 
 Vue.use(Router)
 
@@ -25,6 +26,11 @@ export default new Router({
       path: '/actions',
       name: 'action_list',
       component: ActionList
+    },
+    {
+      path: '/actions/:actionId',
+      name: 'action_view',
+      component: ActionView
     },
     {
       path: '/groups',

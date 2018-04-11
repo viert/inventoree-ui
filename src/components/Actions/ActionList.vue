@@ -2,7 +2,7 @@
   <div class="PageContent">
     <main class="PageMain">
       <div class="ContentHeader">
-        <h2 class="ContentHeader_Title ContentHeader_Title--Grow">Action List</h2>
+        <h2 class="ContentHeader_Title ContentHeader_Title--Grow">User Action List</h2>
         <div class="ContentHeader_ActionTypeField">
           <action-type-picker
             @pick="actionTypePicked"

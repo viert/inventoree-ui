@@ -126,6 +126,15 @@ export const DefaultFields = {
       'username',
       'created_at',
       'status'
+    ],
+    Get: [
+      '_id',
+      'action_type',
+      'computed',
+      'params',
+      'username',
+      'created_at',
+      'status'
     ]
   }
 }
@@ -320,13 +329,17 @@ const Api = {
   },
   Actions: {
     List: (page, actionTypes = [], fields = DefaultFields.Actions.List, limit = null) => {
-      let url = `/api/v1/actions/?_page=${page}&_fields=${fields}`
+      let url = `/api/v1/actions/?_page=${page}&_fields=${fields.join(',')}`
       if (actionTypes && actionTypes.length > 0) {
         url += `&_action_types=${actionTypes.join(',')}`
       }
       if (limit) {
         url += `&_limit=${limit}`
       }
+      return wrap(axios.get(url))
+    },
+    Get: (actionId, fields = DefaultFields.Actions.Get) => {
+      let url = `/api/v1/actions/${actionId}?_fields=${fields.join(',')}`
       return wrap(axios.get(url))
     },
     ActionTypes: () => {
