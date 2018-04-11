@@ -319,8 +319,14 @@ const Api = {
     }
   },
   Actions: {
-    List: (page, fields = DefaultFields.Actions.List) => {
+    List: (page, actionTypes = [], fields = DefaultFields.Actions.List, limit = null) => {
       let url = `/api/v1/actions/?_page=${page}&_fields=${fields}`
+      if (actionTypes && actionTypes.length > 0) {
+        url += `&_action_types=${actionTypes.join(',')}`
+      }
+      if (limit) {
+        url += `&_limit=${limit}`
+      }
       return wrap(axios.get(url))
     }
   }

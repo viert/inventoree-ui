@@ -12,7 +12,12 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'https://c.inventoree.ru',
+        target: 'http://localhost:5000',
+        changeOrigin: false,
+        secure: false
+      },
+      '/oauth_callback': {
+        target: 'http://localhost:5000',
         changeOrigin: false,
         secure: false
       }
