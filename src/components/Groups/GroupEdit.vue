@@ -203,7 +203,7 @@ export default {
         description,
         tags,
         custom_fields: this.group.custom_fields,
-        project_id: this.group.project._id
+        project_id: this.group.project ? this.group.project._id : null
       }
       if (this.create || this.clone) {
         Api.Groups.Create(payload)

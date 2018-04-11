@@ -4,7 +4,7 @@
       <div class="ContentHeader">
         <h2 class="ContentHeader_Title">View User Action</h2>
       </div>
-      <div v-if="action.action_type !== null" class="PageContentContainer">
+      <div v-if="action.action_type !== null" class="PageContentContainer" :class="{ 'ActionFailure': action.status !== 'success' }">
         <component
           :is="componentName"
           :action="action"
@@ -22,6 +22,7 @@ import ModelUpdate from './Views/ModelUpdate'
 import ModelMassMove from './Views/ModelMassMove'
 import ModelMassDelete from './Views/ModelMassDelete'
 import ModelMassSetDatacenter from './Views/ModelMassSetDatacenter'
+import ModelSetSupervisor from './Views/ModelSetSupervisor'
 
 export default {
   data () {
@@ -37,7 +38,8 @@ export default {
     ModelUpdate,
     ModelMassMove,
     ModelMassDelete,
-    ModelMassSetDatacenter
+    ModelMassSetDatacenter,
+    ModelSetSupervisor
   },
   created () {
     this.loadData()
@@ -71,5 +73,16 @@ export default {
 </script>
 
 <style>
+.ActionFailure .CardHeader h3 {
+  color: #E74C3C;
+}
+.ErrorList {
+  list-style: none;
+  padding-left: 20px;
+  margin: 0;
+}
 
+.ErrorList li {
+  color: #E74C3C;
+}
 </style>

@@ -1,4 +1,5 @@
 import ParamList from '@/components/Actions/Views/ParamList'
+import StatusFields from '@/components/Actions/Views/StatusFields'
 
 const ActionViewMixin = {
   props: {
@@ -12,7 +13,8 @@ const ActionViewMixin = {
     }
   },
   components: {
-    ParamList
+    ParamList,
+    StatusFields
   },
   computed: {
     actionDatetime () {
@@ -20,12 +22,6 @@ const ActionViewMixin = {
         let dt = new Date(this.action.created_at)
         return dt.toLocaleDateString() + ' ' + dt.toLocaleTimeString()
       }
-    },
-    isFailure () {
-      return this.action.status !== 'success'
-    },
-    isSuccess () {
-      return this.action.status === 'success'
     },
     updatedFields () {
       let computedKey = this.model + '_data'

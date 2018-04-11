@@ -16,10 +16,7 @@
         </div>
       </div>
       <div class="col-sm-6">
-        <div class="Card_Field">
-          <label class="Card_FieldLabel">Status</label>
-          <span :class="{ 'text-danger': isFailure, 'text-success': isSuccess }">{{action.status}}</span>
-        </div>
+        <status-fields :status="action.status" :errors="action.errors" />
         <div class="Card_Field">
           <label class="Card_FieldLabel">Request Details</label>
           <param-list :params="actionDetails" />
