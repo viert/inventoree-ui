@@ -217,6 +217,10 @@ export default {
   color: #18bc9c;
 }
 
+.ContentHeader_ActionTypeField .input-group-wrap.picked::after {
+  top: 4px;
+}
+
 .input-group-wrap + .input-group-append {
   background: white;
   z-index: 2;

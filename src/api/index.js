@@ -116,6 +116,17 @@ export const DefaultFields = {
       'root',
       'children'
     ]
+  },
+  Actions: {
+    List: [
+      '_id',
+      'action_type',
+      'computed',
+      'params',
+      'username',
+      'created_at',
+      'status'
+    ]
   }
 }
 
@@ -151,6 +162,16 @@ const Api = {
     Delete: (groupName) => {
       let url = `/api/v1/groups/${groupName}`
       return wrap(axios.delete(url))
+    },
+    MassMove: (groupIds, projectId) => {
+      let payload = { group_ids: groupIds, project_id: projectId }
+      let url = '/api/v1/groups/mass_move'
+      return wrap(axios.post(url, payload))
+    },
+    MassDelete: (groupIds) => {
+      let payload = { group_ids: groupIds }
+      let url = '/api/v1/groups/mass_delete'
+      return wrap(axios.post(url, payload))
     }
   },
   Hosts: {
@@ -295,6 +316,21 @@ const Api = {
   Open: {
     AppInfo: () => {
       return wrap(axios.get('/api/v1/open/app'))
+    }
+  },
+  Actions: {
+    List: (page, actionTypes = [], fields = DefaultFields.Actions.List, limit = null) => {
+      let url = `/api/v1/actions/?_page=${page}&_fields=${fields}`
+      if (actionTypes && actionTypes.length > 0) {
+        url += `&_action_types=${actionTypes.join(',')}`
+      }
+      if (limit) {
+        url += `&_limit=${limit}`
+      }
+      return wrap(axios.get(url))
+    },
+    ActionTypes: () => {
+      return wrap(axios.get('/api/v1/actions/action_types'))
     }
   }
 }
