@@ -1,6 +1,6 @@
 <template>
   <nav aria-label="Page navigation" class="Pagination">
-    <ul class="pagination" v-if="total > 0">
+    <ul class="pagination" v-if="needPagination">
       <li
         v-for="page in pages"
         :key="page.id"
@@ -47,6 +47,11 @@ export default {
     }
   },
   computed: {
+    needPagination () {
+      if (total > 1) return true
+      if (total === 1 && current !== total) return true
+      return false
+    },
     pages () {
       let { current, total, spread } = this
 
