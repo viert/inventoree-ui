@@ -9,7 +9,7 @@
             @clear="actionTypeCleared" />
         </div>
       </div>
-      <div class="PageContentContainer">
+      <div v-if="items.length > 0" class="PageContentContainer">
         <table class="ActionList">
           <tbody>
             <action-list-item

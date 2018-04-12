@@ -1,5 +1,5 @@
 <template>
-  <tr class="ActionList_Item" :class="{ 'ActionList_Item-failure': action.status !== 'success' }">
+  <tr class="ActionList_Item" :class="{ 'ActionList_Item--Failure': action.status !== 'success' }">
     <td class="ActionList_Item-Date">
       {{ date }}
     </td>
@@ -75,8 +75,9 @@
           <span v-else>failed to set parent of</span>
         </router-link>
         <datacenter :name="action.computed.datacenter_name" :link="false" />
-        <span>to</span>
-        <datacenter :name="action.computed.parent_name" :link="false" />
+        to
+        <datacenter v-if="action.computed.parent_name" :name="action.computed.parent_name" :link="false" />
+        <datacenter v-else name="root" :link="false" :root="true" />
       </span>
       <span v-else-if="action.action_type == 'group_update'">
         <router-link :to="viewLink">
@@ -248,6 +249,7 @@ export default {
 <style>
 .ActionList_Item {
   overflow: hidden;
+  border-bottom: 2px solid white;
 }
 
 .ActionList_Item-Act .User > span,
@@ -286,6 +288,10 @@ export default {
 }
 
 .ActionList_Item-Act {
+}
+
+.ActionList_Item--Failure {
+  background-color: #FDD;
 }
 
 </style>
