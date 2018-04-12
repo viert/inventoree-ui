@@ -1,6 +1,6 @@
 <template>
   <div id="app" @mouseup="stopSelection">
-    <div v-if="auth.state === 'authenticating'">Loading</div>
+    <div v-if="auth.state === 'authenticating'" class="SiteLoading">Starting Inventoree app, please be patient...</div>
     <login-page v-else-if="auth.state == 'login'"></login-page>
     <layout v-else/>
     <alert-box />
@@ -281,6 +281,11 @@ table.ModelList > tbody > tr:hover > td { background-color: #f3f3fc; }
 .CardHeader {
     border-bottom: 1px solid #eee;
     margin-bottom: 20px;
+}
+
+.SiteLoading {
+  margin: 20px;
+  font-size: 20px;
 }
 
 </style>
