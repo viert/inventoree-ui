@@ -23,6 +23,14 @@ import ModelMassMove from './Views/ModelMassMove'
 import ModelMassDelete from './Views/ModelMassDelete'
 import ModelMassSetDatacenter from './Views/ModelMassSetDatacenter'
 import ModelSetSupervisor from './Views/ModelSetSupervisor'
+import ModelSetPassword from './Views/ModelSetPassword'
+import ModelSetParent from './Views/ModelSetParent'
+import ModelSetChildren from './Views/ModelSetChildren'
+import ModelSetHosts from './Views/ModelSetHosts'
+import ModelSwitchOwner from './Views/ModelSwitchOwner'
+import ModelAddMember from './Views/ModelAddMember'
+import ModelRemoveMember from './Views/ModelRemoveMember'
+import ModelSetMembers from './Views/ModelSetMembers'
 
 export default {
   data () {
@@ -39,7 +47,15 @@ export default {
     ModelMassMove,
     ModelMassDelete,
     ModelMassSetDatacenter,
-    ModelSetSupervisor
+    ModelSetSupervisor,
+    ModelSetChildren,
+    ModelSetHosts,
+    ModelSetParent,
+    ModelSwitchOwner,
+    ModelSetPassword,
+    ModelAddMember,
+    ModelRemoveMember,
+    ModelSetMembers
   },
   created () {
     this.loadData()
