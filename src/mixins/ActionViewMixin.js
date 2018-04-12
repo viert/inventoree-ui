@@ -1,5 +1,6 @@
 import ParamList from '@/components/Actions/Views/ParamList'
 import StatusFields from '@/components/Actions/Views/StatusFields'
+import RequestDetails from '@/components/Actions/Views/RequestDetails'
 
 const ActionViewMixin = {
   props: {
@@ -14,7 +15,8 @@ const ActionViewMixin = {
   },
   components: {
     ParamList,
-    StatusFields
+    StatusFields,
+    RequestDetails
   },
   computed: {
     actionDatetime () {
@@ -30,15 +32,6 @@ const ActionViewMixin = {
       } else {
         return null
       }
-    },
-    actionDetails () {
-      let details = {}
-      for (var key in this.action.computed) {
-        if (key !== this.model + '_data') {
-          details[key] = this.action.computed[key]
-        }
-      }
-      return details
     }
   }
 }

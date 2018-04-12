@@ -17,14 +17,7 @@
       </div>
       <div class="col-sm-6">
         <status-fields :status="action.status" :errors="action.errors" />
-        <div class="Card_Field">
-          <label class="Card_FieldLabel">Request Details</label>
-          <param-list :params="actionDetails" />
-        </div>
-        <div class="Card_Field">
-          <label class="Card_FieldLabel">Request Payload</label>
-          <param-list :params="action.params" />
-        </div>
+        <request-details :params="action.params" :details="action.computed" />
       </div>
     </div>
   </div>
