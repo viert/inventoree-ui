@@ -48,8 +48,8 @@ export default {
   },
   computed: {
     needPagination () {
-      if (total > 1) return true
-      if (total === 1 && current !== total) return true
+      if (this.total > 1) return true
+      if (this.total === 1 && this.current !== this.total) return true
       return false
     },
     pages () {
