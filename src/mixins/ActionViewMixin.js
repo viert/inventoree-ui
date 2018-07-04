@@ -1,4 +1,3 @@
-import ParamList from '@/components/Actions/Views/ParamList'
 import StatusFields from '@/components/Actions/Views/StatusFields'
 import RequestDetails from '@/components/Actions/Views/RequestDetails'
 
@@ -14,7 +13,6 @@ const ActionViewMixin = {
     }
   },
   components: {
-    ParamList,
     StatusFields,
     RequestDetails
   },

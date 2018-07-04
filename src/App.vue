@@ -35,19 +35,17 @@ export default {
       }
     },
     getAuthData () {
-      Api.Account.Me()
-        .then(response => {
-          if (response) {
-            this.$store.commit('setUser', response.data.data)
-            this.$store.commit('setAuthState', 'authenticated')
-          }
-        })
+      Api.Account.Me().then(response => {
+        if (response) {
+          this.$store.commit('setUser', response.data.data)
+          this.$store.commit('setAuthState', 'authenticated')
+        }
+      })
     },
     getAppData () {
-      Api.Open.AppInfo()
-        .then(response => {
-          this.$store.commit('setAppInfo', response.data.app_info)
-        })
+      Api.Open.AppInfo().then(response => {
+        this.$store.commit('setAppInfo', response.data.app_info)
+      })
     }
   },
   watch: {
@@ -73,11 +71,20 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1,h2,h3,h4,h5 {
+h1,
+h2,
+h3,
+h4,
+h5 {
   font-weight: normal;
 }
 
-.btn,h1,h2,h3,h4,h5 {
+.btn,
+h1,
+h2,
+h3,
+h4,
+h5 {
   text-transform: uppercase;
   font-family: Lato, Arial, Helvetica, sans-serif;
 }
@@ -107,19 +114,21 @@ a:hover {
   width: 50%;
 }
 
-.PageContentContainer, table.ModelList {
+.PageContentContainer,
+table.ModelList {
   box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
 }
 
 .PageMain {
   width: 100%;
-  min-height: calc(100vh - 108px);
+  min-height: calc(100vh - 114px);
   background-color: #f0f0f0;
   overflow: auto;
   box-sizing: border-box;
 }
 
-.PageMain, .SelectPanel {
+.PageMain,
+.SelectPanel {
   padding: 20px;
 }
 
@@ -146,7 +155,7 @@ a:hover {
 }
 
 table.ModelList {
-  font-size: 0.80rem;
+  font-size: 0.8rem;
   width: 100%;
   border-collapse: collapse;
 }
@@ -178,17 +187,27 @@ table.ModelList > thead > tr > th {
   color: white;
 }
 
-table.ModelList > thead > tr > th:first-child { border-top-left-radius: 4px; }
-table.ModelList > thead > tr > th:last-child { border-top-right-radius: 4px; }
+table.ModelList > thead > tr > th:first-child {
+  border-top-left-radius: 4px;
+}
+table.ModelList > thead > tr > th:last-child {
+  border-top-right-radius: 4px;
+}
 table.ModelList > tbody > tr > td {
   padding-top: 4px;
   padding-bottom: 4px;
   overflow: hidden;
 }
 
-table.ModelList > tbody > tr:nth-child(even) > td { background-color: #f9f9f9; }
-table.ModelList > tbody > tr:nth-child(odd) > td { background-color: #ffffff; }
-table.ModelList > tbody > tr:hover > td { background-color: #f3f3fc; }
+table.ModelList > tbody > tr:nth-child(even) > td {
+  background-color: #f9f9f9;
+}
+table.ModelList > tbody > tr:nth-child(odd) > td {
+  background-color: #ffffff;
+}
+table.ModelList > tbody > tr:hover > td {
+  background-color: #f3f3fc;
+}
 
 .ModelList_Select {
   width: 32px;
@@ -204,14 +223,16 @@ table.ModelList > tbody > tr:hover > td { background-color: #f3f3fc; }
   margin-bottom: 20px;
 }
 
-.Form_FieldLabel, .Card_FieldLabel {
+.Form_FieldLabel,
+.Card_FieldLabel {
   text-transform: uppercase;
   margin-bottom: 0;
   display: block;
   font-size: 80%;
 }
 
-.Form_Field, .Card_Field {
+.Form_Field,
+.Card_Field {
   text-align: left;
   margin-bottom: 16px;
 }
@@ -231,29 +252,29 @@ table.ModelList > tbody > tr:hover > td { background-color: #f3f3fc; }
 }
 
 .ListSelected {
-    padding: 0;
-    margin: 16px 0;
-    list-style: none;
+  padding: 0;
+  margin: 16px 0;
+  list-style: none;
 }
 
 .ListSelected_Item {
-    position: relative;
-    margin-left: 14px;
-    line-height: 1.1em;
-    cursor: pointer;
+  position: relative;
+  margin-left: 14px;
+  line-height: 1.1em;
+  cursor: pointer;
 }
 
 .ListSelected_Item:before {
-    content: "\f00d";
-    position: absolute;
-    left: -14px;
-    font-size: 90%;
-    font-family: FontAwesome;
+  content: '\f00d';
+  position: absolute;
+  left: -14px;
+  font-size: 90%;
+  font-family: FontAwesome;
 }
 
 .ListSelected_Item:hover {
-    color: red;
-    text-decoration: line-through;
+  color: red;
+  text-decoration: line-through;
 }
 
 .NoSelect {
@@ -261,31 +282,29 @@ table.ModelList > tbody > tr:hover > td { background-color: #f3f3fc; }
 }
 
 .Form_Buttons {
-
 }
 
 .RelationsList {
-    padding: 0;
-    margin: 0;
-    list-style: none;
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
 
 .RelationsList_Item {
-    line-height: 1.1rem;
+  line-height: 1.1rem;
 }
 
 .Card h3 {
-    text-transform: none;
+  text-transform: none;
 }
 
 .CardHeader {
-    border-bottom: 1px solid #eee;
-    margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
 }
 
 .SiteLoading {
   margin: 20px;
   font-size: 20px;
 }
-
 </style>
