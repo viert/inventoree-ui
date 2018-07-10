@@ -10,8 +10,12 @@ const wrap = (axiosRequest) => {
       .then(response => {
         resolve(response)
       })
-      .catch(ErrorHandler)
-      .finally(() => { store.commit('removeLoadRequest', reqId) })
+      .catch(err => {
+        reject(ErrorHandler(err))
+      })
+      .finally(() => {
+        store.commit('removeLoadRequest', reqId)
+      })
   })
 }
 

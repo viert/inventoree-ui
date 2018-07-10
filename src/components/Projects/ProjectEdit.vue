@@ -140,6 +140,11 @@ export default {
               return acc
             }, {})
           })
+          .catch(status => {
+            if (status === 404) {
+              this.$router.push('/projects')
+            }
+          })
       } else {
         this.project = {
           _id: null,

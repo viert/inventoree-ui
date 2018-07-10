@@ -150,6 +150,11 @@ export default {
           .then(response => {
             this.host = response.data.data[0]
           })
+          .catch(status => {
+            if (status === 404) {
+              this.$router.push('/hosts')
+            }
+          })
       } else {
         this.host = {
           _id: null,

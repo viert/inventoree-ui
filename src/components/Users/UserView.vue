@@ -106,6 +106,11 @@ export default {
         .then(response => {
           this.user = response.data.data[0]
         })
+        .catch(status => {
+          if (status === 404) {
+            this.$router.push('/users')
+          }
+        })
     }
   },
   created () {

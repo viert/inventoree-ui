@@ -101,10 +101,14 @@ export default {
   methods: {
     loadData () {
       let { hostName } = this.$route.params
-      Api.Hosts.Get(hostName)
-        .then(response => {
-          this.host = response.data.data[0]
-        })
+      Api.Hosts.Get(hostName).then(response => {
+        console.log(response)
+        this.host = response.data.data[0]
+      }).catch(status => {
+        if (status === 404) {
+          this.$router.push('/hosts')
+        }
+      })
     }
   },
   created () {
@@ -119,5 +123,4 @@ export default {
 </script>
 
 <style>
-
 </style>

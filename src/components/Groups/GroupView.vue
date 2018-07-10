@@ -117,6 +117,11 @@ export default {
         .then(response => {
           this.group = response.data.data[0]
         })
+        .catch(status => {
+          if (status === 404) {
+            this.$router.push('/groups')
+          }
+        })
     }
   },
   created () {

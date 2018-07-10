@@ -281,9 +281,6 @@ table.ModelList > tbody > tr:hover > td {
   user-select: none;
 }
 
-.Form_Buttons {
-}
-
 .RelationsList {
   padding: 0;
   margin: 0;

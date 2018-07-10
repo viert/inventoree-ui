@@ -89,6 +89,11 @@ export default {
           .then(response => {
             this.datacenter = response.data.data[0]
           })
+          .catch(status => {
+            if (status === 404) {
+              this.$router.push('/datacenters')
+            }
+          })
       } else {
         this.datacenter = {
           name: '',

@@ -17,8 +17,10 @@ const ErrorHandler = err => {
     } else {
       console.log(err)
     }
+    return err.response.status
   } else {
     console.log(err)
+    return undefined
   }
 }
 

@@ -169,6 +169,11 @@ export default {
               return acc
             }, {})
           })
+          .catch(status => {
+            if (status === 404) {
+              this.$router.push('/groups')
+            }
+          })
       } else {
         this.group = {
           _id: null,
