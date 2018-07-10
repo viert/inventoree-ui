@@ -67,6 +67,11 @@ export default {
         .then(({data}) => {
           this.action = data.data[0]
         })
+        .catch(status => {
+          if (status === 404) {
+            this.$router.push('/actions')
+          }
+        })
     }
   },
   computed: {
