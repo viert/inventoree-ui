@@ -9,7 +9,12 @@ const ErrorHandler = err => {
         store.commit('setExtAuth', err.response.data)
       }
     } else if (err.response.status === 502 || err.response.status === 504) {
-      store.dispatch('error', `Gateway problems, unable to get data. Status code is ${err.response.status}`)
+      store.dispatch(
+        'error',
+        `Gateway problems, unable to get data. Status code is ${
+          err.response.status
+        }`
+      )
     } else if (err.response.data && err.response.data.errors) {
       err.response.data.errors.forEach(item => {
         store.dispatch('error', item)
