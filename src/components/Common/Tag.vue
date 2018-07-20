@@ -26,10 +26,10 @@ export default {
     }
   },
   methods: {
-    crossClick (e) {
+    crossClick(e) {
       this.$emit('close', e)
     },
-    tagClick (e) {
+    tagClick(e) {
       this.$emit('click', e)
     }
   }

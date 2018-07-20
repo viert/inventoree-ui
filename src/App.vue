@@ -304,11 +304,13 @@ table.ModelList
 
 .Card_TagList {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
 }
 
 .Card_TagList .Tag {
   margin-right: 4px;
+  margin-bottom: 4px;
 }
 
 .ListSelected {

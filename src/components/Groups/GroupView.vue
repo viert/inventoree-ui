@@ -86,7 +86,7 @@ export default {
     Tag,
     CustomField
   },
-  data () {
+  data() {
     return {
       group: {
         name: '',
@@ -103,15 +103,15 @@ export default {
     }
   },
   computed: {
-    editLink () {
+    editLink() {
       return `/groups/${this.group.name}/edit`
     },
-    cloneLink () {
+    cloneLink() {
       return `/groups/${this.group.name}/clone`
     }
   },
   methods: {
-    loadData () {
+    loadData() {
       let { groupName } = this.$route.params
       Api.Groups.Get(groupName)
         .then(response => {
@@ -124,11 +124,11 @@ export default {
         })
     }
   },
-  created () {
+  created() {
     this.loadData()
   },
   watch: {
-    '$route.params.groupName' () {
+    '$route.params.groupName'() {
       this.loadData()
     }
   }
@@ -136,5 +136,4 @@ export default {
 </script>
 
 <style>
-
 </style>
