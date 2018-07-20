@@ -9,7 +9,26 @@
             @clear="actionTypeCleared" />
         </div>
       </div>
-      <div v-if="items.length > 0" class="PageContentContainer">
+      <table class="ModelList">
+        <col class="col-datetime"/>
+        <col class="col-username"/>
+        <col class="col-action"/>
+        <thead>
+          <tr>
+            <th>Date/Time</th>
+            <th>Username</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <action-list-item
+            v-for="item in items"
+            :key="item._id"
+            :action="item"
+            />
+        </tbody>
+      </table>
+      <!-- <div v-if="items.length > 0" class="PageContentContainer">
         <table class="ActionList">
           <tbody>
             <action-list-item
@@ -19,7 +38,7 @@
               />
           </tbody>
         </table>
-      </div>
+      </div> -->
       <pagination
         :current="page"
         :total="totalPages"
@@ -41,49 +60,44 @@ export default {
     ActionTypePicker,
     Pagination
   },
-  mixins: [
-    FilteredDataMixin
-  ],
-  data () {
+  mixins: [FilteredDataMixin],
+  data() {
     return {
       items: [],
       actionTypeFilter: ''
     }
   },
   methods: {
-    loadData () {
-      let actionTypes = this.actionTypeFilter === '' ? [] : [this.actionTypeFilter]
-      Api.Actions.List(this.page, actionTypes)
-        .then(response => {
-          this.items = response.data.data
-          this.page = response.data.page
-          this.totalPages = response.data.total_pages
-        })
+    loadData() {
+      let actionTypes =
+        this.actionTypeFilter === '' ? [] : [this.actionTypeFilter]
+      Api.Actions.List(this.page, actionTypes).then(response => {
+        this.items = response.data.data
+        this.page = response.data.page
+        this.totalPages = response.data.total_pages
+      })
     },
-    actionTypePicked (aType) {
+    actionTypePicked(aType) {
       this.actionTypeFilter = aType.name
       this.loadData()
     },
-    actionTypeCleared (aType) {
+    actionTypeCleared(aType) {
       this.actionTypeFilter = ''
       this.loadData()
     }
   }
-
 }
 </script>
 
 <style>
-.ActionList {
-  width: 100%;
-  table-layout: fixed;
+.col-datetime {
+  width: 140px;
+}
+.col-username {
+  width: 200px;
 }
 
 .ContentHeader_Title--Grow {
   flex-grow: 1;
-}
-
-.ContentHeader_ActionTypeField {
-  width: 300px;
 }
 </style>

@@ -235,11 +235,11 @@ export default {
     }
   },
   computed: {
-    date () {
+    date() {
       let dt = new Date(this.action.created_at)
       return dt.toLocaleDateString() + ' ' + dt.toLocaleTimeString()
     },
-    viewLink () {
+    viewLink() {
       return `/actions/${this.action._id}`
     }
   }
@@ -256,8 +256,7 @@ export default {
 .ActionList_Item-Act .Group > span,
 .ActionList_Item-Act .Project > span,
 .ActionList_Item-Act .Host > span,
-.ActionList_Item-Act .Datacenter > span
-{
+.ActionList_Item-Act .Datacenter > span {
   font-weight: bold;
 }
 
@@ -265,8 +264,7 @@ export default {
 .ActionList_Item-Act .Group,
 .ActionList_Item-Act .Project,
 .ActionList_Item-Act .Host,
-.ActionList_Item-Act .Datacenter
-{
+.ActionList_Item-Act .Datacenter {
   padding-left: 4px;
 }
 
@@ -290,8 +288,11 @@ export default {
 .ActionList_Item-Act {
 }
 
-.ActionList_Item--Failure {
-  background-color: #FDD;
+.ActionList_Item--Failure td a {
+  color: #cc0000 !important;
 }
 
+.ActionList_Item--Failure td a:hover {
+  color: #ff0000 !important;
+}
 </style>
