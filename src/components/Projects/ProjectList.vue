@@ -10,32 +10,34 @@
         </div>
         <filter-field :change="filterChanged" :value="filter" />
       </div>
-      <table class="ModelList">
-        <col class="col-name" />
-        <col class="col-owner" />
-        <col class="col-email" />
-        <col class="col-rootemail" />
-        <col class="col-desc" />
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Owner</th>
-            <th>Email</th>
-            <th>Root Email</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          <project-list-item
-            v-for="project in items"
-            :project="project"
-            :key="project._id" />
-        </tbody>
-      </table>
-      <pagination
-        :current="page"
-        :total="totalPages"
-        @page="pageChanged" />
+        <item-list :count="items.length" :filter="filter">
+          <table class="ModelList">
+            <col class="col-name" />
+            <col class="col-owner" />
+            <col class="col-email" />
+            <col class="col-rootemail" />
+            <col class="col-desc" />
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Owner</th>
+                <th>Email</th>
+                <th>Root Email</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <project-list-item
+                v-for="project in items"
+                :project="project"
+                :key="project._id" />
+            </tbody>
+          </table>
+        <pagination
+          :current="page"
+          :total="totalPages"
+          @page="pageChanged" />
+        </item-list>
     </main>
   </div>
 </template>
@@ -59,7 +61,7 @@ export default {
   mixins: [FilteredDataMixin],
   methods: {
     loadData() {
-      Api.Projects.List(this.page, this.filter).then(response => {
+      return Api.Projects.List(this.page, this.filter).then(response => {
         this.items = response.data.data
         this.page = response.data.page
         this.totalPages = response.data.total_pages

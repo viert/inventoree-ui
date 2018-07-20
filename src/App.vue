@@ -145,6 +145,10 @@ table.ModelList {
   font-size: 26px;
 }
 
+.ContentHeader_Title--Grow {
+  flex-grow: 1;
+}
+
 .ContentHeader_Buttons {
   margin: 0 20px;
   flex-grow: 1;

@@ -11,6 +11,7 @@ import User from '@/components/Users/User'
 import Datacenter from '@/components/Datacenters/Datacenter'
 import FilterField from '@/components/Common/FilterField'
 import ConfirmButton from '@/components/Common/ConfirmButton'
+import ItemList from '@/components/Common/ItemList'
 
 Vue.component('group', Group)
 Vue.component('project', Project)
@@ -19,6 +20,7 @@ Vue.component('user', User)
 Vue.component('datacenter', Datacenter)
 Vue.component('filter-field', FilterField)
 Vue.component('confirm-button', ConfirmButton)
+Vue.component('item-list', ItemList)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

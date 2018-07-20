@@ -10,39 +10,43 @@
         </div>
         <filter-field :change="filterChanged" :value="filter" />
       </div>
-      <table class="ModelList">
-        <col class="col-check" />
-        <col class="col-name" />
-        <col class="col-project" />
-        <col class="col-tags" />
-        <col class="col-cf" />
-        <col v-if="itemsSelected.length === 0" class="col-desc" />
-        <thead>
-          <tr>
-            <th class="ModelList_Select">
-              <fa-checkbox :checked="allSelected" @trigger="toggleAll" />
-            </th>
-            <th>Name</th>
-            <th>Project</th>
-            <th>Tags</th>
-            <th>Custom Fields</th>
-            <th v-if="itemsSelected.length === 0">Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          <group-list-item
-            v-for="group in items"
-            :group="group"
-            :key="group._id"
-            :hide-desc="itemsSelected.length > 0"
-            @toggle-select="toggleItem"
-            @start-selection="startSelection" />
-        </tbody>
-      </table>
-      <pagination
-        :current="page"
-        :total="totalPages"
-        @page="pageChanged" />
+      <item-list :count="items.length" :filter="filter">
+
+        <table class="ModelList">
+          <col class="col-check" />
+          <col class="col-name" />
+          <col class="col-project" />
+          <col class="col-tags" />
+          <col class="col-cf" />
+          <col v-if="itemsSelected.length === 0" class="col-desc" />
+          <thead>
+            <tr>
+              <th class="ModelList_Select">
+                <fa-checkbox :checked="allSelected" @trigger="toggleAll" />
+              </th>
+              <th>Name</th>
+              <th>Project</th>
+              <th>Tags</th>
+              <th>Custom Fields</th>
+              <th v-if="itemsSelected.length === 0">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <group-list-item
+              v-for="group in items"
+              :group="group"
+              :key="group._id"
+              :hide-desc="itemsSelected.length > 0"
+              @toggle-select="toggleItem"
+              @start-selection="startSelection" />
+          </tbody>
+        </table>
+        <pagination
+          :current="page"
+          :total="totalPages"
+          @page="pageChanged" />
+
+      </item-list>
     </main>
     <aside v-if="itemsSelected.length > 0" class="SelectPanel">
       <h2 class="ContentHeader_Title">Mass actions</h2>

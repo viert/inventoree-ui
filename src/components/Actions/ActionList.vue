@@ -9,27 +9,18 @@
             @clear="actionTypeCleared" />
         </div>
       </div>
-      <table class="ModelList">
-        <col class="col-datetime"/>
-        <col class="col-username"/>
-        <col class="col-action"/>
-        <thead>
-          <tr>
-            <th>Date/Time</th>
-            <th>Username</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <action-list-item
-            v-for="item in items"
-            :key="item._id"
-            :action="item"
-            />
-        </tbody>
-      </table>
-      <!-- <div v-if="items.length > 0" class="PageContentContainer">
-        <table class="ActionList">
+      <item-list :filter="actionTypeFilter" :count="items.length">
+        <table class="ModelList">
+          <col class="col-datetime"/>
+          <col class="col-username"/>
+          <col class="col-action"/>
+          <thead>
+            <tr>
+              <th>Date/Time</th>
+              <th>Username</th>
+              <th>Action</th>
+            </tr>
+          </thead>
           <tbody>
             <action-list-item
               v-for="item in items"
@@ -38,11 +29,11 @@
               />
           </tbody>
         </table>
-      </div> -->
-      <pagination
-        :current="page"
-        :total="totalPages"
-        @page="pageChanged" />
+        <pagination
+          :current="page"
+          :total="totalPages"
+          @page="pageChanged" />
+      </item-list>
     </main>
   </div>
 </template>
@@ -89,15 +80,11 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .col-datetime {
   width: 140px;
 }
 .col-username {
   width: 200px;
-}
-
-.ContentHeader_Title--Grow {
-  flex-grow: 1;
 }
 </style>

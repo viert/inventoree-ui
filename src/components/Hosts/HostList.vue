@@ -10,41 +10,43 @@
         </div>
         <filter-field :change="filterChanged" :value="filter" />
       </div>
-      <table class="ModelList">
-        <col class="col-check" />
-        <col class="col-fqdn" />
-        <col class="col-dc" />
-        <col class="col-group" />
-        <col class="col-tags" />
-        <col class="col-cf" />
-        <col v-if="itemsSelected.length === 0" class="col-desc" />
-        <thead>
-          <tr>
-            <th class="ModelList_Select">
-              <fa-checkbox :checked="allSelected" @trigger="toggleAll" />
-            </th>
-            <th>FQDN</th>
-            <th>Datacenter</th>
-            <th>Group</th>
-            <th>Tags</th>
-            <th>Custom Fields</th>
-            <th v-if="itemsSelected.length === 0">Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          <host-list-item
-            v-for="host in items"
-            :host="host"
-            :key="host._id"
-            :hide-desc="itemsSelected.length > 0"
-            @toggle-select="toggleItem"
-            @start-selection="startSelection" />
-        </tbody>
-      </table>
-      <pagination
-        :current="page"
-        :total="totalPages"
-        @page="pageChanged" />
+      <item-list :count="items.length" :filter="filter">
+        <table class="ModelList">
+          <col class="col-check" />
+          <col class="col-fqdn" />
+          <col class="col-dc" />
+          <col class="col-group" />
+          <col class="col-tags" />
+          <col class="col-cf" />
+          <col v-if="itemsSelected.length === 0" class="col-desc" />
+          <thead>
+            <tr>
+              <th class="ModelList_Select">
+                <fa-checkbox :checked="allSelected" @trigger="toggleAll" />
+              </th>
+              <th>FQDN</th>
+              <th>Datacenter</th>
+              <th>Group</th>
+              <th>Tags</th>
+              <th>Custom Fields</th>
+              <th v-if="itemsSelected.length === 0">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <host-list-item
+              v-for="host in items"
+              :host="host"
+              :key="host._id"
+              :hide-desc="itemsSelected.length > 0"
+              @toggle-select="toggleItem"
+              @start-selection="startSelection" />
+          </tbody>
+        </table>
+        <pagination
+          :current="page"
+          :total="totalPages"
+          @page="pageChanged" />
+      </item-list>
     </main>
     <aside v-if="itemsSelected.length > 0" class="SelectPanel">
       <h2 class="ContentHeader_Title">Mass actions</h2>

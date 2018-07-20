@@ -10,30 +10,32 @@
         </div>
         <filter-field :change="filterChanged" :value="filter" />
       </div>
-      <table class="ModelList">
-        <col class="col-username" />
-        <col class="col-fullname" />
-        <col class="col-email" />
-        <col class="col-supervisor" />
-        <thead>
-          <tr>
-            <th>Username</th>
-            <th>Full Name</th>
-            <th>Email</th>
-            <th>Supervisor</th>
-          </tr>
-        </thead>
-        <tbody>
-          <user-list-item
-            v-for="user in items"
-            :user="user"
-            :key="user._id" />
-        </tbody>
-      </table>
-      <pagination
-        :current="page"
-        :total="totalPages"
-        @page="pageChanged" />
+      <item-list :count="items.length" :filter="filter">
+        <table class="ModelList">
+          <col class="col-username" />
+          <col class="col-fullname" />
+          <col class="col-email" />
+          <col class="col-supervisor" />
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Full Name</th>
+              <th>Email</th>
+              <th>Supervisor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <user-list-item
+              v-for="user in items"
+              :user="user"
+              :key="user._id" />
+          </tbody>
+        </table>
+        <pagination
+          :current="page"
+          :total="totalPages"
+          @page="pageChanged" />
+      </item-list>
     </main>
   </div>
 </template>
