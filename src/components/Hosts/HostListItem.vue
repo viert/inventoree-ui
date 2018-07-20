@@ -12,13 +12,13 @@
     <td>
       <span v-if="host.group_name">{{host.group_name}}</span>
     </td>
-    <td>
+    <td class="ModelList_Item--MayBeLong">
       <tag v-for="tag in allTagsSorted" :name="tag" :key="tag" :derived="!(host.tags.includes(tag))"/>
     </td>
-    <td>
+    <td class="ModelList_Item--MayBeLong">
       <custom-field v-for="cf in host.all_custom_fields" :cf-key="cf.key" :cf-value="cf.value" :key="cf.key" />
     </td>
-    <td>{{ host.description }}</td>
+    <td v-if="!hideDesc">{{ host.description }}</td>
   </tr>
 </template>
 
@@ -31,6 +31,10 @@ export default {
     host: {
       type: Object,
       required: true
+    },
+    hideDesc: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
@@ -39,12 +43,12 @@ export default {
     FaCheckbox
   },
   computed: {
-    allTagsSorted () {
+    allTagsSorted() {
       return this.host.all_tags.slice().sort()
     }
   },
   methods: {
-    toggleSelected () {
+    toggleSelected() {
       this.$emit('toggle-select', this.host)
       this.$emit('start-selection')
     }
@@ -53,5 +57,4 @@ export default {
 </script>
 
 <style>
-
 </style>

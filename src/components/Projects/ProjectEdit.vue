@@ -111,7 +111,7 @@ export default {
   components: {
     UserPicker
   },
-  data () {
+  data() {
     return {
       project: {
         _id: null,
@@ -125,11 +125,11 @@ export default {
       memberMap: {}
     }
   },
-  created () {
+  created() {
     this.reload()
   },
   methods: {
-    reload () {
+    reload() {
       if (!this.create) {
         let { projectName } = this.$route.params
         Api.Projects.Get(projectName, editorFields)
@@ -158,13 +158,13 @@ export default {
         this.memberMap = {}
       }
     },
-    ownerPicked (owner) {
+    ownerPicked(owner) {
       this.project.owner = owner
     },
-    ownerClear () {
+    ownerClear() {
       this.project.owner._id = null
     },
-    handleSave () {
+    handleSave() {
       let { name, description, email } = this.project
       let payload = {
         name,
@@ -173,53 +173,69 @@ export default {
         root_email: this.project.root_email
       }
       if (this.create) {
-        Api.Projects.Create(payload)
-          .then(response => {
-            let { name } = payload
-            this.$store.dispatch('info', `Project ${name} has been created, you can now add project members`)
-            this.$router.push(`/projects/${name}`)
-          })
+        Api.Projects.Create(payload).then(response => {
+          let { name } = payload
+          this.$store.dispatch(
+            'info',
+            `Project ${name} has been created, you can now add project members`
+          )
+          this.$router.push(`/projects/${name}`)
+        })
       } else {
-        Api.Projects.Update(this.project._id, payload, editorFields)
-          .then(response => {
-            this.$store.dispatch('info', `Project ${name} has been updated, be sure to save project members if you made any changes`)
-          })
+        Api.Projects.Update(this.project._id, payload, editorFields).then(
+          response => {
+            this.$store.dispatch(
+              'info',
+              `Project ${name} has been updated, be sure to save project members if you made any changes`
+            )
+          }
+        )
       }
     },
-    handleDestroy () {
-      Api.Projects.Delete(this.project._id)
-        .then(() => {
-          this.$store.dispatch('info', `Project ${this.project.name} has been deleted successfully`)
-          this.$router.push('/projects')
-        })
+    handleDestroy() {
+      Api.Projects.Delete(this.project._id).then(() => {
+        this.$store.dispatch(
+          'info',
+          `Project ${this.project.name} has been deleted successfully`
+        )
+        this.$router.push('/projects')
+      })
     },
-    handleSaveMembers () {
+    handleSaveMembers() {
       let memberIds = this.project.members.map(i => i._id)
-      Api.Projects.SetMembers(this.project._id, memberIds)
-        .then(() => {
-          this.$store.dispatch('info', `Project ${this.project.name} members have been updated`)
-        })
+      Api.Projects.SetMembers(this.project._id, memberIds).then(() => {
+        this.$store.dispatch(
+          'info',
+          `Project ${this.project.name} members have been updated`
+        )
+      })
     },
-    handleChangeOwner () {
-      Api.Projects.ChangeOwner(this.project._id, this.project.owner._id)
-        .then(() => {
-          this.$store.dispatch('info', `Project ${this.project.name} owner has been changed`)
-        })
+    handleChangeOwner() {
+      Api.Projects.ChangeOwner(this.project._id, this.project.owner._id).then(
+        () => {
+          this.$store.dispatch(
+            'info',
+            `Project ${this.project.name} owner has been changed`
+          )
+        }
+      )
     },
-    isSelected (item) {
+    isSelected(item) {
       return item._id in this.memberMap
     },
-    addMember (member) {
+    addMember(member) {
       this.project.members.push(member)
       this.$set(this.memberMap, member._id, member)
     },
-    removeMember (member) {
-      this.project.members = this.project.members.filter(i => i._id !== member._id)
+    removeMember(member) {
+      this.project.members = this.project.members.filter(
+        i => i._id !== member._id
+      )
       this.$delete(this.memberMap, member._id)
     }
   },
   watch: {
-    '$route.params.projectName' () {
+    '$route.params.projectName'() {
       this.reload()
     }
   }

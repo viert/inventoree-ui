@@ -11,6 +11,13 @@
         <filter-field :change="filterChanged" :value="filter" />
       </div>
       <table class="ModelList">
+        <col class="col-check" />
+        <col class="col-fqdn" />
+        <col class="col-dc" />
+        <col class="col-group" />
+        <col class="col-tags" />
+        <col class="col-cf" />
+        <col v-if="itemsSelected.length === 0" class="col-desc" />
         <thead>
           <tr>
             <th class="ModelList_Select">
@@ -21,7 +28,7 @@
             <th>Group</th>
             <th>Tags</th>
             <th>Custom Fields</th>
-            <th>Description</th>
+            <th v-if="itemsSelected.length === 0">Description</th>
           </tr>
         </thead>
         <tbody>
@@ -29,6 +36,7 @@
             v-for="host in items"
             :host="host"
             :key="host._id"
+            :hide-desc="itemsSelected.length > 0"
             @toggle-select="toggleItem"
             @start-selection="startSelection" />
         </tbody>
@@ -87,10 +95,7 @@ import MassSelect from '@/mixins/MassSelect'
 import { mapState } from 'vuex'
 export default {
   name: 'HostList',
-  mixins: [
-    MassSelect,
-    FilteredDataMixin
-  ],
+  mixins: [MassSelect, FilteredDataMixin],
   components: {
     HostListItem,
     FaCheckbox,
@@ -98,7 +103,7 @@ export default {
     DatacenterPicker,
     Pagination
   },
-  data () {
+  data() {
     return {
       destGroup: null,
       destDatacenter: null
@@ -108,70 +113,88 @@ export default {
     ...mapState(['selectMode'])
   },
   methods: {
-    loadData () {
-      return Api.Hosts.List(this.page, this.filter)
-        .then(response => {
-          this.page = response.data.page
-          this.totalPages = response.data.total_pages
-          this.items = response.data.data.map(item => {
-            item._selected = this.shouldBeSelected(item)
-            return item
-          })
+    loadData() {
+      return Api.Hosts.List(this.page, this.filter).then(response => {
+        this.page = response.data.page
+        this.totalPages = response.data.total_pages
+        this.items = response.data.data.map(item => {
+          item._selected = this.shouldBeSelected(item)
+          return item
         })
+      })
     },
-    startSelection () {
+    startSelection() {
       this.$store.commit('setSelectMode', true)
     },
-    massDelete () {
+    massDelete() {
       let hostIds = this.itemsSelected.map(item => item._id)
-      Api.Hosts.MassDelete(hostIds)
-        .then(() => {
-          this.$store.dispatch('info', 'Hosts were deleted successfully')
-          this.clearSelection()
-          this.loadData()
-        })
+      Api.Hosts.MassDelete(hostIds).then(() => {
+        this.$store.dispatch('info', 'Hosts were deleted successfully')
+        this.clearSelection()
+        this.loadData()
+      })
     },
-    massDetach () {
+    massDetach() {
       let hostIds = this.itemsSelected.map(item => item._id)
-      Api.Hosts.MassDetach(hostIds)
-        .then(() => {
-          this.$store.dispatch('info', 'Hosts were detached from their groups successfully')
-          this.clearSelection()
-          this.loadData()
-        })
+      Api.Hosts.MassDetach(hostIds).then(() => {
+        this.$store.dispatch(
+          'info',
+          'Hosts were detached from their groups successfully'
+        )
+        this.clearSelection()
+        this.loadData()
+      })
     },
-    massMoveToGroup () {
+    massMoveToGroup() {
       if (!this.destGroup) {
         this.$store.dispatch('error', 'Please select a group to move hosts to')
         return
       }
       let hostIds = this.itemsSelected.map(item => item._id)
-      Api.Hosts.MassMove(hostIds, this.destGroup._id)
-        .then(() => {
-          this.$store.dispatch('info', `Hosts were moved to group ${this.destGroup.name}`)
-          this.destGroup = null
-          this.clearSelection()
-          this.loadData()
-        })
+      Api.Hosts.MassMove(hostIds, this.destGroup._id).then(() => {
+        this.$store.dispatch(
+          'info',
+          `Hosts were moved to group ${this.destGroup.name}`
+        )
+        this.destGroup = null
+        this.clearSelection()
+        this.loadData()
+      })
     },
-    massMoveToDatacenter () {
+    massMoveToDatacenter() {
       if (!this.destDatacenter) {
-        this.$store.dispatch('error', 'Please select a datacenter to move hosts to')
+        this.$store.dispatch(
+          'error',
+          'Please select a datacenter to move hosts to'
+        )
         return
       }
       let hostIds = this.itemsSelected.map(item => item._id)
-      Api.Hosts.MassSetDatacenter(hostIds, this.destDatacenter._id)
-        .then(() => {
-          this.$store.dispatch('info', `Hosts were moved to datacenter ${this.destDatacenter.name}`)
-          this.destDatacenter = null
-          this.clearSelection()
-          this.loadData()
-        })
+      Api.Hosts.MassSetDatacenter(hostIds, this.destDatacenter._id).then(() => {
+        this.$store.dispatch(
+          'info',
+          `Hosts were moved to datacenter ${this.destDatacenter.name}`
+        )
+        this.destDatacenter = null
+        this.clearSelection()
+        this.loadData()
+      })
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
+.col-check {
+  width: 32px;
+}
 
+.col-fqdn,
+.col-group {
+  width: 13%;
+}
+
+.col-dc {
+  width: 7%;
+}
 </style>

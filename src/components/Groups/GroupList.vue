@@ -11,6 +11,12 @@
         <filter-field :change="filterChanged" :value="filter" />
       </div>
       <table class="ModelList">
+        <col class="col-check" />
+        <col class="col-name" />
+        <col class="col-project" />
+        <col class="col-tags" />
+        <col class="col-cf" />
+        <col v-if="itemsSelected.length === 0" class="col-desc" />
         <thead>
           <tr>
             <th class="ModelList_Select">
@@ -20,7 +26,7 @@
             <th>Project</th>
             <th>Tags</th>
             <th>Custom Fields</th>
-            <th>Description</th>
+            <th v-if="itemsSelected.length === 0">Description</th>
           </tr>
         </thead>
         <tbody>
@@ -28,6 +34,7 @@
             v-for="group in items"
             :group="group"
             :key="group._id"
+            :hide-desc="itemsSelected.length > 0"
             @toggle-select="toggleItem"
             @start-selection="startSelection" />
         </tbody>
@@ -73,17 +80,14 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'GroupList',
-  mixins: [
-    MassSelect,
-    FilteredDataMixin
-  ],
+  mixins: [MassSelect, FilteredDataMixin],
   components: {
     GroupListItem,
     FaCheckbox,
     ProjectPicker,
     Pagination
   },
-  data () {
+  data() {
     return {
       destProject: null
     }
@@ -92,50 +96,63 @@ export default {
     ...mapState(['selectMode'])
   },
   methods: {
-    loadData () {
-      return Api.Groups.List(this.page, this.filter)
-        .then(response => {
-          this.page = response.data.page
-          this.totalPages = response.data.total_pages
-          this.items = response.data.data.map(item => {
-            item._selected = this.shouldBeSelected(item)
-            return item
-          })
+    loadData() {
+      return Api.Groups.List(this.page, this.filter).then(response => {
+        this.page = response.data.page
+        this.totalPages = response.data.total_pages
+        this.items = response.data.data.map(item => {
+          item._selected = this.shouldBeSelected(item)
+          return item
         })
+      })
     },
-    startSelection () {
+    startSelection() {
       this.$store.commit('setSelectMode', true)
     },
-    projectPicked (project) {
+    projectPicked(project) {
       this.destProject = project
     },
-    massMoveToProject () {
+    massMoveToProject() {
       if (!this.destProject) {
-        this.$store.dispatch('error', 'Please select a project to move groups to')
+        this.$store.dispatch(
+          'error',
+          'Please select a project to move groups to'
+        )
         return
       }
       let groupIds = this.itemsSelected.map(item => item._id)
-      Api.Groups.MassMove(groupIds, this.destProject._id)
-        .then(() => {
-          this.$store.dispatch('info', `Groups were moved to project ${this.destProject.name}`)
-          this.destProject = null
-          this.clearSelection()
-          this.loadData()
-        })
+      Api.Groups.MassMove(groupIds, this.destProject._id).then(() => {
+        this.$store.dispatch(
+          'info',
+          `Groups were moved to project ${this.destProject.name}`
+        )
+        this.destProject = null
+        this.clearSelection()
+        this.loadData()
+      })
     },
-    massDelete () {
+    massDelete() {
       let groupIds = this.itemsSelected.map(item => item._id)
-      Api.Groups.MassDelete(groupIds)
-        .then(() => {
-          this.$store.dispatch('info', `Groups were successfully deleted`)
-          this.clearSelection()
-          this.loadData()
-        })
+      Api.Groups.MassDelete(groupIds).then(() => {
+        this.$store.dispatch('info', `Groups were successfully deleted`)
+        this.clearSelection()
+        this.loadData()
+      })
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
+.col-check {
+  width: 32px;
+}
 
+.col-name {
+  width: 12%;
+}
+
+.col-project {
+  width: 12%;
+}
 </style>

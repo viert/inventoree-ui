@@ -24,17 +24,17 @@ export default {
   computed: {
     ...mapState(['auth'])
   },
-  created () {
+  created() {
     this.getAuthData()
     this.getAppData()
   },
   methods: {
-    stopSelection () {
+    stopSelection() {
       if (this.$store.state.selectMode) {
         this.$store.commit('setSelectMode', false)
       }
     },
-    getAuthData () {
+    getAuthData() {
       Api.Account.Me().then(response => {
         if (response) {
           this.$store.commit('setUser', response.data.data)
@@ -42,14 +42,14 @@ export default {
         }
       })
     },
-    getAppData () {
+    getAppData() {
       Api.Open.AppInfo().then(response => {
         this.$store.commit('setAppInfo', response.data.app_info)
       })
     }
   },
   watch: {
-    '$store.state.auth.state' (newState) {
+    '$store.state.auth.state'(newState) {
       if (newState === 'authenticating') {
         this.getAuthData()
       }
@@ -158,6 +158,7 @@ table.ModelList {
   font-size: 0.8rem;
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
 table.ModelList > thead > tr > th,
@@ -167,6 +168,7 @@ table.ModelList > tbody > tr > td {
   font-weight: normal;
   padding-left: 4px;
   padding-right: 4px;
+  white-space: nowrap;
 }
 
 table.ModelList > thead > tr > th:first-child:not(.ModelList_Select),
@@ -197,6 +199,9 @@ table.ModelList > tbody > tr > td {
   padding-top: 4px;
   padding-bottom: 4px;
   overflow: hidden;
+  position: relative;
+  height: 28px;
+  box-sizing: border-box;
 }
 
 table.ModelList > tbody > tr:nth-child(even) > td {
@@ -212,6 +217,61 @@ table.ModelList > tbody > tr:hover > td {
 .ModelList_Select {
   width: 32px;
   text-align: center !important;
+}
+
+.ModelList_Item--MayBeLong::after {
+  display: block;
+  content: ' ';
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 28px;
+  height: 28px;
+}
+
+table.ModelList
+  > tbody
+  > tr:nth-child(odd)
+  > td.ModelList_Item--MayBeLong::after {
+  background: -moz-linear-gradient(
+    left,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 1) 100%
+  ); /* FF3.6-15 */
+  background: -webkit-linear-gradient(
+    left,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 1) 100%
+  ); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 1) 100%
+  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 */
+}
+
+table.ModelList
+  > tbody
+  > tr:nth-child(even)
+  > td.ModelList_Item--MayBeLong::after {
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,ffffff+0,f9f9f9+100&0+0,1+100 */
+  background: -moz-linear-gradient(
+    left,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(249, 249, 249, 1) 100%
+  ); /* FF3.6-15 */
+  background: -webkit-linear-gradient(
+    left,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(249, 249, 249, 1) 100%
+  ); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(249, 249, 249, 1) 100%
+  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#f9f9f9',GradientType=1 ); /* IE6-9 */
 }
 
 .Card h3 {

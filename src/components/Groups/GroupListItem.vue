@@ -9,13 +9,13 @@
     <td>
       {{group.project_name}}
     </td>
-    <td>
+    <td class="ModelList_Item--MayBeLong">
       <tag v-for="tag in allTagsSorted" :name="tag" :key="tag" :derived="!(group.tags.includes(tag))"/>
     </td>
-    <td>
+    <td class="ModelList_Item--MayBeLong">
       <custom-field v-for="cf in group.all_custom_fields" :cf-key="cf.key" :cf-value="cf.value" :key="cf.key" />
     </td>
-    <td>{{ group.description }}</td>
+    <td v-if="!hideDesc">{{ group.description }}</td>
   </tr>
 </template>
 
@@ -28,6 +28,10 @@ export default {
     group: {
       type: Object,
       required: true
+    },
+    hideDesc: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
@@ -36,15 +40,15 @@ export default {
     FaCheckbox
   },
   computed: {
-    viewLink () {
+    viewLink() {
       return `/groups/${this.group.name}`
     },
-    allTagsSorted () {
+    allTagsSorted() {
       return this.group.all_tags.slice().sort()
     }
   },
   methods: {
-    toggleSelected () {
+    toggleSelected() {
       this.$emit('toggle-select', this.group)
       this.$emit('start-selection')
     }
@@ -53,5 +57,4 @@ export default {
 </script>
 
 <style>
-
 </style>

@@ -11,6 +11,11 @@
         <filter-field :change="filterChanged" :value="filter" />
       </div>
       <table class="ModelList">
+        <col class="col-name" />
+        <col class="col-owner" />
+        <col class="col-email" />
+        <col class="col-rootemail" />
+        <col class="col-desc" />
         <thead>
           <tr>
             <th>Name</th>
@@ -42,7 +47,7 @@ import ProjectListItem from './ProjectListItem'
 import Api from '@/api'
 
 export default {
-  data () {
+  data() {
     return {
       items: []
     }
@@ -51,22 +56,26 @@ export default {
     ProjectListItem,
     Pagination
   },
-  mixins: [
-    FilteredDataMixin
-  ],
+  mixins: [FilteredDataMixin],
   methods: {
-    loadData () {
-      Api.Projects.List(this.page, this.filter)
-        .then(response => {
-          this.items = response.data.data
-          this.page = response.data.page
-          this.totalPages = response.data.total_pages
-        })
+    loadData() {
+      Api.Projects.List(this.page, this.filter).then(response => {
+        this.items = response.data.data
+        this.page = response.data.page
+        this.totalPages = response.data.total_pages
+      })
     }
   }
 }
 </script>
 
-<style>
-
+<style scoped>
+.col-name,
+.col-owner {
+  width: 13%;
+}
+.col-email,
+.col-rootemail {
+  width: 20%;
+}
 </style>

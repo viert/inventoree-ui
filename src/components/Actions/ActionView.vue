@@ -33,7 +33,10 @@ import ModelRemoveMember from './Views/ModelRemoveMember'
 import ModelSetMembers from './Views/ModelSetMembers'
 
 export default {
-  data () {
+  beforeCreate () {
+
+  },
+  data() {
     return {
       action: {
         action_type: null

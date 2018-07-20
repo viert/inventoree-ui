@@ -11,6 +11,10 @@
         <filter-field :change="filterChanged" :value="filter" />
       </div>
       <table class="ModelList">
+        <col class="col-username" />
+        <col class="col-fullname" />
+        <col class="col-email" />
+        <col class="col-supervisor" />
         <thead>
           <tr>
             <th>Username</th>
@@ -41,7 +45,7 @@ import UserListItem from './UserListItem'
 import Api from '@/api'
 
 export default {
-  data () {
+  data() {
     return {
       items: []
     }
@@ -50,22 +54,24 @@ export default {
     UserListItem,
     Pagination
   },
-  mixins: [
-    FilteredDataMixin
-  ],
+  mixins: [FilteredDataMixin],
   methods: {
-    loadData () {
-      return Api.Users.List(this.page, this.filter)
-        .then(response => {
-          this.items = response.data.data
-          this.page = response.data.page
-          this.totalPages = response.data.total_pages
-        })
+    loadData() {
+      return Api.Users.List(this.page, this.filter).then(response => {
+        this.items = response.data.data
+        this.page = response.data.page
+        this.totalPages = response.data.total_pages
+      })
     }
   }
 }
 </script>
 
-<style>
-
+<style scoped>
+.col-supervisor {
+  width: 5%;
+}
+.col-username {
+  width: 13%;
+}
 </style>
