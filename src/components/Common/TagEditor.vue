@@ -24,10 +24,12 @@ export default {
   props: {
     tags: {
       type: Array,
-      default: () => { return [] }
+      default: () => {
+        return []
+      }
     }
   },
-  data () {
+  data() {
     return {
       focused: false,
       value: '',
@@ -38,14 +40,14 @@ export default {
     Tag
   },
   methods: {
-    onBlur (e) {
+    onBlur(e) {
       this.focused = false
       this.addTag(e)
     },
-    removeTag (tag) {
+    removeTag(tag) {
       this.$emit('remove', tag)
     },
-    addTag (e) {
+    addTag(e) {
       let tag = e.target.value.trim()
       this.value = ''
       this.size = 5
@@ -53,20 +55,20 @@ export default {
       if (this.tags.find(i => i === tag)) return
       this.$emit('add', tag)
     },
-    tabHandler (e) {
+    tabHandler(e) {
       if (e.target.value.length > 0) {
         e.preventDefault()
         this.addTag(e)
       }
     },
-    backspaceHandler (e) {
+    backspaceHandler(e) {
       if (e.target.value.length === 0) {
         e.preventDefault()
         let lastTag = this.tags[this.tags.length - 1]
         this.removeTag(lastTag)
       }
     },
-    editorInput (e) {
+    editorInput(e) {
       let { value, size } = e.target
       let targetSize = value.length + 5
       let newSize = targetSize
@@ -89,8 +91,7 @@ export default {
   min-height: 32px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  line-height: 32px;
-  padding: 0 12px;
+  padding: 6px 12px 2px;
   background-color: white;
   cursor: text;
   transition: border-color 0.15s linear, box-shadow 0.15s linear;
@@ -116,11 +117,11 @@ export default {
   padding: 1px 8px;
   border: 1px solid #ccc;
   background-color: #e0ffe0;
-  margin-right: 8px;
+  margin-right: 4px;
+  margin-bottom: 4px;
   overflow-wrap: normal;
   line-height: 1.5em;
   position: relative;
   top: -1px;
 }
-
 </style>
