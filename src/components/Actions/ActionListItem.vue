@@ -14,28 +14,28 @@
         </router-link>
         <user :username="action.computed.username" :link="false" />
       </span>
-      <span v-if="action.action_type == 'user_create'">
+      <span v-else-if="action.action_type == 'user_create'">
         <router-link :to="viewLink">
           <span v-if="action.status == 'success'">created</span>
           <span v-else>failed to create</span>
         </router-link>
         <user :username="action.computed.username" :link="false" />
       </span>
-      <span v-if="action.action_type == 'user_delete'">
+      <span v-else-if="action.action_type == 'user_delete'">
         <router-link :to="viewLink">
           <span v-if="action.status == 'success'">deleted</span>
           <span v-else>failed to delete</span>
         </router-link>
         <user :username="action.computed.username" :link="false" />
       </span>
-      <span v-if="action.action_type == 'user_set_password'">
+      <span v-else-if="action.action_type == 'user_set_password'">
         <router-link :to="viewLink">
           <span v-if="action.status == 'success'">reset password of</span>
           <span v-else>failed to reset password</span>
         </router-link>
         <user :username="action.computed.username" :link="false" />
       </span>
-      <span v-if="action.action_type == 'user_set_supervisor'">
+      <span v-else-if="action.action_type == 'user_set_supervisor'">
         <router-link :to="viewLink">
           <span v-if="action.status == 'success'">
             <span v-if="action.params.supervisor">granted supervisor to</span>
