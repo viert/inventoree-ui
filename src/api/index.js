@@ -288,7 +288,7 @@ const Api = {
     },
     ChangePassword: (userName, newPassword, confirmPassword) => {
       let url = `/api/v1/users/${userName}/set_password`
-      let payload = { password: newPassword, confirm_password: confirmPassword }
+      let payload = { password_raw: newPassword, password_raw_confirm: confirmPassword }
       return wrap(axios.put(url, payload))
     },
     SetSupervisor: (userName, supervisor) => {

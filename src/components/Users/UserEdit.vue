@@ -95,7 +95,7 @@ export default {
       required: true
     }
   },
-  data () {
+  data() {
     return {
       user: {
         _id: null,
@@ -108,11 +108,11 @@ export default {
       confirmPassword: ''
     }
   },
-  created () {
+  created() {
     this.reload()
   },
   methods: {
-    reload () {
+    reload() {
       if (!this.create) {
         let { userName } = this.$route.params
         this.newPassword = ''
@@ -138,49 +138,70 @@ export default {
         this.confirmPassword = ''
       }
     },
-    handleSave () {
+    handleSave() {
       let payload = {
         username: this.user.username,
         first_name: this.user.first_name,
         last_name: this.user.last_name,
         email: this.user.email
       }
-      Api.Users.Update(this.user._id, payload)
-        .then(response => {
+      if (this.create) {
+        Api.Users.Create(payload).then(response => {
+          let user = response.data.data
+          this.$store.dispatch(
+            'info',
+            `User ${user.username} has been created successfully`
+          )
+          this.$router.push(`/users/${user.username}/edit`)
+        })
+      } else {
+        Api.Users.Update(this.user._id, payload).then(response => {
           this.user = response.data.data
-          this.$store.dispatch('info', `User ${this.user.username} has been updated successfully`)
+          this.$store.dispatch(
+            'info',
+            `User ${this.user.username} has been updated successfully`
+          )
         })
+      }
     },
-    handleDestroy () {
-      Api.Users.Delete(this.user._id)
-        .then(() => {
-          this.$store.dispatch('info', `User ${this.user.username} has been deleted successfully`)
-          this.$router.push('/users')
-        })
+    handleDestroy() {
+      Api.Users.Delete(this.user._id).then(() => {
+        this.$store.dispatch(
+          'info',
+          `User ${this.user.username} has been deleted successfully`
+        )
+        this.$router.push('/users')
+      })
     },
-    handleChangePassword () {
+    handleChangePassword() {
       if (this.newPassword !== this.confirmPassword) {
-        this.$store.dispatch('error', 'Passwords don\'t match')
+        this.$store.dispatch('error', "Passwords don't match")
         return
       }
-      Api.Users.ChangePassword(this.user._id, this.newPassword, this.confirmPassword)
-        .then(() => {
-          this.$store.dispatch('info', 'Password has been updated')
-          this.newPassword = ''
-          this.confirmPassword = ''
-        })
+      Api.Users.ChangePassword(
+        this.user._id,
+        this.newPassword,
+        this.confirmPassword
+      ).then(() => {
+        this.$store.dispatch('info', 'Password has been updated')
+        this.newPassword = ''
+        this.confirmPassword = ''
+      })
     },
-    toggleSupervisor () {
+    toggleSupervisor() {
       let supervisor = !this.user.supervisor
-      Api.Users.SetSupervisor(this.user._id, supervisor)
-        .then(() => {
-          this.$store.dispatch('info', 'Supervisor permissions successfully ' + (supervisor ? 'granted' : 'revoked'))
-          this.user.supervisor = supervisor
-        })
+      Api.Users.SetSupervisor(this.user._id, supervisor).then(() => {
+        this.$store.dispatch(
+          'info',
+          'Supervisor permissions successfully ' +
+            (supervisor ? 'granted' : 'revoked')
+        )
+        this.user.supervisor = supervisor
+      })
     }
   },
   watch: {
-    '$route.params.userName' () {
+    '$route.params.userName'() {
       this.reload()
     }
   }
