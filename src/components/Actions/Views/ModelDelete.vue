@@ -11,8 +11,8 @@
           <project v-if="model == 'project'" :name="action.computed.project_name" :link="false" />
           <group v-else-if="model == 'group'" :name="action.computed.group_name" :link="false" />
           <datacenter v-else-if="model == 'datacenter'" :name="action.computed.datacenter_name" :link="false" />
-          <host v-else-if="model == 'host'" :name="action.computed.host_fqdn" :link="false" />
-          <user v-else-if="model == 'user'" :name="action.computed.user_name" :link="false" />
+          <host v-else-if="model == 'host'" :fqdn="action.computed.host_fqdn" :link="false" />
+          <user v-else-if="model == 'user'" :username="action.computed.username" :link="false" />
         </div>
       </div>
       <div class="col-sm-6">
@@ -25,8 +25,6 @@
 <script>
 import ActionViewMixin from '@/mixins/ActionViewMixin'
 export default {
-  mixins: [
-    ActionViewMixin
-  ]
+  mixins: [ActionViewMixin]
 }
 </script>
