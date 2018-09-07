@@ -63,9 +63,8 @@
                 <ul class="RelationsList">
                   <li
                     v-for="host in group.hosts"
-                    class="RelationList_Item Host"
                     :key="host._id">
-                    <a href="#">{{ host.fqdn }}</a>
+                    <host :fqdn="host.fqdn" />
                   </li>
                 </ul>
               </div>
