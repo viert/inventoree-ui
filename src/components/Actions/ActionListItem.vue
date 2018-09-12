@@ -141,6 +141,13 @@
         </router-link>
         <host :fqdn="action.computed.host_fqdn" :link="false" />
       </span>
+      <span v-else-if="action.action_type == 'host_delete'">
+        <router-link :to="viewLink">
+          <span v-if="action.status == 'success'">deleted</span>
+          <span v-else>failed to delete</span>
+        </router-link>
+        <host :fqdn="action.computed.host_fqdn" :link="false" />
+      </span>
       <span v-else-if="action.action_type == 'host_mass_delete'">
         <router-link :to="viewLink">
           <span v-if="action.status == 'success'">deleted {{action.computed.host_fqdns.length}} hosts</span>
