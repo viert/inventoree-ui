@@ -127,6 +127,34 @@
         </router-link>
         <group :name="action.computed.group_name" :link="false" />
       </span>
+      <span v-else-if="action.action_type == 'group_set_custom_fields'">
+        <router-link :to="viewLink">
+          <span v-if="action.status == 'success'">set custom fields of</span>
+          <span v-else>failed to set custom fields of</span>
+        </router-link>
+        <group :name="action.computed.group_name" :link="false" />
+      </span>
+      <span v-else-if="action.action_type == 'group_remove_custom_fields'">
+        <router-link :to="viewLink">
+          <span v-if="action.status == 'success'">removed custom fields from</span>
+          <span v-else>failed to remove custom fields from</span>
+        </router-link>
+        <group :name="action.computed.group_name" :link="false" />
+      </span>
+      <span v-else-if="action.action_type == 'group_add_tags'">
+        <router-link :to="viewLink">
+          <span v-if="action.status == 'success'">added tags to</span>
+          <span v-else>failed to add tags to</span>
+        </router-link>
+        <group :name="action.computed.group_name" :link="false" />
+      </span>
+      <span v-else-if="action.action_type == 'group_remove_tags'">
+        <router-link :to="viewLink">
+          <span v-if="action.status == 'success'">removed tags from</span>
+          <span v-else>failed to remove tags from</span>
+        </router-link>
+        <group :name="action.computed.group_name" :link="false" />
+      </span>
       <span v-else-if="action.action_type == 'host_create'">
         <router-link :to="viewLink">
           <span v-if="action.status == 'success'">created</span>
@@ -138,6 +166,34 @@
         <router-link :to="viewLink">
           <span v-if="action.status == 'success'">updated</span>
           <span v-else>failed to update</span>
+        </router-link>
+        <host :fqdn="action.computed.host_fqdn" :link="false" />
+      </span>
+      <span v-else-if="action.action_type == 'host_set_custom_fields'">
+        <router-link :to="viewLink">
+          <span v-if="action.status == 'success'">set custom fields of</span>
+          <span v-else>failed to set custom fields of</span>
+        </router-link>
+        <host :fqdn="action.computed.host_fqdn" :link="false" />
+      </span>
+      <span v-else-if="action.action_type == 'host_remove_custom_fields'">
+        <router-link :to="viewLink">
+          <span v-if="action.status == 'success'">removed custom fields from</span>
+          <span v-else>failed to remove custom fields from</span>
+        </router-link>
+        <host :fqdn="action.computed.host_fqdn" :link="false" />
+      </span>
+      <span v-else-if="action.action_type == 'host_add_tags'">
+        <router-link :to="viewLink">
+          <span v-if="action.status == 'success'">added tags to</span>
+          <span v-else>failed to add tags to</span>
+        </router-link>
+        <host :fqdn="action.computed.host_fqdn" :link="false" />
+      </span>
+      <span v-else-if="action.action_type == 'host_remove_tags'">
+        <router-link :to="viewLink">
+          <span v-if="action.status == 'success'">removed tags from</span>
+          <span v-else>failed to remove tags from</span>
         </router-link>
         <host :fqdn="action.computed.host_fqdn" :link="false" />
       </span>

@@ -31,11 +31,11 @@ import ModelSwitchOwner from './Views/ModelSwitchOwner'
 import ModelAddMember from './Views/ModelAddMember'
 import ModelRemoveMember from './Views/ModelRemoveMember'
 import ModelSetMembers from './Views/ModelSetMembers'
+import ModelAddTags from './Views/ModelAddTags'
+import ModelRemoveTags from './Views/ModelRemoveTags'
 
 export default {
-  beforeCreate () {
-
-  },
+  beforeCreate() {},
   data() {
     return {
       action: {
@@ -58,16 +58,18 @@ export default {
     ModelSetPassword,
     ModelAddMember,
     ModelRemoveMember,
-    ModelSetMembers
+    ModelSetMembers,
+    ModelAddTags,
+    ModelRemoveTags
   },
-  created () {
+  created() {
     this.loadData()
   },
   methods: {
-    loadData () {
+    loadData() {
       let { actionId } = this.$route.params
       Api.Actions.Get(actionId)
-        .then(({data}) => {
+        .then(({ data }) => {
           this.action = data.data[0]
         })
         .catch(status => {
@@ -78,18 +80,21 @@ export default {
     }
   },
   computed: {
-    modelName () {
+    modelName() {
       return this.action.action_type && this.action.action_type.split('_')[0]
     },
-    modelAction () {
-      return this.action.action_type && this.action.action_type.slice(this.action.action_type.indexOf('_') + 1)
+    modelAction() {
+      return (
+        this.action.action_type &&
+        this.action.action_type.slice(this.action.action_type.indexOf('_') + 1)
+      )
     },
-    componentName () {
+    componentName() {
       return 'model-' + this.modelAction.replace(/_/g, '-')
     }
   },
   watch: {
-    '$route.params.actionId' () {
+    '$route.params.actionId'() {
       this.loadData()
     }
   }
@@ -98,7 +103,7 @@ export default {
 
 <style>
 .ActionFailure .CardHeader h3 {
-  color: #E74C3C;
+  color: #e74c3c;
 }
 .ErrorList {
   list-style: none;
@@ -107,6 +112,6 @@ export default {
 }
 
 .ErrorList li {
-  color: #E74C3C;
+  color: #e74c3c;
 }
 </style>
