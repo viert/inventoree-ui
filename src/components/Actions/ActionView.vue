@@ -33,6 +33,8 @@ import ModelRemoveMember from './Views/ModelRemoveMember'
 import ModelSetMembers from './Views/ModelSetMembers'
 import ModelAddTags from './Views/ModelAddTags'
 import ModelRemoveTags from './Views/ModelRemoveTags'
+import ModelSetCustomFields from './Views/ModelSetCustomFields'
+import ModelRemoveCustomFields from './Views/ModelRemoveCustomFields'
 
 export default {
   beforeCreate() {},
@@ -60,7 +62,9 @@ export default {
     ModelRemoveMember,
     ModelSetMembers,
     ModelAddTags,
-    ModelRemoveTags
+    ModelRemoveTags,
+    ModelSetCustomFields,
+    ModelRemoveCustomFields
   },
   created() {
     this.loadData()

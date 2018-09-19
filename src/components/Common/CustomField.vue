@@ -2,6 +2,7 @@
   <div class="CF">
     <span class="CF_Key">{{cfKey}}</span>
     <span class="CF_Value">{{cfValue}}</span>
+    <slot></slot>
   </div>
 </template>
 
@@ -30,11 +31,21 @@ export default {
 }
 
 .CF_Key::after {
-  content: ":";
+  content: ':';
+}
+
+.CF_Replace .CF_Value {
+  color: green;
+  font-weight: bold;
+}
+
+.CF_Replace .CF_Prev {
+  color: #770000;
+  text-decoration: line-through;
 }
 
 .ModelList .CF:not(:last-child) .CF_Value::after {
-  content: ", ";
+  content: ', ';
 }
 
 .ModelList .CF {
