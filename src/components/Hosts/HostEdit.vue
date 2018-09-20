@@ -70,6 +70,16 @@
                 Combining those you can produce long and complex list of hostnames in a flexible way.
                 Try typing something like <pre style="display: inline">srv[00-12][a,b,f].example.com</pre> and see the result
               </p>
+              <h5>Aliases with multiple host creation</h5>
+              <p>
+                You can still use aliases with multiple hosts.
+                Use <span style="color: red">$1</span>, <span style="color: red">$2</span> etc. syntax to match your FQDN pattern expressions.<br/>
+
+                For example, for pattern <pre style="display: inline">srv[00-12][a,b,f].example.com</pre> the first host generated will be
+                <pre style="display: inline">srv00a.example.com</pre> and thus, there will be vars available: <span style="color: red">$0</span> = srv00a.example.com, <span style="color: red">$1</span> = 00, <span style="color: red">$2</span> = a.
+                <br/>
+                Alias pattern <pre style="display: inline">int.srv$1$2.mycompany.io</pre> will generate <pre style="display: inline">int.srv00a.mycopmany.io</pre> correspondingly.
+              </p>
             </div>
             <div v-else>
               <h5>Multiple host records will be created</h5>
@@ -124,7 +134,7 @@ export default {
     CustomFieldEditor,
     ListEditor
   },
-  data () {
+  data() {
     return {
       host: {
         _id: null,
@@ -139,11 +149,11 @@ export default {
       hostList: []
     }
   },
-  created () {
+  created() {
     this.reload()
   },
   methods: {
-    reload () {
+    reload() {
       if (!this.create) {
         let { hostName } = this.$route.params
         Api.Hosts.Get(hostName, editorFields)
@@ -168,25 +178,25 @@ export default {
         }
       }
     },
-    addTag (tag) {
+    addTag(tag) {
       this.host.tags.push(tag)
     },
-    removeTag (tag) {
+    removeTag(tag) {
       this.host.tags = this.host.tags.filter(i => i !== tag)
     },
-    groupPicked (group) {
+    groupPicked(group) {
       this.host.group = group
     },
-    datacenterPicked (dc) {
+    datacenterPicked(dc) {
       this.host.datacenter = dc
     },
-    cfChange (fields) {
+    cfChange(fields) {
       this.host.custom_fields = fields
     },
-    aliasesChange (aliases) {
+    aliasesChange(aliases) {
       this.host.aliases = aliases
     },
-    handleSave () {
+    handleSave() {
       let { _id, fqdn, datacenter, group, description } = this.host
       let payload = {
         tags: [...this.host.tags],
@@ -202,43 +212,52 @@ export default {
         } else {
           payload.fqdn = fqdn
         }
-        Api.Hosts.Create(payload)
-          .then((response) => {
-            if (payload.fqdn) {
-              this.$store.dispatch('info', `Host ${payload.fqdn} successfully created`)
-            } else {
-              let createdHostnames = response.data.data.map(h => h.fqdn)
-              this.$store.dispatch('info', `Hosts successfully created: ${createdHostnames.join(', ')}`)
-            }
-            this.$router.push('/hosts')
-          })
-      } else {
-        payload.fqdn = fqdn
-        Api.Hosts.Update(_id, payload)
-          .then(() => {
-            this.$store.dispatch('info', `Host ${payload.fqdn} successfully updated`)
-            this.$router.push('/hosts')
-          })
-      }
-    },
-    handleDestroy () {
-      Api.Hosts.Delete(this.host._id)
-        .then(() => {
-          this.$store.dispatch('info', `Host ${this.host.fqdn} successfully deleted`)
+        Api.Hosts.Create(payload).then(response => {
+          if (payload.fqdn) {
+            this.$store.dispatch(
+              'info',
+              `Host ${payload.fqdn} successfully created`
+            )
+          } else {
+            let createdHostnames = response.data.data.map(h => h.fqdn)
+            this.$store.dispatch(
+              'info',
+              `Hosts successfully created: ${createdHostnames.join(', ')}`
+            )
+          }
           this.$router.push('/hosts')
         })
+      } else {
+        payload.fqdn = fqdn
+        Api.Hosts.Update(_id, payload).then(() => {
+          this.$store.dispatch(
+            'info',
+            `Host ${payload.fqdn} successfully updated`
+          )
+          this.$router.push('/hosts')
+        })
+      }
+    },
+    handleDestroy() {
+      Api.Hosts.Delete(this.host._id).then(() => {
+        this.$store.dispatch(
+          'info',
+          `Host ${this.host.fqdn} successfully deleted`
+        )
+        this.$router.push('/hosts')
+      })
     }
   },
   computed: {
-    cloneLink () {
+    cloneLink() {
       return `/hosts/${this.$route.params.hostName}/clone`
     }
   },
   watch: {
-    '$route.params.hostName' () {
+    '$route.params.hostName'() {
       this.reload()
     },
-    'host.fqdn' (fqdn) {
+    'host.fqdn'(fqdn) {
       if (this.clone || this.create) {
         if (hasValidPatterns(fqdn)) {
           let i = 0
