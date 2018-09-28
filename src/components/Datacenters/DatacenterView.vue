@@ -24,6 +24,10 @@
           <div class="row">
             <div class="col-sm-5">
               <div class="Card_Field">
+                <label class="Card_FieldLabel">Id</label>
+                <div @click="selectAll">{{datacenter._id}}</div>
+              </div>
+              <div class="Card_Field">
                 <label class="Card_FieldLabel">Parent</label>
                 <datacenter v-if="datacenter.parent !== null" :name="datacenter.parent.name" :sub="datacenter.parent.parent_id !== null" />
               </div>
@@ -54,9 +58,11 @@
 
 <script>
 import Api from '@/api'
+import SelectAllMixin from '@/mixins/SelectAllMixin'
 
 export default {
-  data () {
+  mixins: [SelectAllMixin],
+  data() {
     return {
       datacenter: {
         _id: null,
@@ -68,11 +74,11 @@ export default {
       }
     }
   },
-  created () {
+  created() {
     this.loadData()
   },
   methods: {
-    loadData () {
+    loadData() {
       let { datacenterName } = this.$route.params
       Api.Datacenters.Get(datacenterName)
         .then(response => {
@@ -86,15 +92,15 @@ export default {
     }
   },
   computed: {
-    editLink () {
+    editLink() {
       return `/datacenters/${this.datacenter.name}/edit`
     },
-    cloneLink () {
+    cloneLink() {
       return `/datacenters/${this.datacenter.name}/clone`
     }
   },
   watch: {
-    '$route.params.datacenterName' () {
+    '$route.params.datacenterName'() {
       this.loadData()
     }
   }

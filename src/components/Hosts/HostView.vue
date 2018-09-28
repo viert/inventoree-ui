@@ -24,6 +24,10 @@
           <div class="row">
             <div class="col-sm-5">
               <div class="Card_Field">
+                <label class="Card_FieldLabel">Id</label>
+                <div @click="selectAll">{{host._id}}</div>
+              </div>
+              <div class="Card_Field">
                 <label class="Card_FieldLabel">Aliases</label>
                 <div v-for="alias in host.aliases" :key="alias">
                   <host :link="false" :fqdn="alias" />
@@ -69,13 +73,15 @@
 import Api from '@/api'
 import Tag from '@/components/Common/Tag'
 import CustomField from '@/components/Common/CustomField'
+import SelectAllMixin from '@/mixins/SelectAllMixin'
 
 export default {
   components: {
     Tag,
     CustomField
   },
-  data () {
+  mixins: [SelectAllMixin],
+  data() {
     return {
       host: {
         fqdn: '',
@@ -91,31 +97,32 @@ export default {
     }
   },
   computed: {
-    editLink () {
+    editLink() {
       return `/hosts/${this.host.fqdn}/edit`
     },
-    cloneLink () {
+    cloneLink() {
       return `/hosts/${this.host.fqdn}/clone`
     }
   },
   methods: {
-    loadData () {
+    loadData() {
       let { hostName } = this.$route.params
-      Api.Hosts.Get(hostName).then(response => {
-        console.log(response)
-        this.host = response.data.data[0]
-      }).catch(status => {
-        if (status === 404) {
-          this.$router.push('/hosts')
-        }
-      })
+      Api.Hosts.Get(hostName)
+        .then(response => {
+          this.host = response.data.data[0]
+        })
+        .catch(status => {
+          if (status === 404) {
+            this.$router.push('/hosts')
+          }
+        })
     }
   },
-  created () {
+  created() {
     this.loadData()
   },
   watch: {
-    '$route.params.hostName' () {
+    '$route.params.hostName'() {
       this.loadData()
     }
   }

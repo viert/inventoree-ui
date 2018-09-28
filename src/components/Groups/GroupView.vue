@@ -24,6 +24,10 @@
           <div class="row">
             <div class="col-sm-5">
               <div class="Card_Field">
+                <label class="Card_FieldLabel">Id</label>
+                <div @click="selectAll">{{group._id}}</div>
+              </div>
+              <div class="Card_Field">
                 <label class="Card_FieldLabel">Tags</label>
                 <div class="Card_TagList">
                   <tag
@@ -80,11 +84,13 @@
 import Api from '@/api'
 import Tag from '@/components/Common/Tag'
 import CustomField from '@/components/Common/CustomField'
+import SelectAllMixin from '@/mixins/SelectAllMixin'
 export default {
   components: {
     Tag,
     CustomField
   },
+  mixins: [SelectAllMixin],
   data() {
     return {
       group: {

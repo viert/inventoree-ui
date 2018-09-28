@@ -20,6 +20,10 @@
           <div class="row">
             <div class="col-sm-5">
               <div class="Card_Field">
+                <label class="Card_FieldLabel">Id</label>
+                <div @click="selectAll">{{user._id}}</div>
+              </div>
+              <div class="Card_Field">
                 <label class="Card_FieldLabel">First Name</label>
                 <div>{{user.first_name}}</div>
               </div>
@@ -74,9 +78,11 @@
 <script>
 import Api from '@/api'
 import UserAuthToken from './UserAuthToken'
+import SelectAllMixin from '@/mixins/SelectAllMixin'
 
 export default {
-  data () {
+  mixins: [SelectAllMixin],
+  data() {
     return {
       user: {
         username: '',
@@ -95,12 +101,12 @@ export default {
     UserAuthToken
   },
   computed: {
-    editLink () {
+    editLink() {
       return `/users/${this.user.username}/edit`
     }
   },
   methods: {
-    loadData () {
+    loadData() {
       let { userName } = this.$route.params
       Api.Users.Get(userName)
         .then(response => {
@@ -113,11 +119,11 @@ export default {
         })
     }
   },
-  created () {
+  created() {
     this.loadData()
   },
   watch: {
-    '$route.params.userName' () {
+    '$route.params.userName'() {
       this.loadData()
     }
   }
@@ -125,5 +131,4 @@ export default {
 </script>
 
 <style>
-
 </style>

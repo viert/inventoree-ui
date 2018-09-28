@@ -21,6 +21,10 @@
           <div class="row">
             <div class="col-sm-5">
               <div class="Card_Field">
+                <label class="Card_FieldLabel">Id</label>
+                <div @click="selectAll">{{project._id}}</div>
+              </div>
+              <div class="Card_Field">
                 <label class="Card_FieldLabel">Owner</label>
                 <user :username="project.owner.username" />
               </div>
@@ -61,9 +65,11 @@
 
 <script>
 import Api from '@/api'
+import SelectAllMixin from '@/mixins/SelectAllMixin'
 
 export default {
-  data () {
+  mixins: [SelectAllMixin],
+  data() {
     return {
       project: {
         name: '',
@@ -78,12 +84,12 @@ export default {
     }
   },
   computed: {
-    editLink () {
+    editLink() {
       return `/projects/${this.project.name}/edit`
     }
   },
   methods: {
-    loadData () {
+    loadData() {
       let { projectName } = this.$route.params
       Api.Projects.Get(projectName)
         .then(response => {
@@ -96,11 +102,11 @@ export default {
         })
     }
   },
-  created () {
+  created() {
     this.loadData()
   },
   watch: {
-    '$route.params.hostName' () {
+    '$route.params.hostName'() {
       this.loadData()
     }
   }
@@ -108,5 +114,4 @@ export default {
 </script>
 
 <style>
-
 </style>
