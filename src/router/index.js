@@ -15,6 +15,7 @@ import UserEdit from '@/components/Users/UserEdit'
 import HostList from '@/components/Hosts/HostList'
 import HostView from '@/components/Hosts/HostView'
 import HostEdit from '@/components/Hosts/HostEdit'
+import WorkGroupList from '@/components/WorkGroups/WorkGroupList'
 import ActionList from '@/components/Actions/ActionList'
 import ActionView from '@/components/Actions/ActionView'
 
@@ -127,6 +128,32 @@ export default new Router({
     {
       path: '/projects/:projectName/edit',
       name: 'project_edit',
+      component: ProjectEdit,
+      props: {
+        create: false
+      }
+    },
+    {
+      path: '/work_groups',
+      name: 'work_group_list',
+      component: WorkGroupList
+    },
+    {
+      path: '/work_groups/:workGroupName',
+      name: 'work_group_view',
+      component: ProjectView
+    },
+    {
+      path: '/work_groups/++/edit',
+      name: 'work_group_create',
+      component: ProjectEdit,
+      props: {
+        create: true
+      }
+    },
+    {
+      path: '/work_groups/:workGroupName/edit',
+      name: 'work_group_edit',
       component: ProjectEdit,
       props: {
         create: false
