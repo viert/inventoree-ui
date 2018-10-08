@@ -1,6 +1,6 @@
 FROM cdrx/fpm-centos:7
 RUN curl --silent --location https://rpm.nodesource.com/setup_8.x | bash -
-RUN yum -y install nodejs git
+RUN yum -y install nodejs git nmap-ncat
 
 ADD build /src/build
 ADD config /src/config
