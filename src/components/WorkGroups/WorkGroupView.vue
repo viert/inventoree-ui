@@ -2,12 +2,12 @@
   <div class="PageContent">
     <main class="PageMain">
       <div class="ContentHeader">
-        <h2 class="ContentHeader_Title">View Project</h2>
+        <h2 class="ContentHeader_Title">View WorkGroup</h2>
         <div class="ContentHeader_Buttons">
-          <router-link v-if="project.modification_allowed" :to="editLink" class="btn btn-primary btn-sm text-uppercase">
+          <router-link v-if="work_group.modification_allowed" :to="editLink" class="btn btn-primary btn-sm text-uppercase">
             <i class="fa fa-edit"></i> Edit
           </router-link>
-          <router-link to="/projects/++/edit" class="btn btn-success btn-sm text-uppercase">
+          <router-link to="/work_groups/++/edit" class="btn btn-success btn-sm text-uppercase">
             <i class="fa fa-plus"></i> New
           </router-link>
         </div>
@@ -15,30 +15,26 @@
       <div class="PageContentContainer PageContentContainer--Half">
         <div class="Card">
           <div class="CardHeader">
-            <h3><project :name="project.name" :link="false" /></h3>
-            <div class="Card_Field">{{project.description}}</div>
+            <h3><work-group :name="work_group.name" :link="false" /></h3>
+            <div class="Card_Field">{{work_group.description}}</div>
           </div>
           <div class="row">
             <div class="col-sm-5">
               <div class="Card_Field">
                 <label class="Card_FieldLabel">Id</label>
-                <div @click="selectAll">{{project._id}}</div>
+                <div @click="selectAll">{{work_group._id}}</div>
               </div>
               <div class="Card_Field">
                 <label class="Card_FieldLabel">Owner</label>
-                <user :username="project.owner.username" />
+                <user :username="work_group.owner.username" />
               </div>
               <div class="Card_Field">
                 <label class="Card_FieldLabel">Email</label>
-                <div>{{project.email}}</div>
-              </div>
-              <div class="Card_Field">
-                <label class="Card_FieldLabel">Root Email</label>
-                <div>{{project.root_email}}</div>
+                <div>{{work_group.email}}</div>
               </div>
               <div class="Card_Field">
                 <label class="Card_FieldLabel">Groups Count</label>
-                <div>{{project.groups_count}}</div>
+                <div>{{work_group.groups_count}}</div>
               </div>
             </div>
             <div class="col-sm-7">
@@ -46,15 +42,13 @@
                 <label class="Card_FieldLabel">Members</label>
                 <ul class="RelationsList">
                   <li
-                    v-for="member in project.members"
+                    v-for="member in work_group.members"
                     class="RelationsList_Item"
                     :key="member._id">
                     <user :username="member.username" />
                   </li>
                 </ul>
-
               </div>
-
             </div>
           </div>
         </div>
@@ -71,13 +65,12 @@ export default {
   mixins: [SelectAllMixin],
   data() {
     return {
-      project: {
+      work_group: {
         name: '',
         description: '',
         owner: { username: '' },
         members: [],
         email: '',
-        root_email: '',
         modification_allowed: false,
         groups_count: 0
       }
@@ -85,19 +78,19 @@ export default {
   },
   computed: {
     editLink() {
-      return `/projects/${this.project.name}/edit`
+      return `/work_groups/${this.work_group.name}/edit`
     }
   },
   methods: {
     loadData() {
-      let { projectName } = this.$route.params
-      Api.Projects.Get(projectName)
+      let { workGroupName } = this.$route.params
+      Api.WorkGroups.Get(workGroupName)
         .then(response => {
-          this.project = response.data.data[0]
+          this.work_group = response.data.data[0]
         })
         .catch(status => {
           if (status === 404) {
-            this.$router.push('/projects')
+            this.$router.push('/work_groups')
           }
         })
     }
@@ -106,7 +99,7 @@ export default {
     this.loadData()
   },
   watch: {
-    '$route.params.hostName'() {
+    '$route.params.workGroupName'() {
       this.loadData()
     }
   }

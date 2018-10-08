@@ -26,8 +26,8 @@
                 <input class="form-control" type="text" v-model="group.description" />
               </div>
               <div class="Form_Field">
-                <label class="Form_FieldLabel">Project</label>
-                <project-picker :project="group.project" @pick="projectPicked" />
+                <label class="Form_FieldLabel">WorkGroup</label>
+                <work-group-picker :work-group="group.work_group" @pick="workGroupPicked" />
               </div>
               <div class="Form_Field">
                 <label class="Form_FieldLabel">Tags</label>
@@ -99,7 +99,7 @@
 
 <script>
 import Api from '@/api'
-import ProjectPicker from '@/components/Picker/ProjectPicker'
+import WorkGroupPicker from '@/components/Picker/WorkGroupPicker'
 import GroupPicker from '@/components/Picker/GroupPicker'
 import HostPicker from '@/components/Picker/HostPicker'
 import TagEditor from '@/components/Common/TagEditor'
@@ -113,7 +113,7 @@ const editorFields = [
   'hosts',
   'tags',
   'custom_fields',
-  'project'
+  'work_group'
 ]
 
 export default {
@@ -128,13 +128,13 @@ export default {
     }
   },
   components: {
-    ProjectPicker,
+    WorkGroupPicker,
     GroupPicker,
     HostPicker,
     TagEditor,
     CustomFieldEditor
   },
-  data () {
+  data() {
     return {
       group: {
         _id: null,
@@ -144,17 +144,17 @@ export default {
         hosts: [],
         tags: [],
         custom_fields: [],
-        project: null
+        work_group: null
       },
       childrenMap: {},
       hostMap: {}
     }
   },
-  created () {
+  created() {
     this.reload()
   },
   methods: {
-    reload () {
+    reload() {
       if (!this.create) {
         let { groupName } = this.$route.params
         Api.Groups.Get(groupName, editorFields)
@@ -183,101 +183,113 @@ export default {
           hosts: [],
           tags: [],
           custom_fields: [],
-          project: null
+          work_group: null
         }
         this.childrenMap = {}
         this.hostMap = {}
       }
     },
-    addTag (tag) {
+    addTag(tag) {
       this.group.tags.push(tag)
     },
-    removeTag (tag) {
+    removeTag(tag) {
       this.group.tags = this.group.tags.filter(i => i !== tag)
     },
-    projectPicked (project) {
-      this.group.project = project
+    workGroupPicked(workGroup) {
+      this.group.work_group = workGroup
     },
-    cfChange (fields) {
+    cfChange(fields) {
       this.group.custom_fields = fields
     },
-    handleSave () {
+    handleSave() {
       let { name, description, tags } = this.group
       let payload = {
         name,
         description,
         tags,
         custom_fields: this.group.custom_fields,
-        project_id: this.group.project ? this.group.project._id : null
+        work_group_id: this.group.work_group ? this.group.work_group._id : null
       }
       if (this.create || this.clone) {
-        Api.Groups.Create(payload)
-          .then(response => {
-            let { name } = payload
-            this.$store.dispatch('info', `Group ${name} has been created, you can now add group's relations`)
-            this.$router.push(`/groups/${name}`)
-          })
+        Api.Groups.Create(payload).then(response => {
+          let { name } = payload
+          this.$store.dispatch(
+            'info',
+            `Group ${name} has been created, you can now add group's relations`
+          )
+          this.$router.push(`/groups/${name}`)
+        })
       } else {
-        Api.Groups.Update(this.group._id, payload, editorFields)
-          .then(response => {
-            this.$store.dispatch('info', `Group ${name} has been updated, be sure to save group's relations if you made any changes`)
-          })
+        Api.Groups.Update(this.group._id, payload, editorFields).then(
+          response => {
+            this.$store.dispatch(
+              'info',
+              `Group ${name} has been updated, be sure to save group's relations if you made any changes`
+            )
+          }
+        )
       }
     },
-    handleDestroy () {
-      Api.Groups.Delete(this.group._id)
-        .then(() => {
-          this.$store.dispatch('info', `Group ${this.group.name} has been deleted successfully`)
-          this.$router.push('/groups')
-        })
+    handleDestroy() {
+      Api.Groups.Delete(this.group._id).then(() => {
+        this.$store.dispatch(
+          'info',
+          `Group ${this.group.name} has been deleted successfully`
+        )
+        this.$router.push('/groups')
+      })
     },
-    handleSaveRelations () {
+    handleSaveRelations() {
       let childIds = this.group.children.map(i => i._id)
       let hostIds = this.group.hosts.map(i => i._id)
       let { _id } = this.group
-      Api.Groups.SetChildren(_id, childIds, ['children'])
-        .then(response => {
-          let { children } = response.data.data
-          this.group.children = children
-          this.$store.dispatch('info', `Group's children have been successfully updated`)
-        })
-      Api.Groups.SetHosts(_id, hostIds, ['hosts'])
-        .then(response => {
-          let { hosts } = response.data.data
-          this.group.hosts = hosts
-          this.$store.dispatch('info', `Group's hosts have been successfully updated`)
-        })
+      Api.Groups.SetChildren(_id, childIds, ['children']).then(response => {
+        let { children } = response.data.data
+        this.group.children = children
+        this.$store.dispatch(
+          'info',
+          `Group's children have been successfully updated`
+        )
+      })
+      Api.Groups.SetHosts(_id, hostIds, ['hosts']).then(response => {
+        let { hosts } = response.data.data
+        this.group.hosts = hosts
+        this.$store.dispatch(
+          'info',
+          `Group's hosts have been successfully updated`
+        )
+      })
     },
-    isSelected (item) {
+    isSelected(item) {
       return item._id in this.childrenMap
     },
-    isHostSelected (item) {
+    isHostSelected(item) {
       return item._id in this.hostMap
     },
-    addChild (child) {
+    addChild(child) {
       this.group.children.push(child)
       this.$set(this.childrenMap, child._id, child)
     },
-    removeChild (child) {
+    removeChild(child) {
       this.group.children = this.group.children.filter(i => i._id !== child._id)
       this.$delete(this.childrenMap, child._id)
     },
-    addHost (host) {
+    addHost(host) {
       this.group.hosts.push(host)
       this.$set(this.hostMap, host._id, host)
     },
-    removeHost (host) {
+    removeHost(host) {
       this.group.hosts = this.group.hosts.filter(i => i._id !== host._id)
       this.$delete(this.hostMap, host._id)
     }
   },
   computed: {
-    cloneLink () {
+    cloneLink() {
       return `/groups/${this.$route.params.groupName}/clone`
     }
   },
   watch: {
-    '$route.params.groupName' () {
+    '$route.params.groupName'() {
       this.reload()
     }
   }

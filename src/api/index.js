@@ -24,7 +24,7 @@ export const DefaultFields = {
     List: [
       '_id',
       'name',
-      'project_name',
+      'work_group_name',
       'custom_fields',
       'tags',
       'all_tags',
@@ -34,7 +34,7 @@ export const DefaultFields = {
     Get: [
       '_id',
       'name',
-      'project_name',
+      'work_group_name',
       'custom_fields',
       'tags',
       'all_tags',
@@ -71,22 +71,18 @@ export const DefaultFields = {
       'aliases'
     ]
   },
-  Projects: {
-    List: ['_id', 'name', 'owner', 'email', 'root_email', 'description'],
+  WorkGroups: {
+    List: ['_id', 'name', 'owner', 'email', 'description'],
     Get: [
       '_id',
       'name',
       'owner',
       'email',
-      'root_email',
       'description',
       'modification_allowed',
       'groups_count',
       'members'
     ]
-  },
-  WorkGroups: {
-    List: ['_id', 'name', 'owner', 'email', 'description']
   },
   Users: {
     List: ['_id', 'username', 'first_name', 'last_name', 'email', 'supervisor'],
@@ -98,8 +94,8 @@ export const DefaultFields = {
       'email',
       'supervisor',
       'modification_allowed',
-      'projects_owned',
-      'projects_included_into'
+      'work_groups_owned',
+      'work_groups_included_into'
     ]
   },
   Datacenters: {
@@ -170,8 +166,8 @@ const Api = {
       let url = `/api/v1/groups/${groupName}`
       return wrap(axios.delete(url))
     },
-    MassMove: (groupIds, projectId) => {
-      let payload = { group_ids: groupIds, project_id: projectId }
+    MassMove: (groupIds, workGroupId) => {
+      let payload = { group_ids: groupIds, work_group_id: workGroupId }
       let url = '/api/v1/groups/mass_move'
       return wrap(axios.post(url, payload))
     },
@@ -237,51 +233,39 @@ const Api = {
         url += `&_limit=${limit}`
       }
       return wrap(axios.get(url))
-    }
-  },
-  Projects: {
-    List: (
-      page,
-      filter,
-      fields = DefaultFields.Projects.List,
-      limit = null
-    ) => {
-      let url = `/api/v1/projects/?_fields=${fields.join(
+    },
+    Get: (workGroupName, fields = DefaultFields.WorkGroups.Get) => {
+      let url = `/api/v1/work_groups/${workGroupName}?_fields=${fields.join(
         ','
-      )}&_page=${page}&_filter=${filter}`
-      if (limit) {
-        url += `&_limit=${limit}`
-      }
+      )}`
       return wrap(axios.get(url))
     },
-    Get: (projectName, fields = DefaultFields.Projects.Get) => {
-      let url = `/api/v1/projects/${projectName}?_fields=${fields.join(',')}`
-      return wrap(axios.get(url))
-    },
-    Update: (projectName, payload, fields = DefaultFields.Projects.Get) => {
-      let url = `/api/v1/projects/${projectName}?_fields=${fields.join(',')}`
+    Update: (workGroupName, payload, fields = DefaultFields.WorkGroups.Get) => {
+      let url = `/api/v1/work_groups/${workGroupName}?_fields=${fields.join(
+        ','
+      )}`
       return wrap(axios.put(url, payload))
     },
-    Create: (payload, fields = DefaultFields.Projects.Get) => {
-      let url = `/api/v1/projects/?_fields=${fields.join(',')}`
+    Create: (payload, fields = DefaultFields.WorkGroups.Get) => {
+      let url = `/api/v1/work_groups/?_fields=${fields.join(',')}`
       return wrap(axios.post(url, payload))
     },
     SetMembers: (
-      projectName,
+      workGroupName,
       memberIds,
-      fields = DefaultFields.Projects.Get
+      fields = DefaultFields.WorkGroups.Get
     ) => {
-      let url = `/api/v1/projects/${projectName}/set_members?_fields=${fields.join(
+      let url = `/api/v1/work_groups/${workGroupName}/set_members?_fields=${fields.join(
         ','
       )}`
       return wrap(axios.post(url, { member_ids: memberIds }))
     },
-    Delete: projectName => {
-      let url = `/api/v1/projects/${projectName}`
+    Delete: workGroupName => {
+      let url = `/api/v1/work_groups/${workGroupName}`
       return wrap(axios.delete(url))
     },
-    ChangeOwner: (projectName, ownerId) => {
-      let url = `/api/v1/projects/${projectName}/switch_owner`
+    ChangeOwner: (workGroupName, ownerId) => {
+      let url = `/api/v1/work_groups/${workGroupName}/switch_owner`
       return wrap(axios.post(url, { owner_id: ownerId }))
     }
   },

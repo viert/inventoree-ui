@@ -34,7 +34,7 @@ export default {
   font-family: FontAwesome;
   padding-right: 0.2em;
   position: relative;
-  content: '\f0f2';
+  content: '\f0c0';
   top: 0;
 }
 </style>

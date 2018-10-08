@@ -33,6 +33,13 @@ const ActionViewMixin = {
       } else {
         return null
       }
+    },
+    modelName() {
+      // work_group alias
+      if (this.model === 'work_group') {
+        return 'workgroup'
+      }
+      return this.model
     }
   }
 }
