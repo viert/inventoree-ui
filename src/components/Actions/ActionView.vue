@@ -36,6 +36,8 @@ import ModelRemoveTags from './Views/ModelRemoveTags'
 import ModelSetCustomFields from './Views/ModelSetCustomFields'
 import ModelRemoveCustomFields from './Views/ModelRemoveCustomFields'
 
+const ModelNames = ['work_group', 'user', 'host', 'group', 'datacenter']
+
 export default {
   beforeCreate() {},
   data() {
@@ -85,13 +87,19 @@ export default {
   },
   computed: {
     modelName() {
-      return this.action.action_type && this.action.action_type.split('_')[0]
+      if (this.action.action_type) {
+        for (let i = 0; i < ModelNames.length; i++) {
+          if (this.action.action_type.startsWith(ModelNames[i])) {
+            return ModelNames[i]
+          }
+        }
+      }
     },
     modelAction() {
-      return (
-        this.action.action_type &&
-        this.action.action_type.slice(this.action.action_type.indexOf('_') + 1)
-      )
+      let mn = this.modelName
+      if (mn) {
+        return this.action.action_type.replace(this.modelName + '_', '')
+      }
     },
     componentName() {
       return 'model-' + this.modelAction.replace(/_/g, '-')

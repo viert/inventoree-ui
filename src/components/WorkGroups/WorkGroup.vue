@@ -1,6 +1,6 @@
 <template>
-  <span :class="{ Project: icon }">
-    <router-link v-if="link" :to="projectLink">{{ name }}</router-link>
+  <span :class="{ WorkGroup: icon }">
+    <router-link v-if="link" :to="workGroupLink">{{ name }}</router-link>
     <span v-else>{{ name }}</span>
   </span>
 </template>
@@ -22,19 +22,19 @@ export default {
     }
   },
   computed: {
-    projectLink () {
-      return `/projects/${this.name}`
+    workGroupLink() {
+      return `/work_groups/${this.name}`
     }
   }
 }
 </script>
 
 <style>
-.Project::before {
+.WorkGroup::before {
   font-family: FontAwesome;
   padding-right: 0.2em;
   position: relative;
-  content: "\f0f2";
+  content: '\f0c0';
   top: 0;
 }
 </style>

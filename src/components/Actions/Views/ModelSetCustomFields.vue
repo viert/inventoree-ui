@@ -1,13 +1,13 @@
 <template>
   <div class="Card">
     <div class="CardHeader">
-      <h3>Action: set custom fields of {{model}}</h3>
+      <h3>Action: set custom fields of {{modelName}}</h3>
       <div class="Card_Field">Invoked by <user :username="action.username" :link="false" />, {{ actionDatetime }}</div>
     </div>
     <div class="row">
       <div class="col-sm-6">
         <div class="Card_Field">
-          <label class="Card_FieldLabel">{{ model }}</label>
+          <label class="Card_FieldLabel">{{ modelName }}</label>
           <host v-if="model == 'host'" :fqdn="action.computed.host_fqdn" :link="false" />
           <group v-else :name="action.computed.group_name" :link="false" />
         </div>

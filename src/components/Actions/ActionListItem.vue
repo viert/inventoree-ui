@@ -111,7 +111,7 @@
           <span v-if="action.status == 'success'">moved {{action.computed.group_names.length}} groups to</span>
           <span v-else>failed to move {{action.computed.group_names.length}} groups to</span>
         </router-link>
-        <project :name="action.computed.project_name" :link="false" />
+        <work-group :name="action.computed.work_group_name" :link="false" />
       </span>
       <span v-else-if="action.action_type == 'group_set_children'">
         <router-link :to="viewLink">
@@ -230,57 +230,57 @@
         </router-link>
         <datacenter :name="action.computed.datacenter_name" :link="false" />
       </span>
-      <span v-else-if="action.action_type == 'project_create'">
+      <span v-else-if="action.action_type == 'work_group_create'">
         <router-link :to="viewLink">
           <span v-if="action.status == 'success'">created</span>
           <span v-else>failed to create</span>
         </router-link>
-        <project :name="action.computed.project_name" :link="false" />
+        <work-group :name="action.computed.work_group_name" :link="false" />
       </span>
-      <span v-else-if="action.action_type == 'project_delete'">
+      <span v-else-if="action.action_type == 'work_group_delete'">
         <router-link :to="viewLink">
           <span v-if="action.status == 'success'">deleted</span>
           <span v-else>failed to delete</span>
         </router-link>
-        <project :name="action.computed.project_name" :link="false" />
+        <work-group :name="action.computed.work_group_name" :link="false" />
       </span>
-      <span v-else-if="action.action_type == 'project_update'">
+      <span v-else-if="action.action_type == 'work_group_update'">
         <router-link :to="viewLink">
           <span v-if="action.status == 'success'">updated</span>
           <span v-else>failed to update</span>
         </router-link>
-        <project :name="action.computed.project_name" :link="false" />
+        <work-group :name="action.computed.work_group_name" :link="false" />
       </span>
-      <span v-else-if="action.action_type == 'project_set_members'">
+      <span v-else-if="action.action_type == 'work_group_set_members'">
         <router-link :to="viewLink">
           <span v-if="action.status == 'success'">set members of</span>
           <span v-else>failed to set members of</span>
         </router-link>
-        <project :name="action.computed.project_name" :link="false" />
+        <work-group :name="action.computed.work_group_name" :link="false" />
       </span>
-      <span v-else-if="action.action_type == 'project_switch_owner'">
+      <span v-else-if="action.action_type == 'work_group_switch_owner'">
         <router-link :to="viewLink">
           <span v-if="action.status == 'success'">set</span>
           <span v-else>failed to set</span>
         </router-link>
         <user :username="action.computed.owner_username" :link="false" /> as the new owner of
-        <project :name="action.computed.project_name" :link="false" />
+        <work-group :name="action.computed.work_group_name" :link="false" />
       </span>
-      <span v-else-if="action.action_type == 'project_add_member'">
+      <span v-else-if="action.action_type == 'work_group_add_member'">
         <router-link :to="viewLink">
           <span v-if="action.status == 'success'">added</span>
           <span v-else>failed to add</span>
         </router-link>
         <user :username="action.computed.user_name" :link="false" />  to members of
-        <project :name="action.computed.project_name" :link="false" />
+        <work-group :name="action.computed.work_group_name" :link="false" />
       </span>
-      <span v-else-if="action.action_type == 'project_remove_member'">
+      <span v-else-if="action.action_type == 'work_group_remove_member'">
         <router-link :to="viewLink">
           <span v-if="action.status == 'success'">removed</span>
           <span v-else>failed to remove</span>
         </router-link>
         <user :username="action.computed.user_name" :link="false" />  from members of
-        <project :name="action.computed.project_name" :link="false" />
+        <work-group :name="action.computed.work_group_name" :link="false" />
       </span>
       <span v-else>
         {{action.action_type}}
@@ -317,7 +317,7 @@ export default {
 
 .ActionList_Item-Act .User > span,
 .ActionList_Item-Act .Group > span,
-.ActionList_Item-Act .Project > span,
+.ActionList_Item-Act .work_group > span,
 .ActionList_Item-Act .Host > span,
 .ActionList_Item-Act .Datacenter > span {
   font-weight: bold;
@@ -325,7 +325,7 @@ export default {
 
 .ActionList_Item-Act .User,
 .ActionList_Item-Act .Group,
-.ActionList_Item-Act .Project,
+.ActionList_Item-Act .work_group,
 .ActionList_Item-Act .Host,
 .ActionList_Item-Act .Datacenter {
   padding-left: 4px;
