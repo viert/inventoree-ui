@@ -23,7 +23,7 @@ rpm() {
   gitcommit=`git rev-list --tags --max-count=1`
   VERSION=`git describe --tags $gitcommit`
   BUILD=`git rev-list $VERSION.. --count`
-  ARCH=noarch
+  ARCH=x86_64
 
   echo "======= BUILDING RPM PACKAGE ======="
   fpm -s dir -t rpm \
