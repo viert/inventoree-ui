@@ -31,10 +31,7 @@ export default {
 
 <style>
 .WorkGroup::before {
-  font-family: FontAwesome;
-  padding-right: 0.2em;
-  position: relative;
-  content: '\f0c0';
+  content: '\F0C0';
   top: 0;
 }
 </style>

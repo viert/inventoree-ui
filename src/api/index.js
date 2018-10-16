@@ -85,7 +85,15 @@ export const DefaultFields = {
     ]
   },
   Users: {
-    List: ['_id', 'username', 'first_name', 'last_name', 'email', 'supervisor'],
+    List: [
+      '_id',
+      'username',
+      'first_name',
+      'last_name',
+      'email',
+      'supervisor',
+      'system'
+    ],
     Get: [
       '_id',
       'username',
@@ -93,6 +101,8 @@ export const DefaultFields = {
       'last_name',
       'email',
       'supervisor',
+      'system',
+      'auth_token',
       'modification_allowed',
       'work_groups_owned',
       'work_groups_included_into'
@@ -122,6 +132,10 @@ export const DefaultFields = {
       'status',
       'errors'
     ]
+  },
+  ServerGroups: {
+    List: ['_id', 'name', 'work_group_name', 'is_master'],
+    Get: ['_id', 'name', 'work_group_name', 'is_master']
   }
 }
 
@@ -175,6 +189,28 @@ const Api = {
       let payload = { group_ids: groupIds }
       let url = '/api/v1/groups/mass_delete'
       return wrap(axios.post(url, payload))
+    }
+  },
+  ServerGroups: {
+    List: (
+      page,
+      filter,
+      fields = DefaultFields.ServerGroups.List,
+      limit = null
+    ) => {
+      let url = `/api/v1/server_groups/?_fields=${fields.join(
+        ','
+      )}&_page=${page}&_filter=${filter}`
+      if (limit) {
+        url += `&limit=${limit}`
+      }
+      return wrap(axios.get(url))
+    },
+    Get: (groupName, fields = DefaultFields.ServerGroups.Get) => {
+      const url = `/api/v1/server_groups/${groupName}?_fields=${fields.join(
+        '.'
+      )}`
+      return wrap(axios.get(url))
     }
   },
   Hosts: {
@@ -306,6 +342,11 @@ const Api = {
     SetSupervisor: (userName, supervisor) => {
       let url = `/api/v1/users/${userName}/set_supervisor`
       let payload = { supervisor }
+      return wrap(axios.put(url, payload))
+    },
+    SetSystem: (userName, system) => {
+      let url = `/api/v1/users/${userName}/set_system`
+      let payload = { system }
       return wrap(axios.put(url, payload))
     }
   },

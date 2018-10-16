@@ -61,7 +61,8 @@ export default {
 <style>
 @import url(./assets/styles/normalize.css);
 @import url(./assets/styles/fonts.css);
-@import url(./assets/styles/font-awesome.css);
+@import url(./assets/styles/font-awesome5.css);
+@import url(./assets/styles/v4-shims.css);
 @import url(./assets/styles/bootstrap-flatly.css);
 
 body {
@@ -369,5 +370,17 @@ table.ModelList
 .SiteLoading {
   margin: 20px;
   font-size: 20px;
+}
+
+.Group::before,
+.WorkGroup::before,
+.ServerGroup::before,
+.User::before,
+.Datacenter::before,
+.Host::before {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  padding-right: 0.2em;
+  position: relative;
 }
 </style>

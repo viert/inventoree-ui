@@ -23,6 +23,7 @@ import ModelMassMove from './Views/ModelMassMove'
 import ModelMassDelete from './Views/ModelMassDelete'
 import ModelMassSetDatacenter from './Views/ModelMassSetDatacenter'
 import ModelSetSupervisor from './Views/ModelSetSupervisor'
+import ModelSetSystem from './Views/ModelSetSystem'
 import ModelSetPassword from './Views/ModelSetPassword'
 import ModelSetParent from './Views/ModelSetParent'
 import ModelSetChildren from './Views/ModelSetChildren'
@@ -36,7 +37,14 @@ import ModelRemoveTags from './Views/ModelRemoveTags'
 import ModelSetCustomFields from './Views/ModelSetCustomFields'
 import ModelRemoveCustomFields from './Views/ModelRemoveCustomFields'
 
-const ModelNames = ['work_group', 'user', 'host', 'group', 'datacenter']
+const ModelNames = [
+  'work_group',
+  'user',
+  'host',
+  'group',
+  'datacenter',
+  'server_group'
+]
 
 export default {
   beforeCreate() {},
@@ -55,6 +63,7 @@ export default {
     ModelMassDelete,
     ModelMassSetDatacenter,
     ModelSetSupervisor,
+    ModelSetSystem,
     ModelSetChildren,
     ModelSetHosts,
     ModelSetParent,

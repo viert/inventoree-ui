@@ -9,6 +9,7 @@ import Host from '@/components/Hosts/Host'
 import WorkGroup from '@/components/WorkGroups/WorkGroup'
 import User from '@/components/Users/User'
 import Datacenter from '@/components/Datacenters/Datacenter'
+import ServerGroup from '@/components/ServerGroups/ServerGroup'
 import FilterField from '@/components/Common/FilterField'
 import ConfirmButton from '@/components/Common/ConfirmButton'
 import ItemList from '@/components/Common/ItemList'
@@ -18,6 +19,7 @@ Vue.component('work-group', WorkGroup)
 Vue.component('host', Host)
 Vue.component('user', User)
 Vue.component('datacenter', Datacenter)
+Vue.component('server-group', ServerGroup)
 Vue.component('filter-field', FilterField)
 Vue.component('confirm-button', ConfirmButton)
 Vue.component('item-list', ItemList)

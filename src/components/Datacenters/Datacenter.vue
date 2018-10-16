@@ -30,7 +30,7 @@ export default {
     }
   },
   computed: {
-    dcLink () {
+    dcLink() {
       return `/datacenters/${this.name}`
     }
   }
@@ -39,19 +39,19 @@ export default {
 
 <style>
 .Datacenter::before {
-  font-family: FontAwesome;
-  padding-right: 0.2em;
-  position: relative;
-  content: "\f0f7";
+  content: '\f1ad';
+  font-weight: 400;
   top: -0.08em;
 }
 
 .Datacenter.Datacenter--Sub::before {
-  content: "\f233";
+  font-weight: 900;
+  content: '\f233';
   top: 0.04em;
 }
 
 .Datacenter.Datacenter--Root::before {
-  content: "\f0ac";
+  font-weight: 400;
+  content: '\f57d';
 }
 </style>

@@ -39,6 +39,9 @@ const ActionViewMixin = {
       if (this.model === 'work_group') {
         return 'workgroup'
       }
+      if (this.model === 'server_group') {
+        return 'server group'
+      }
       return this.model
     }
   }

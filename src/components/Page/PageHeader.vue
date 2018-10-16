@@ -13,6 +13,7 @@
         <li><router-link to="/hosts">Hosts</router-link></li>
         <li><router-link to="/users">Users</router-link></li>
         <li><router-link to="/work_groups">WorkGroups</router-link></li>
+        <li><router-link to="/server_groups">ServerGroups</router-link></li>
         <li><router-link to="/actions">Actions</router-link></li>
       </ul>
     </nav>
