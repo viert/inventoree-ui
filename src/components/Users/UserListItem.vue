@@ -12,6 +12,9 @@
     <td>
       <i class="fa fa-check" v-if="user.supervisor"></i>
     </td>
+    <td>
+      <i class="fa fa-check" v-if="user.system"></i>
+    </td>
   </tr>
 </template>
 
@@ -24,7 +27,7 @@ export default {
     }
   },
   computed: {
-    fullName () {
+    fullName() {
       return `${this.user.first_name} ${this.user.last_name}`
     }
   }
@@ -32,5 +35,4 @@ export default {
 </script>
 
 <style>
-
 </style>

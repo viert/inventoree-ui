@@ -48,6 +48,19 @@
         </router-link>
         <user :username="action.computed.username" :link="false" />
       </span>
+      <span v-else-if="action.action_type == 'user_set_system'">
+        <router-link :to="viewLink">
+          <span v-if="action.status == 'success'">
+            <span v-if="action.params.system">set system flag for</span>
+            <span v-else>unset system flag for</span>
+          </span>
+          <span v-else>
+            <span v-if="action.params.system">failed to set system flag for</span>
+            <span v-else>failed to unset system flag for</span>
+          </span>
+        </router-link>
+        <user :username="action.computed.username" :link="false" />
+      </span>
       <span v-else-if="action.action_type == 'datacenter_update'">
         <router-link :to="viewLink">
           <span v-if="action.status == 'success'">updated</span>
@@ -282,6 +295,21 @@
         <user :username="action.computed.user_name" :link="false" />  from members of
         <work-group :name="action.computed.work_group_name" :link="false" />
       </span>
+      <span v-else-if="action.action_type == 'server_group_create'">
+        <router-link :to="viewLink">
+          <span v-if="action.status == 'success'">created</span>
+          <span v-else>failed to create</span>
+        </router-link>
+        <server-group :name="action.computed.server_group_name" :link="false" />
+      </span>
+      <span v-else-if="action.action_type == 'server_group_delete'">
+        <router-link :to="viewLink">
+          <span v-if="action.status == 'success'">deleted</span>
+          <span v-else>failed to delete</span>
+        </router-link>
+        <server-group :name="action.computed.server_group_name" :link="false" />
+      </span>
+
       <span v-else>
         {{action.action_type}}
       </span>

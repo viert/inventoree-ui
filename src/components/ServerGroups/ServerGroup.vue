@@ -1,7 +1,7 @@
 <template>
-  <span :class="{ User: icon }">
-    <router-link v-if="link" :to="userLink">{{ username }}</router-link>
-    <span v-else>{{ username }}</span>
+  <span :class="{ ServerGroup: icon }">
+    <router-link v-if="link" :to="serverGroupLink">{{ name }}</router-link>
+    <span v-else>{{ name }}</span>
   </span>
 </template>
 
@@ -16,22 +16,22 @@ export default {
       type: Boolean,
       default: true
     },
-    username: {
+    name: {
       type: String,
       required: true
     }
   },
   computed: {
-    userLink() {
-      return `/users/${this.username}`
+    serverGroupLink() {
+      return `/server_groups/${this.name}`
     }
   }
 }
 </script>
 
 <style>
-.User::before {
+.ServerGroup::before {
+  content: '\f6ff';
   top: 0;
-  content: '\f007';
 }
 </style>

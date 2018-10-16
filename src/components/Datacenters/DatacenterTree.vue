@@ -21,23 +21,21 @@ export default {
     }
   },
   methods: {
-    buildTree (dcList, parentId, level) {
+    buildTree(dcList, parentId, level) {
       let result = []
-      dcList
-        .filter(item => item.parent_id === parentId)
-        .forEach(item => {
-          item.level = level
-          result.push(item)
-          let children = this.buildTree(dcList, item._id, level + 1)
-          if (children.length > 0) {
-            result = result.concat(children)
-          }
-        })
+      dcList.filter(item => item.parent_id === parentId).forEach(item => {
+        item.level = level
+        result.push(item)
+        let children = this.buildTree(dcList, item._id, level + 1)
+        if (children.length > 0) {
+          result = result.concat(children)
+        }
+      })
       return result
     }
   },
   computed: {
-    datacenterTree () {
+    datacenterTree() {
       let tree = [
         {
           _id: 'root',
@@ -74,19 +72,21 @@ export default {
 .DatacenterTree_Item::before {
   position: absolute;
   display: block;
-  content: "\f0f7";
-  font-family: FontAwesome;
+  font-weight: 400;
+  content: '\F1AD';
+  font-family: 'Font Awesome 5 Free';
   left: -16px;
 }
 
-.DatacenterTree_Item--Sub::before {
-  content: "\f233";
+.DatacenterTree_Item.DatacenterTree_Item--Sub::before {
+  content: '\f233';
+  font-weight: 900;
   left: -18px;
 }
 
-.DatacenterTree_Item--Root::before {
-  content: "\f0ac";
-  font-weight: 300;
+.DatacenterTree_Item.DatacenterTree_Item--Root::before {
+  font-weight: 900;
+  content: '\f57d';
   left: -18px;
 }
 </style>

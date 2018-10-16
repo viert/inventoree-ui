@@ -15,6 +15,7 @@ import HostEdit from '@/components/Hosts/HostEdit'
 import WorkGroupList from '@/components/WorkGroups/WorkGroupList'
 import WorkGroupView from '@/components/WorkGroups/WorkGroupView'
 import WorkGroupEdit from '@/components/WorkGroups/WorkGroupEdit'
+import ServerGroupList from '@/components/ServerGroups/ServerGroupList'
 import ActionList from '@/components/Actions/ActionList'
 import ActionView from '@/components/Actions/ActionView'
 
@@ -31,6 +32,11 @@ export default new Router({
       path: '/actions/:actionId',
       name: 'action_view',
       component: ActionView
+    },
+    {
+      path: '/server_groups',
+      name: 'server_group_list',
+      component: ServerGroupList
     },
     {
       path: '/groups',

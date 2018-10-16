@@ -2,35 +2,28 @@
   <div class="PageContent">
     <main class="PageMain">
       <div class="ContentHeader">
-        <h2 class="ContentHeader_Title">User List</h2>
+        <h2 class="ContentHeader_Title">ServerGroup List</h2>
         <div class="ContentHeader_Buttons">
-          <router-link to="/users/++/edit" class="btn btn-success btn-sm text-uppercase">
-            <i class="fa fa-plus"></i> Create
-          </router-link>
         </div>
         <filter-field :change="filterChanged" :value="filter" />
       </div>
       <item-list :count="items.length" :filter="filter">
         <table class="ModelList">
-          <col class="col-username" />
-          <col class="col-fullname" />
-          <col class="col-email" />
-          <col class="col-supervisor" />
-          <col class="col-system" />
+          <col class="col-name" />
+          <col class="col-workgroup" />
+          <col class="col-master" />
           <thead>
             <tr>
-              <th>Username</th>
-              <th>Full Name</th>
-              <th>Email</th>
-              <th>Supervisor</th>
-              <th>System</th>
+              <th>Name</th>
+              <th>WorkGroup</th>
+              <th>Master</th>
             </tr>
           </thead>
           <tbody>
-            <user-list-item
-              v-for="user in items"
-              :user="user"
-              :key="user._id" />
+            <server-group-list-item
+              v-for="server_group in items"
+              :server_group="server_group"
+              :key="server_group._id" />
           </tbody>
         </table>
         <pagination
@@ -45,7 +38,7 @@
 <script>
 import FilteredDataMixin from '@/mixins/FilteredDataMixin'
 import Pagination from '@/components/Common/Pagination'
-import UserListItem from './UserListItem'
+import ServerGroupListItem from './ServerGroupListItem'
 import Api from '@/api'
 
 export default {
@@ -55,13 +48,13 @@ export default {
     }
   },
   components: {
-    UserListItem,
+    ServerGroupListItem,
     Pagination
   },
   mixins: [FilteredDataMixin],
   methods: {
     loadData() {
-      return Api.Users.List(this.page, this.filter).then(response => {
+      return Api.ServerGroups.List(this.page, this.filter).then(response => {
         this.items = response.data.data
         this.page = response.data.page
         this.totalPages = response.data.total_pages
@@ -72,11 +65,11 @@ export default {
 </script>
 
 <style scoped>
-.col-supervisor,
-.col-system {
-  width: 5%;
-}
-.col-username {
+.col-workgroup {
   width: 13%;
+}
+
+.col-master {
+  width: 5%;
 }
 </style>
