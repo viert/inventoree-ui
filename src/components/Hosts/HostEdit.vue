@@ -208,14 +208,9 @@ export default {
       this.host.aliases = aliases
     },
     handleSave() {
-      const {
-        _id,
-        fqdn,
-        datacenter,
-        group,
-        server_group,
-        description
-      } = this.host
+      const { _id, fqdn, datacenter, group, description } = this.host
+
+      const serverGroup = this.host.server_group
 
       let payload = {
         tags: [...this.host.tags],
@@ -224,7 +219,7 @@ export default {
         description,
         group_id: group ? group._id : null,
         datacenter_id: datacenter ? datacenter._id : null,
-        server_group_id: server_group ? server_group._id : null
+        server_group_id: serverGroup ? serverGroup._id : null
       }
       if (this.create || this.clone) {
         if (this.hostList.length > 0) {
