@@ -31,8 +31,6 @@ export default {
 
 <style>
 .Host::before {
-  padding-right: 0.2em;
-  position: relative;
   top: 0.04em;
   content: '\f109';
 }
