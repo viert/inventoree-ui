@@ -27,11 +27,15 @@
               </div>
               <div class="Form_Field">
                 <label class="Form_FieldLabel">Group</label>
-                <group-picker :group="host.group" @pick="groupPicked" />
+                <group-picker :group="host.group" @clear="host.group = null" @pick="groupPicked" />
               </div>
               <div class="Form_Field">
                 <label class="Form_FieldLabel">Datacenter</label>
-                <datacenter-picker :datacenter="host.datacenter" @pick="datacenterPicked" />
+                <datacenter-picker :datacenter="host.datacenter" @clear="host.datacenter = null" @pick="datacenterPicked" />
+              </div>
+              <div class="Form_Field">
+                <label class="Form_FieldLabel">Server Group</label>
+                <server-group-picker :server-group="host.server_group" @clear="host.server_group = null" @pick="serverGroupPicked" />
               </div>
               <div class="Form_Field">
                 <label class="Form_FieldLabel">Aliases</label>
@@ -100,6 +104,7 @@
 import Api from '@/api'
 import GroupPicker from '@/components/Picker/GroupPicker'
 import DatacenterPicker from '@/components/Picker/DatacenterPicker'
+import ServerGroupPicker from '@/components/Picker/ServerGroupPicker'
 import TagEditor from '@/components/Common/TagEditor'
 import CustomFieldEditor from '@/components/Common/CustomFieldEditor/CustomFieldEditor'
 import ListEditor from '@/components/Common/ListEditor'
@@ -111,6 +116,7 @@ const editorFields = [
   'datacenter',
   'group',
   'tags',
+  'server_group',
   'custom_fields',
   'aliases',
   'description'
@@ -130,6 +136,7 @@ export default {
   components: {
     GroupPicker,
     DatacenterPicker,
+    ServerGroupPicker,
     TagEditor,
     CustomFieldEditor,
     ListEditor
@@ -144,7 +151,8 @@ export default {
         custom_fields: [],
         aliases: [],
         group: null,
-        datacenter: null
+        datacenter: null,
+        server_group: null
       },
       hostList: []
     }
@@ -187,6 +195,9 @@ export default {
     groupPicked(group) {
       this.host.group = group
     },
+    serverGroupPicked(serverGroup) {
+      this.host.server_group = serverGroup
+    },
     datacenterPicked(dc) {
       this.host.datacenter = dc
     },
@@ -197,14 +208,23 @@ export default {
       this.host.aliases = aliases
     },
     handleSave() {
-      let { _id, fqdn, datacenter, group, description } = this.host
+      const {
+        _id,
+        fqdn,
+        datacenter,
+        group,
+        server_group,
+        description
+      } = this.host
+
       let payload = {
         tags: [...this.host.tags],
         custom_fields: [...this.host.custom_fields],
         aliases: [...this.host.aliases],
         description,
         group_id: group ? group._id : null,
-        datacenter_id: datacenter ? datacenter._id : null
+        datacenter_id: datacenter ? datacenter._id : null,
+        server_group_id: server_group ? server_group._id : null
       }
       if (this.create || this.clone) {
         if (this.hostList.length > 0) {

@@ -55,7 +55,8 @@ export const DefaultFields = {
       'all_tags',
       'all_custom_fields',
       'description',
-      'group_name'
+      'group_name',
+      'server_group_name'
     ],
     Get: [
       '_id',
@@ -68,7 +69,8 @@ export const DefaultFields = {
       'modification_allowed',
       'description',
       'group_name',
-      'aliases'
+      'aliases',
+      'server_group_name'
     ]
   },
   WorkGroups: {
@@ -135,7 +137,15 @@ export const DefaultFields = {
   },
   ServerGroups: {
     List: ['_id', 'name', 'work_group_name', 'is_master'],
-    Get: ['_id', 'name', 'work_group_name', 'is_master']
+    Get: [
+      '_id',
+      'name',
+      'work_group_name',
+      'is_master',
+      'modification_allowed',
+      'assigning_allowed',
+      'hosts_count'
+    ]
   }
 }
 
@@ -208,7 +218,7 @@ const Api = {
     },
     Get: (groupName, fields = DefaultFields.ServerGroups.Get) => {
       const url = `/api/v1/server_groups/${groupName}?_fields=${fields.join(
-        '.'
+        ','
       )}`
       return wrap(axios.get(url))
     }

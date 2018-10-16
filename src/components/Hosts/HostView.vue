@@ -61,6 +61,10 @@
                 <label class="Card_FieldLabel">Datacenter</label>
                 <div><datacenter :name="host.datacenter_name"/></div>
               </div>
+              <div class="Card_Field" v-if="host.server_group_name" >
+                <label class="Card_FieldLabel">Server Group</label>
+                <div><server-group :name="host.server_group_name"/></div>
+              </div>
             </div>
           </div>
         </div>
