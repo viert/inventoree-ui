@@ -35,12 +35,7 @@ export default {
       }
     },
     getAuthData() {
-      Api.Account.Me().then(response => {
-        if (response) {
-          this.$store.commit('setUser', response.data.data)
-          this.$store.commit('setAuthState', 'authenticated')
-        }
-      })
+      this.$store.dispatch('loadAuthData')
     },
     getAppData() {
       Api.Open.AppInfo().then(response => {

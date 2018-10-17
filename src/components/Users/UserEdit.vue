@@ -175,6 +175,10 @@ export default {
             'info',
             `User ${this.user.username} has been updated successfully`
           )
+          if (this.user._id === this.$store.state.auth.user._id) {
+            // if user edited himself update his profile instantly
+            this.$store.dispatch('loadAuthData')
+          }
         })
       }
     },

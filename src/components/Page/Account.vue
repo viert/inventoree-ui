@@ -2,7 +2,7 @@
   <div class="PageHeader_Account">
     <div class="PageHeader_Account_Username">{{ displayName }}</div>
     <div class="PageHeader_Account_Avatar" @mouseover="showPopover" @mouseout="hidePopover">
-      <img v-if="user.avatar_url" class="PageHeader_Account_Avatar_Pic" :src="user.avatar_url" alt="avatar"/>
+      <img v-if="user.avatar" class="PageHeader_Account_Avatar_Pic" :src="user.avatar" alt="avatar"/>
       <i class="fa fa-user" v-else></i>
     </div>
     <transition name="fadefast">
