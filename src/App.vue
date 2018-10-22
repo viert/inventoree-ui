@@ -331,7 +331,8 @@ table.ModelList
   position: absolute;
   left: -14px;
   font-size: 90%;
-  font-family: FontAwesome;
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
 }
 
 .ListSelected_Item:hover {
