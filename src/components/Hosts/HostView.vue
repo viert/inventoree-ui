@@ -22,7 +22,7 @@
             <div class="Card_Field">{{host.description}}</div>
           </div>
           <div class="row">
-            <div class="col-sm-5">
+            <div class="col-sm-6">
               <div class="Card_Field">
                 <label class="Card_FieldLabel">Id</label>
                 <div @click="selectAll">{{host._id}}</div>
@@ -52,7 +52,7 @@
                   :cfValue="cf.value" />
               </div>
             </div>
-            <div class="col-sm-7">
+            <div class="col-sm-6">
               <div class="Card_Field" v-if="host.group_name">
                 <label class="Card_FieldLabel">Group</label>
                 <div><group :name="host.group_name"/></div>

@@ -24,6 +24,8 @@ export default {
 <style>
 .CF {
   line-height: 1.1em;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .CF_Key {
