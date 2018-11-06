@@ -15,7 +15,7 @@
           <div v-else-if="model == 'host'">
             <host style="display: block" v-for="fqdn in action.computed.host_fqdns" :key="fqdn" :fqdn="fqdn" :link="false" />
           </div>
-          <server-group v-if="model == 'server_group'" :name="action.computed.server_group_name" :link="false" />
+          <network-group v-if="model == 'network_group'" :name="action.computed.network_group_name" :link="false" />
         </div>
       </div>
       <div class="col-sm-6">

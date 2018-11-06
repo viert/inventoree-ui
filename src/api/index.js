@@ -56,7 +56,7 @@ export const DefaultFields = {
       'all_custom_fields',
       'description',
       'group_name',
-      'server_group_name'
+      'network_group_name'
     ],
     Get: [
       '_id',
@@ -70,7 +70,7 @@ export const DefaultFields = {
       'description',
       'group_name',
       'aliases',
-      'server_group_name'
+      'network_group_name'
     ]
   },
   WorkGroups: {
@@ -135,7 +135,7 @@ export const DefaultFields = {
       'errors'
     ]
   },
-  ServerGroups: {
+  NetworkGroups: {
     List: ['_id', 'name', 'work_group_name', 'is_master'],
     Get: [
       '_id',
@@ -201,14 +201,14 @@ const Api = {
       return wrap(axios.post(url, payload))
     }
   },
-  ServerGroups: {
+  NetworkGroups: {
     List: (
       page,
       filter,
-      fields = DefaultFields.ServerGroups.List,
+      fields = DefaultFields.NetworkGroups.List,
       limit = null
     ) => {
-      let url = `/api/v1/server_groups/?_fields=${fields.join(
+      let url = `/api/v1/network_groups/?_fields=${fields.join(
         ','
       )}&_page=${page}&_filter=${filter}`
       if (limit) {
@@ -216,8 +216,8 @@ const Api = {
       }
       return wrap(axios.get(url))
     },
-    Get: (groupName, fields = DefaultFields.ServerGroups.Get) => {
-      const url = `/api/v1/server_groups/${groupName}?_fields=${fields.join(
+    Get: (groupName, fields = DefaultFields.NetworkGroups.Get) => {
+      const url = `/api/v1/network_groups/${groupName}?_fields=${fields.join(
         ','
       )}`
       return wrap(axios.get(url))

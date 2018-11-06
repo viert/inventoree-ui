@@ -2,7 +2,7 @@
   <div class="PageContent">
     <main class="PageMain">
       <div class="ContentHeader">
-        <h2 class="ContentHeader_Title">ServerGroup List</h2>
+        <h2 class="ContentHeader_Title">Network Group List</h2>
         <div class="ContentHeader_Buttons">
         </div>
         <filter-field :change="filterChanged" :value="filter" />
@@ -20,10 +20,10 @@
             </tr>
           </thead>
           <tbody>
-            <server-group-list-item
-              v-for="server_group in items"
-              :server_group="server_group"
-              :key="server_group._id" />
+            <network-group-list-item
+              v-for="network_group in items"
+              :network_group="network_group"
+              :key="network_group._id" />
           </tbody>
         </table>
         <pagination
@@ -38,7 +38,7 @@
 <script>
 import FilteredDataMixin from '@/mixins/FilteredDataMixin'
 import Pagination from '@/components/Common/Pagination'
-import ServerGroupListItem from './ServerGroupListItem'
+import NetworkGroupListItem from './NetworkGroupListItem'
 import Api from '@/api'
 
 export default {
@@ -48,13 +48,13 @@ export default {
     }
   },
   components: {
-    ServerGroupListItem,
+    NetworkGroupListItem,
     Pagination
   },
   mixins: [FilteredDataMixin],
   methods: {
     loadData() {
-      return Api.ServerGroups.List(this.page, this.filter).then(response => {
+      return Api.NetworkGroups.List(this.page, this.filter).then(response => {
         this.items = response.data.data
         this.page = response.data.page
         this.totalPages = response.data.total_pages

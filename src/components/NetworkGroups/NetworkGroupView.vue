@@ -7,27 +7,27 @@
       <div class="PageContentContainer PageContentContainer--Half">
         <div class="Card">
           <div class="CardHeader">
-            <h3><server-group :name="server_group.name" :link="false" /></h3>
+            <h3><network-group :name="network_group.name" :link="false" /></h3>
           </div>
           <div class="row">
             <div class="col-sm-5">
               <div class="Card_Field">
                 <label class="Card_FieldLabel">Id</label>
-                <div @click="selectAll">{{server_group._id}}</div>
+                <div @click="selectAll">{{network_group._id}}</div>
               </div>
               <div class="Card_Field">
                 <label class="Card_FieldLabel">WorkGroup</label>
-                <work-group :name="server_group.work_group_name" :icon="true" :link="true"/>
+                <work-group :name="network_group.work_group_name" :icon="true" :link="true"/>
               </div>
               <div class="Card_Field">
                 <label class="Card_FieldLabel">Hosts Count</label>
-                <div>{{server_group.hosts_count}}</div>
+                <div>{{network_group.hosts_count}}</div>
               </div>
             </div>
             <div class="col-sm-7">
               <div class="Card_Field">
                 <label class="Card_FieldLabel">Master Group</label>
-                <div>{{server_group.is_master}}</div>
+                <div>{{network_group.is_master}}</div>
               </div>
             </div>
           </div>
@@ -45,7 +45,7 @@ export default {
   mixins: [SelectAllMixin],
   data() {
     return {
-      server_group: {
+      network_group: {
         name: '',
         work_group_name: '',
         is_master: false,
@@ -57,14 +57,14 @@ export default {
   },
   methods: {
     loadData() {
-      let { serverGroupName } = this.$route.params
-      Api.ServerGroups.Get(serverGroupName)
+      let { networkGroupName } = this.$route.params
+      Api.NetworkGroups.Get(networkGroupName)
         .then(response => {
-          this.server_group = response.data.data[0]
+          this.network_group = response.data.data[0]
         })
         .catch(status => {
           if (status === 404) {
-            this.$router.push('/server_groups')
+            this.$router.push('/network_groups')
           }
         })
     }
@@ -73,7 +73,7 @@ export default {
     this.loadData()
   },
   watch: {
-    '$route.params.serverGroupName'() {
+    '$route.params.networkGroupName'() {
       this.loadData()
     }
   }

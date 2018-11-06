@@ -295,19 +295,19 @@
         <user :username="action.computed.user_name" :link="false" />  from members of
         <work-group :name="action.computed.work_group_name" :link="false" />
       </span>
-      <span v-else-if="action.action_type == 'server_group_create'">
+      <span v-else-if="action.action_type == 'network_group_create'">
         <router-link :to="viewLink">
           <span v-if="action.status == 'success'">created</span>
           <span v-else>failed to create</span>
         </router-link>
-        <server-group :name="action.computed.server_group_name" :link="false" />
+        <network-group :name="action.computed.network_group_name" :link="false" />
       </span>
-      <span v-else-if="action.action_type == 'server_group_delete'">
+      <span v-else-if="action.action_type == 'network_group_delete'">
         <router-link :to="viewLink">
           <span v-if="action.status == 'success'">deleted</span>
           <span v-else>failed to delete</span>
         </router-link>
-        <server-group :name="action.computed.server_group_name" :link="false" />
+        <network-group :name="action.computed.network_group_name" :link="false" />
       </span>
 
       <span v-else>

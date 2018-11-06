@@ -13,7 +13,7 @@
           <datacenter v-else-if="model == 'datacenter'" :name="action.computed.datacenter_name" :link="false" />
           <host v-else-if="model == 'host'" :fqdn="action.computed.host_fqdn" :link="false" />
           <user v-else-if="model == 'user'" :username="action.computed.username" :link="false" />
-          <server-group v-if="model == 'server_group'" :name="action.computed.server_group_name" :link="false" />
+          <network-group v-if="model == 'network_group'" :name="action.computed.network_group_name" :link="false" />
         </div>
       </div>
       <div class="col-sm-6">

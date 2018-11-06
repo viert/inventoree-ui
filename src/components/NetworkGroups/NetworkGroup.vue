@@ -1,6 +1,6 @@
 <template>
-  <span :class="{ ServerGroup: icon }">
-    <router-link v-if="link" :to="serverGroupLink">{{ name }}</router-link>
+  <span :class="{ NetworkGroup: icon }">
+    <router-link v-if="link" :to="networkGroupLink">{{ name }}</router-link>
     <span v-else>{{ name }}</span>
   </span>
 </template>
@@ -22,15 +22,15 @@ export default {
     }
   },
   computed: {
-    serverGroupLink() {
-      return `/server_groups/${this.name}`
+    networkGroupLink() {
+      return `/network_groups/${this.name}`
     }
   }
 }
 </script>
 
 <style>
-.ServerGroup::before {
+.NetworkGroup::before {
   content: '\f6ff';
   top: 0;
 }

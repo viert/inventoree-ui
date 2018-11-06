@@ -43,7 +43,7 @@ const ModelNames = [
   'host',
   'group',
   'datacenter',
-  'server_group'
+  'network_group'
 ]
 
 export default {
