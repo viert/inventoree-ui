@@ -48,7 +48,19 @@
             </div>
           </div>
           <div v-if="!create && !clone" class="col-sm-7 offset-sm-1">
-            <h5>Relations</h5>
+            <div class="RelationsHeader">
+              <h5 class="RelationsHeader_Title">Relations</h5>
+              <div class="RelationsHeader_Buttons">
+                <button
+                  type="submit"
+                  class="btn btn-xs"
+                  :class="{'btn-warning': relationsModified}"
+                  :disabled="!relationsModified"
+                  @click="handleSaveRelations">
+                  Save Changes
+                </button>
+              </div>
+            </div>
             <div class="Form">
               <div class="row">
                 <div class="col-sm-6">
@@ -84,13 +96,6 @@
                   <ul class="ListSelected">
                     <li @click="removeHost(chost)" class="ListSelected_Item" v-for="chost in group.hosts" :key="chost._id">{{chost.fqdn}}</li>
                   </ul>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="Form_Buttons">
-                    <button type="submit" class="btn btn-primary" @click="handleSaveRelations">Save Changes</button>
-                  </div>
                 </div>
               </div>
             </div>
@@ -152,7 +157,8 @@ export default {
       },
       parent: null,
       childrenMap: {},
-      hostMap: {}
+      hostMap: {},
+      relationsModified: false
     }
   },
   created() {
@@ -236,7 +242,7 @@ export default {
             'info',
             `Group ${name} has been created, you can now add group's relations`
           )
-          this.$router.push(`/groups/${name}`)
+          this.$router.push(`/groups/${name}/edit`)
         })
       } else {
         Api.Groups.Update(this.group._id, payload, editorFields).then(
@@ -269,6 +275,7 @@ export default {
           'info',
           `Group's children have been successfully updated`
         )
+        this.relationsModified = false
       })
       Api.Groups.SetHosts(_id, hostIds, ['hosts']).then(response => {
         let { hosts } = response.data.data
@@ -277,6 +284,7 @@ export default {
           'info',
           `Group's hosts have been successfully updated`
         )
+        this.relationsModified = false
       })
     },
     isSelected(item) {
@@ -288,18 +296,22 @@ export default {
     addChild(child) {
       this.group.children.push(child)
       this.$set(this.childrenMap, child._id, child)
+      this.relationsModified = true
     },
     removeChild(child) {
       this.group.children = this.group.children.filter(i => i._id !== child._id)
       this.$delete(this.childrenMap, child._id)
+      this.relationsModified = true
     },
     addHost(host) {
       this.group.hosts.push(host)
       this.$set(this.hostMap, host._id, host)
+      this.relationsModified = true
     },
     removeHost(host) {
       this.group.hosts = this.group.hosts.filter(i => i._id !== host._id)
       this.$delete(this.hostMap, host._id)
+      this.relationsModified = true
     }
   },
   computed: {
@@ -314,3 +326,13 @@ export default {
   }
 }
 </script>
+
+<style>
+.RelationsHeader {
+  display: flex;
+}
+
+.RelationsHeader_Title {
+  flex-grow: 1;
+}
+</style>

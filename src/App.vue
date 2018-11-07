@@ -398,4 +398,9 @@ table.ModelList > tbody > tr:hover > td.ModelList_Item--MayBeLong::after {
   padding-right: 0.2em;
   position: relative;
 }
+
+.btn.btn-xs {
+  padding: 0.18rem 0.4rem;
+  font-size: 0.72rem;
+}
 </style>
