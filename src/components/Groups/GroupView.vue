@@ -52,6 +52,17 @@
                 <div><work-group :name="group.work_group_name" /></div>
               </div>
               <div class="Card_Field">
+                <label class="Card_FieldLabel">Parents</label>
+                <ul class="RelationsList">
+                  <li
+                    v-for="parent in group.parents"
+                    class="RelationsList_Item"
+                    :key="parent._id">
+                    <group :name="parent.name" />
+                  </li>
+                </ul>
+              </div>
+              <div class="Card_Field">
                 <label class="Card_FieldLabel">Children</label>
                 <ul class="RelationsList">
                   <li
@@ -98,6 +109,7 @@ export default {
         description: '',
         work_group_name: '',
         children: [],
+        parents: [],
         hosts: [],
         all_tags: [],
         tags: [],

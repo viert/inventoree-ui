@@ -41,6 +41,7 @@ export const DefaultFields = {
       'all_custom_fields',
       'description',
       'children',
+      'parents',
       'modification_allowed',
       'hosts'
     ]

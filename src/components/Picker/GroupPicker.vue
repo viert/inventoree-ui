@@ -43,24 +43,25 @@ export default {
   components: {
     Picker
   },
-  data () {
+  data() {
     return {
       groups: [],
       filter: ''
     }
   },
   methods: {
-    inputChanged (newVal) {
+    inputChanged(newVal) {
       this.filter = newVal
-      Api.Groups.List(1, newVal, ['_id', 'name'], 5)
-        .then(response => {
+      Api.Groups.List(1, newVal, ['_id', 'name', 'work_group_id'], 5).then(
+        response => {
           this.groups = response.data.data
-        })
+        }
+      )
     },
-    getValue (s) {
+    getValue(s) {
       return s.name
     },
-    getIndex (s) {
+    getIndex(s) {
       return s._id
     }
   }

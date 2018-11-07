@@ -25,6 +25,10 @@
                 <label class="Form_FieldLabel">Description</label>
                 <input class="form-control" type="text" v-model="group.description" />
               </div>
+              <div v-if="create || clone" class="Form_Field">
+                <label class="Form_FieldLabel">Parent Group</label>
+                <group-picker :group="parent" @pick="parentPicked" />
+              </div>
               <div class="Form_Field">
                 <label class="Form_FieldLabel">WorkGroup</label>
                 <work-group-picker :work-group="group.work_group" @pick="workGroupPicked" />
@@ -146,6 +150,7 @@ export default {
         custom_fields: [],
         work_group: null
       },
+      parent: null,
       childrenMap: {},
       hostMap: {}
     }
@@ -197,6 +202,17 @@ export default {
     },
     workGroupPicked(workGroup) {
       this.group.work_group = workGroup
+      // remove current parent if it doesn't match the workgroup picked
+      if (this.parent && this.parent.work_group_id !== workGroup._id) {
+        this.parent = null
+      }
+    },
+    parentPicked(parentGroup) {
+      this.parent = parentGroup
+      // set workgroup matching the picked parent
+      Api.WorkGroups.Get(parentGroup.work_group_id).then(response => {
+        this.group.work_group = response.data.data[0]
+      })
     },
     cfChange(fields) {
       this.group.custom_fields = fields
@@ -211,6 +227,9 @@ export default {
         work_group_id: this.group.work_group ? this.group.work_group._id : null
       }
       if (this.create || this.clone) {
+        if (this.parent && this.parent._id) {
+          payload.parent_group_id = this.parent._id
+        }
         Api.Groups.Create(payload).then(response => {
           let { name } = payload
           this.$store.dispatch(
