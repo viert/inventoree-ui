@@ -31,7 +31,9 @@ export default {
   props: {
     suggestions: {
       type: Array,
-      default: () => { return [] }
+      default: () => {
+        return []
+      }
     },
     getValue: {
       type: Function,
@@ -43,7 +45,9 @@ export default {
     },
     isSelected: {
       type: Function,
-      default: () => { console.error('isSelected prop is required in "multi" mode of picker') }
+      default: () => {
+        console.error('isSelected prop is required in "multi" mode of picker')
+      }
     },
     inputClass: {
       type: String,
@@ -70,7 +74,7 @@ export default {
     }
   },
   methods: {
-    inputValueChanged (e) {
+    inputValueChanged(e) {
       this.picked = false
       this.inputValue = e.target.value
       this.typedValue = e.target.value
@@ -78,16 +82,16 @@ export default {
       this.$emit('change', e.target.value)
       this.$emit('clear')
     },
-    inputFocus () {
+    inputFocus() {
       this.showSuggestions = true
     },
-    handleEscape () {
+    handleEscape() {
       if (this.multi) {
         this.showSuggestions = false
         this.inputBlur()
       }
     },
-    inputBlur () {
+    inputBlur() {
       if (this.multi) {
         if (this.justPicked) {
           this.justPicked = false
@@ -99,14 +103,17 @@ export default {
         this.showSuggestions = false
       }
       if (!this.picked && !this.multi) {
-        let match = this.suggestions.find(item => this.getValue(item).toLowerCase() === this.typedValue.toLowerCase())
+        let match = this.suggestions.find(
+          item =>
+            this.getValue(item).toLowerCase() === this.typedValue.toLowerCase()
+        )
         if (match) {
           this.$emit('pick', match)
           this.picked = true
         }
       }
     },
-    moveCursor (amount) {
+    moveCursor(amount) {
       let si = this.selectIndex + amount
       if (si >= this.suggestions.length) {
         si = -1
@@ -115,7 +122,7 @@ export default {
       }
       this.selectIndex = si
     },
-    pickItem (e) {
+    pickItem(e) {
       if (this.selectIndex < 0 || this.selectIndex >= this.suggestions.length) {
         return
       }
@@ -142,12 +149,12 @@ export default {
     }
   },
   watch: {
-    suggestions (newSuggestions) {
+    suggestions(newSuggestions) {
       if (this.selectIndex >= newSuggestions.length) {
         this.selectIndex = newSuggestions.length - 1
       }
     },
-    selectIndex (si) {
+    selectIndex(si) {
       if (!this.multi) {
         if (si === -1) {
           this.inputValue = this.typedValue
@@ -156,7 +163,7 @@ export default {
         }
       }
     },
-    pickedItem (newVal) {
+    pickedItem(newVal) {
       if (newVal) {
         this.inputValue = this.getValue(newVal)
         this.typedValue = this.getValue(newVal)
@@ -168,7 +175,7 @@ export default {
       }
     }
   },
-  data () {
+  data() {
     return {
       inputValue: this.pickedItem ? this.getValue(this.pickedItem) : '',
       selectIndex: -1,
@@ -178,10 +185,10 @@ export default {
     }
   },
   computed: {
-    showSuggestionsComputed () {
+    showSuggestionsComputed() {
       return this.showSuggestions && this.suggestions.length > 0
     },
-    inputClassComputed () {
+    inputClassComputed() {
       let c = {
         [this.inputClass]: true,
         [this.inputPickedClass]: this.picked
@@ -207,9 +214,10 @@ export default {
   border-bottom-right-radius: 0;
 }
 
-.input-group-wrap.picked::after{
+.input-group-wrap.picked::after {
   display: block;
-  font-family: FontAwesome;
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
   position: absolute;
   right: 7px;
   top: 7px;
@@ -253,7 +261,8 @@ ul.autosuggest.autosuggest-multi > li {
 
 ul.autosuggest.autosuggest-multi > li.selected::before {
   display: block;
-  font-family: FontAwesome;
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
   position: absolute;
   left: 7px;
   top: 10px;

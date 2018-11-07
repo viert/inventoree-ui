@@ -15,7 +15,7 @@
         <table class="ModelList">
           <col class="col-check" />
           <col class="col-name" />
-          <col class="col-project" />
+          <col class="col-workgroup" />
           <col class="col-tags" />
           <col class="col-cf" />
           <col v-if="itemsSelected.length === 0" class="col-desc" />
@@ -25,7 +25,7 @@
                 <fa-checkbox :checked="allSelected" @trigger="toggleAll" />
               </th>
               <th>Name</th>
-              <th>Project</th>
+              <th>WorkGroup</th>
               <th>Tags</th>
               <th>Custom Fields</th>
               <th v-if="itemsSelected.length === 0">Description</th>
@@ -55,11 +55,11 @@
       </ul>
       <div class="Form">
         <div class="Form_Field">
-          <label class="Form_FieldLabel">Move groups to project</label>
+          <label class="Form_FieldLabel">Move groups to workgroup</label>
           <div class="input-group">
-            <project-picker @pick="projectPicked" />
+            <work-group-picker @pick="workGroupPicked" />
             <div class="input-group-append">
-              <button @click="massMoveToProject" class="btn btn-outline-primary">Move</button>
+              <button @click="massMoveToWorkGroup" class="btn btn-outline-primary">Move</button>
             </div>
           </div>
         </div>
@@ -77,7 +77,7 @@ import Api from '@/api'
 import GroupListItem from './GroupListItem'
 import FaCheckbox from '@/components/Common/FaCheckbox'
 import Pagination from '@/components/Common/Pagination'
-import ProjectPicker from '@/components/Picker/ProjectPicker'
+import WorkGroupPicker from '@/components/Picker/WorkGroupPicker'
 import FilteredDataMixin from '@/mixins/FilteredDataMixin'
 import MassSelect from '@/mixins/MassSelect'
 import { mapState } from 'vuex'
@@ -88,12 +88,12 @@ export default {
   components: {
     GroupListItem,
     FaCheckbox,
-    ProjectPicker,
+    WorkGroupPicker,
     Pagination
   },
   data() {
     return {
-      destProject: null
+      destWorkGroup: null
     }
   },
   computed: {
@@ -113,24 +113,24 @@ export default {
     startSelection() {
       this.$store.commit('setSelectMode', true)
     },
-    projectPicked(project) {
-      this.destProject = project
+    workGroupPicked(workGroup) {
+      this.destWorkGroup = workGroup
     },
-    massMoveToProject() {
-      if (!this.destProject) {
+    massMoveToWorkGroup() {
+      if (!this.destWorkGroup) {
         this.$store.dispatch(
           'error',
-          'Please select a project to move groups to'
+          'Please select a workgroup to move groups to'
         )
         return
       }
       let groupIds = this.itemsSelected.map(item => item._id)
-      Api.Groups.MassMove(groupIds, this.destProject._id).then(() => {
+      Api.Groups.MassMove(groupIds, this.destWorkGroup._id).then(() => {
         this.$store.dispatch(
           'info',
-          `Groups were moved to project ${this.destProject.name}`
+          `Groups were moved to workgroup ${this.destWorkGroup.name}`
         )
-        this.destProject = null
+        this.destWorkGroup = null
         this.clearSelection()
         this.loadData()
       })
@@ -156,7 +156,7 @@ export default {
   width: 12%;
 }
 
-.col-project {
+.col-workgroup {
   width: 12%;
 }
 </style>

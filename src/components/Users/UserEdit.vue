@@ -55,14 +55,25 @@
                     <confirm-button class="btn btn-danger" @confirm="handleChangePassword">Change Password</confirm-button>
                   </div>
                   <hr />
-                  <div class="Form_Buttons">
-                    <label class="Form_FieldLabel">Supervisor</label>
-                    <confirm-button v-if="user.supervisor" type="submit" class="btn btn-danger" @confirm="toggleSupervisor">
-                      Revoke Supervisor
-                    </confirm-button>
-                    <confirm-button v-else type="submit" class="btn btn-success" @confirm="toggleSupervisor">
-                      Grant Supervisor
-                    </confirm-button>
+                  <div class="Form_Buttons row">
+                    <div class="col-7">
+                      <label class="Form_FieldLabel">Supervisor</label>
+                      <confirm-button v-if="user.supervisor" type="submit" class="btn btn-danger" @confirm="toggleSupervisor">
+                        Revoke Supervisor
+                      </confirm-button>
+                      <confirm-button v-else type="submit" class="btn btn-success" @confirm="toggleSupervisor">
+                        Grant Supervisor
+                      </confirm-button>
+                    </div>
+                    <div class="col-5">
+                      <label class="Form_FieldLabel">System</label>
+                      <confirm-button v-if="user.system" type="submit" class="btn btn-danger" @confirm="toggleSystem">
+                        Unset System
+                      </confirm-button>
+                      <confirm-button v-else type="submit" class="btn btn-success" @confirm="toggleSystem">
+                        Set System
+                      </confirm-button>
+                    </div>
                   </div>
                 </div>
                 <div class="col-sm-6">
@@ -85,6 +96,7 @@ const editorFields = [
   'first_name',
   'last_name',
   'supervisor',
+  'system',
   'email'
 ]
 
@@ -102,7 +114,9 @@ export default {
         username: '',
         first_name: '',
         last_name: '',
-        email: ''
+        email: '',
+        supervisor: false,
+        system: false
       },
       newPassword: '',
       confirmPassword: ''
@@ -161,6 +175,10 @@ export default {
             'info',
             `User ${this.user.username} has been updated successfully`
           )
+          if (this.user._id === this.$store.state.auth.user._id) {
+            // if user edited himself update his profile instantly
+            this.$store.dispatch('loadAuthData')
+          }
         })
       }
     },
@@ -197,6 +215,16 @@ export default {
             (supervisor ? 'granted' : 'revoked')
         )
         this.user.supervisor = supervisor
+      })
+    },
+    toggleSystem() {
+      let system = !this.user.system
+      Api.Users.SetSystem(this.user._id, system).then(() => {
+        this.$store.dispatch(
+          'info',
+          'System flag successfully ' + (system ? 'set' : 'unset')
+        )
+        this.user.system = system
       })
     }
   },

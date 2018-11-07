@@ -35,12 +35,7 @@ export default {
       }
     },
     getAuthData() {
-      Api.Account.Me().then(response => {
-        if (response) {
-          this.$store.commit('setUser', response.data.data)
-          this.$store.commit('setAuthState', 'authenticated')
-        }
-      })
+      this.$store.dispatch('loadAuthData')
     },
     getAppData() {
       Api.Open.AppInfo().then(response => {
@@ -61,7 +56,8 @@ export default {
 <style>
 @import url(./assets/styles/normalize.css);
 @import url(./assets/styles/fonts.css);
-@import url(./assets/styles/font-awesome.css);
+@import url(./assets/styles/font-awesome5.css);
+@import url(./assets/styles/v4-shims.css);
 @import url(./assets/styles/bootstrap-flatly.css);
 
 body {
@@ -278,6 +274,25 @@ table.ModelList
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#f9f9f9',GradientType=1 ); /* IE6-9 */
 }
 
+table.ModelList > tbody > tr:hover > td.ModelList_Item--MayBeLong::after {
+  background: -moz-linear-gradient(
+    left,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(249, 249, 255, 1) 100%
+  ); /* FF3.6-15 */
+  background: -webkit-linear-gradient(
+    left,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(249, 249, 255, 1) 100%
+  ); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(242, 242, 255, 1) 100%
+  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#f9f9f9',GradientType=1 ); /* IE6-9 */
+}
+
 .Card h3 {
   text-transform: none;
 }
@@ -335,7 +350,8 @@ table.ModelList
   position: absolute;
   left: -14px;
   font-size: 90%;
-  font-family: FontAwesome;
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
 }
 
 .ListSelected_Item:hover {
@@ -369,5 +385,17 @@ table.ModelList
 .SiteLoading {
   margin: 20px;
   font-size: 20px;
+}
+
+.Group::before,
+.WorkGroup::before,
+.NetworkGroup::before,
+.User::before,
+.Datacenter::before,
+.Host::before {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  padding-right: 0.2em;
+  position: relative;
 }
 </style>

@@ -7,7 +7,7 @@
       <group :name="group.name" :icon="false" />
     </td>
     <td>
-      {{group.project_name}}
+      {{group.work_group_name}}
     </td>
     <td class="ModelList_Item--MayBeLong">
       <tag v-for="tag in allTagsSorted" :name="tag" :key="tag" :derived="!(group.tags.includes(tag))"/>

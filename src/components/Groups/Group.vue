@@ -22,7 +22,7 @@ export default {
     }
   },
   computed: {
-    groupLink () {
+    groupLink() {
       return `/groups/${this.name}`
     }
   }
@@ -31,10 +31,8 @@ export default {
 
 <style>
 .Group::before {
-  font-family: FontAwesome;
-  padding-right: 0.2em;
-  position: relative;
   top: 0.04em;
-  content: "\f114";
+  font-weight: 400;
+  content: '\f07b';
 }
 </style>

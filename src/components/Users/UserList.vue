@@ -16,12 +16,14 @@
           <col class="col-fullname" />
           <col class="col-email" />
           <col class="col-supervisor" />
+          <col class="col-system" />
           <thead>
             <tr>
               <th>Username</th>
               <th>Full Name</th>
               <th>Email</th>
               <th>Supervisor</th>
+              <th>System</th>
             </tr>
           </thead>
           <tbody>
@@ -70,7 +72,8 @@ export default {
 </script>
 
 <style scoped>
-.col-supervisor {
+.col-supervisor,
+.col-system {
   width: 5%;
 }
 .col-username {

@@ -2,7 +2,7 @@
   <div class="PageHeader_Account">
     <div class="PageHeader_Account_Username">{{ displayName }}</div>
     <div class="PageHeader_Account_Avatar" @mouseover="showPopover" @mouseout="hidePopover">
-      <img v-if="user.avatar_url" class="PageHeader_Account_Avatar_Pic" :src="user.avatar_url" alt="avatar"/>
+      <img v-if="user.avatar" class="PageHeader_Account_Avatar_Pic" :src="user.avatar" alt="avatar"/>
       <i class="fa fa-user" v-else></i>
     </div>
     <transition name="fadefast">
@@ -27,7 +27,7 @@
 import UserAuthToken from '@/components/Users/UserAuthToken'
 import Api from '@/api'
 export default {
-  data () {
+  data() {
     return {
       popover: false,
       popoverWillHide: false
@@ -43,7 +43,7 @@ export default {
     }
   },
   computed: {
-    displayName () {
+    displayName() {
       if (this.user.first_name && this.user.last_name) {
         return `${this.user.first_name} ${this.user.last_name}`
       } else {
@@ -52,22 +52,21 @@ export default {
     }
   },
   methods: {
-    logout () {
-      Api.Account.Logout()
-        .then(() => {
-          this.$store.commit('setAuthState', 'authenticating')
-          this.$store.commit('setUser', null)
-        })
+    logout() {
+      Api.Account.Logout().then(() => {
+        this.$store.commit('setAuthState', 'authenticating')
+        this.$store.commit('setUser', null)
+      })
     },
-    showPopover (e) {
+    showPopover(e) {
       this.popoverWillHide = false
       this.popover = true
     },
-    hidePopover (e) {
+    hidePopover(e) {
       this.popoverWillHide = true
       setTimeout(this.seriouslyHidePopover, 250)
     },
-    seriouslyHidePopover () {
+    seriouslyHidePopover() {
       if (this.popoverWillHide) {
         this.popover = false
       }
@@ -87,7 +86,8 @@ export default {
   line-height: 40px;
 }
 
-.PageHeader_Account_Avatar, .PageHeader_Account_Avatar_Pic {
+.PageHeader_Account_Avatar,
+.PageHeader_Account_Avatar_Pic {
   width: 36px;
   height: 36px;
   box-sizing: content-box;
@@ -102,9 +102,9 @@ export default {
 }
 
 .PageHeader_Account_Avatar .fa-user {
-  font-size: 28px;
+  font-size: 23px;
   position: relative;
-  top: 3px;
+  top: 5px;
   left: 8px;
 }
 

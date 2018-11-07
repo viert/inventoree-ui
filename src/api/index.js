@@ -2,7 +2,7 @@ import axios from 'axios'
 import store from '@/store'
 import ErrorHandler from '@/errors/ErrorHandler'
 
-const wrap = (axiosRequest) => {
+const wrap = axiosRequest => {
   let reqId = new Date() / 1
   store.commit('addLoadRequest', { id: reqId, req: axiosRequest })
   return new Promise((resolve, reject) => {
@@ -24,7 +24,7 @@ export const DefaultFields = {
     List: [
       '_id',
       'name',
-      'project_name',
+      'work_group_name',
       'custom_fields',
       'tags',
       'all_tags',
@@ -34,7 +34,7 @@ export const DefaultFields = {
     Get: [
       '_id',
       'name',
-      'project_name',
+      'work_group_name',
       'custom_fields',
       'tags',
       'all_tags',
@@ -55,7 +55,8 @@ export const DefaultFields = {
       'all_tags',
       'all_custom_fields',
       'description',
-      'group_name'
+      'group_name',
+      'network_group_name'
     ],
     Get: [
       '_id',
@@ -68,24 +69,17 @@ export const DefaultFields = {
       'modification_allowed',
       'description',
       'group_name',
-      'aliases'
+      'aliases',
+      'network_group_name'
     ]
   },
-  Projects: {
-    List: [
-      '_id',
-      'name',
-      'owner',
-      'email',
-      'root_email',
-      'description'
-    ],
+  WorkGroups: {
+    List: ['_id', 'name', 'owner', 'email', 'description'],
     Get: [
       '_id',
       'name',
       'owner',
       'email',
-      'root_email',
       'description',
       'modification_allowed',
       'groups_count',
@@ -99,7 +93,8 @@ export const DefaultFields = {
       'first_name',
       'last_name',
       'email',
-      'supervisor'
+      'supervisor',
+      'system'
     ],
     Get: [
       '_id',
@@ -108,25 +103,16 @@ export const DefaultFields = {
       'last_name',
       'email',
       'supervisor',
+      'system',
+      'auth_token',
       'modification_allowed',
-      'projects_owned',
-      'projects_included_into'
+      'work_groups_owned',
+      'work_groups_included_into'
     ]
   },
   Datacenters: {
-    List: [
-      '_id',
-      'name',
-      'parent_id'
-    ],
-    Get: [
-      '_id',
-      'name',
-      'description',
-      'parent',
-      'root',
-      'children'
-    ]
+    List: ['_id', 'name', 'parent_id'],
+    Get: ['_id', 'name', 'description', 'parent', 'root', 'children']
   },
   Actions: {
     List: [
@@ -148,14 +134,30 @@ export const DefaultFields = {
       'status',
       'errors'
     ]
+  },
+  NetworkGroups: {
+    List: ['_id', 'name', 'work_group_name', 'is_master'],
+    Get: [
+      '_id',
+      'name',
+      'work_group_name',
+      'is_master',
+      'modification_allowed',
+      'assigning_allowed',
+      'hosts_count'
+    ]
   }
 }
 
 const Api = {
   Groups: {
     List: (page, filter, fields = DefaultFields.Groups.List, limit = null) => {
-      let url = `/api/v1/groups/?_fields=${fields.join(',')}&_page=${page}&_filter=${filter}`
-      if (limit) { url += `&_limit=${limit}` }
+      let url = `/api/v1/groups/?_fields=${fields.join(
+        ','
+      )}&_page=${page}&_filter=${filter}`
+      if (limit) {
+        url += `&_limit=${limit}`
+      }
       return wrap(axios.get(url))
     },
     Get: (groupName, fields = DefaultFields.Groups.Get) => {
@@ -171,34 +173,64 @@ const Api = {
       return wrap(axios.put(url, payload))
     },
     SetChildren: (groupName, childIds, fields = DefaultFields.Groups.Get) => {
-      let url = `/api/v1/groups/${groupName}/set_children?_fields=${fields.join(',')}`
+      let url = `/api/v1/groups/${groupName}/set_children?_fields=${fields.join(
+        ','
+      )}`
       let payload = { child_ids: childIds }
       return wrap(axios.put(url, payload))
     },
     SetHosts: (groupName, hostIds, fields = DefaultFields.Groups.Get) => {
-      let url = `/api/v1/groups/${groupName}/set_hosts?_fields=${fields.join(',')}`
+      let url = `/api/v1/groups/${groupName}/set_hosts?_fields=${fields.join(
+        ','
+      )}`
       let payload = { host_ids: hostIds }
       return wrap(axios.put(url, payload))
     },
-    Delete: (groupName) => {
+    Delete: groupName => {
       let url = `/api/v1/groups/${groupName}`
       return wrap(axios.delete(url))
     },
-    MassMove: (groupIds, projectId) => {
-      let payload = { group_ids: groupIds, project_id: projectId }
+    MassMove: (groupIds, workGroupId) => {
+      let payload = { group_ids: groupIds, work_group_id: workGroupId }
       let url = '/api/v1/groups/mass_move'
       return wrap(axios.post(url, payload))
     },
-    MassDelete: (groupIds) => {
+    MassDelete: groupIds => {
       let payload = { group_ids: groupIds }
       let url = '/api/v1/groups/mass_delete'
       return wrap(axios.post(url, payload))
     }
   },
+  NetworkGroups: {
+    List: (
+      page,
+      filter,
+      fields = DefaultFields.NetworkGroups.List,
+      limit = null
+    ) => {
+      let url = `/api/v1/network_groups/?_fields=${fields.join(
+        ','
+      )}&_page=${page}&_filter=${filter}`
+      if (limit) {
+        url += `&limit=${limit}`
+      }
+      return wrap(axios.get(url))
+    },
+    Get: (groupName, fields = DefaultFields.NetworkGroups.Get) => {
+      const url = `/api/v1/network_groups/${groupName}?_fields=${fields.join(
+        ','
+      )}`
+      return wrap(axios.get(url))
+    }
+  },
   Hosts: {
     List: (page, filter, fields = DefaultFields.Hosts.List, limit = null) => {
-      let url = `/api/v1/hosts/?_fields=${fields.join(',')}&_page=${page}&_filter=${filter}`
-      if (limit) { url += `&_limit=${limit}` }
+      let url = `/api/v1/hosts/?_fields=${fields.join(
+        ','
+      )}&_page=${page}&_filter=${filter}`
+      if (limit) {
+        url += `&_limit=${limit}`
+      }
       return wrap(axios.get(url))
     },
     Get: (hostName, fields = DefaultFields.Hosts.Get) => {
@@ -209,15 +241,15 @@ const Api = {
       let url = `/api/v1/hosts/${hostName}`
       return wrap(axios.put(url, payload))
     },
-    Create: (payload) => {
+    Create: payload => {
       let url = '/api/v1/hosts/'
       return wrap(axios.post(url, payload))
     },
-    Delete: (hostName) => {
+    Delete: hostName => {
       let url = `/api/v1/hosts/${hostName}`
       return wrap(axios.delete(url))
     },
-    MassDelete: (hostIds) => {
+    MassDelete: hostIds => {
       let payload = { host_ids: hostIds }
       let url = '/api/v1/hosts/mass_delete'
       return wrap(axios.post(url, payload))
@@ -233,41 +265,64 @@ const Api = {
       return wrap(axios.post(url, payload))
     }
   },
-  Projects: {
-    List: (page, filter, fields = DefaultFields.Projects.List, limit = null) => {
-      let url = `/api/v1/projects/?_fields=${fields.join(',')}&_page=${page}&_filter=${filter}`
-      if (limit) { url += `&_limit=${limit}` }
+  WorkGroups: {
+    List: (
+      page,
+      filter,
+      fields = DefaultFields.WorkGroups.List,
+      limit = null
+    ) => {
+      let url = `/api/v1/work_groups/?_fields=${fields.join(
+        ','
+      )}&_page=${page}&_filter=${filter}`
+      if (limit) {
+        url += `&_limit=${limit}`
+      }
       return wrap(axios.get(url))
     },
-    Get: (projectName, fields = DefaultFields.Projects.Get) => {
-      let url = `/api/v1/projects/${projectName}?_fields=${fields.join(',')}`
+    Get: (workGroupName, fields = DefaultFields.WorkGroups.Get) => {
+      let url = `/api/v1/work_groups/${workGroupName}?_fields=${fields.join(
+        ','
+      )}`
       return wrap(axios.get(url))
     },
-    Update: (projectName, payload, fields = DefaultFields.Projects.Get) => {
-      let url = `/api/v1/projects/${projectName}?_fields=${fields.join(',')}`
+    Update: (workGroupName, payload, fields = DefaultFields.WorkGroups.Get) => {
+      let url = `/api/v1/work_groups/${workGroupName}?_fields=${fields.join(
+        ','
+      )}`
       return wrap(axios.put(url, payload))
     },
-    Create: (payload, fields = DefaultFields.Projects.Get) => {
-      let url = `/api/v1/projects/?_fields=${fields.join(',')}`
+    Create: (payload, fields = DefaultFields.WorkGroups.Get) => {
+      let url = `/api/v1/work_groups/?_fields=${fields.join(',')}`
       return wrap(axios.post(url, payload))
     },
-    SetMembers: (projectName, memberIds, fields = DefaultFields.Projects.Get) => {
-      let url = `/api/v1/projects/${projectName}/set_members?_fields=${fields.join(',')}`
+    SetMembers: (
+      workGroupName,
+      memberIds,
+      fields = DefaultFields.WorkGroups.Get
+    ) => {
+      let url = `/api/v1/work_groups/${workGroupName}/set_members?_fields=${fields.join(
+        ','
+      )}`
       return wrap(axios.post(url, { member_ids: memberIds }))
     },
-    Delete: (projectName) => {
-      let url = `/api/v1/projects/${projectName}`
+    Delete: workGroupName => {
+      let url = `/api/v1/work_groups/${workGroupName}`
       return wrap(axios.delete(url))
     },
-    ChangeOwner: (projectName, ownerId) => {
-      let url = `/api/v1/projects/${projectName}/switch_owner`
+    ChangeOwner: (workGroupName, ownerId) => {
+      let url = `/api/v1/work_groups/${workGroupName}/switch_owner`
       return wrap(axios.post(url, { owner_id: ownerId }))
     }
   },
   Users: {
     List: (page, filter, fields = DefaultFields.Users.List, limit = null) => {
-      let url = `/api/v1/users/?_fields=${fields.join(',')}&_page=${page}&_filter=${filter}`
-      if (limit) { url += `&_limit=${limit}` }
+      let url = `/api/v1/users/?_fields=${fields.join(
+        ','
+      )}&_page=${page}&_filter=${filter}`
+      if (limit) {
+        url += `&_limit=${limit}`
+      }
       return wrap(axios.get(url))
     },
     Get: (userName, fields = DefaultFields.Users.Get) => {
@@ -282,25 +337,42 @@ const Api = {
       let url = '/api/v1/users/'
       return wrap(axios.post(url, payload))
     },
-    Delete: (userName) => {
+    Delete: userName => {
       let url = `/api/v1/users/${userName}`
       return wrap(axios.delete(url))
     },
     ChangePassword: (userName, newPassword, confirmPassword) => {
       let url = `/api/v1/users/${userName}/set_password`
-      let payload = { password_raw: newPassword, password_raw_confirm: confirmPassword }
+      let payload = {
+        password_raw: newPassword,
+        password_raw_confirm: confirmPassword
+      }
       return wrap(axios.put(url, payload))
     },
     SetSupervisor: (userName, supervisor) => {
       let url = `/api/v1/users/${userName}/set_supervisor`
       let payload = { supervisor }
       return wrap(axios.put(url, payload))
+    },
+    SetSystem: (userName, system) => {
+      let url = `/api/v1/users/${userName}/set_system`
+      let payload = { system }
+      return wrap(axios.put(url, payload))
     }
   },
   Datacenters: {
-    List: (page, filter, fields = DefaultFields.Datacenters.List, limit = null) => {
-      let url = `/api/v1/datacenters/?_fields=${fields.join(',')}&_page=${page}&_filter=${filter}`
-      if (limit) { url += `&_limit=${limit}` }
+    List: (
+      page,
+      filter,
+      fields = DefaultFields.Datacenters.List,
+      limit = null
+    ) => {
+      let url = `/api/v1/datacenters/?_fields=${fields.join(
+        ','
+      )}&_page=${page}&_filter=${filter}`
+      if (limit) {
+        url += `&_limit=${limit}`
+      }
       return wrap(axios.get(url))
     },
     FullList: () => {
@@ -318,7 +390,7 @@ const Api = {
       let url = `/api/v1/datacenters/${dcName}?_fields=${fields.join(',')}`
       return wrap(axios.put(url, payload))
     },
-    Delete: (dcName) => {
+    Delete: dcName => {
       let url = `/api/v1/datacenters/${dcName}`
       return wrap(axios.delete(url))
     }
@@ -331,7 +403,9 @@ const Api = {
       return wrap(axios.post('/api/v1/account/logout'))
     },
     Authenticate: (username, password) => {
-      return wrap(axios.post('/api/v1/account/authenticate', { username, password }))
+      return wrap(
+        axios.post('/api/v1/account/authenticate', { username, password })
+      )
     }
   },
   Open: {
@@ -340,7 +414,12 @@ const Api = {
     }
   },
   Actions: {
-    List: (page, actionTypes = [], fields = DefaultFields.Actions.List, limit = null) => {
+    List: (
+      page,
+      actionTypes = [],
+      fields = DefaultFields.Actions.List,
+      limit = null
+    ) => {
       let url = `/api/v1/actions/?_page=${page}&_fields=${fields.join(',')}`
       if (actionTypes && actionTypes.length > 0) {
         url += `&_action_types=${actionTypes.join(',')}`

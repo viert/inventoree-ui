@@ -22,7 +22,7 @@ export default {
     }
   },
   computed: {
-    hostLink () {
+    hostLink() {
       return `/hosts/${this.fqdn}`
     }
   }
@@ -31,10 +31,7 @@ export default {
 
 <style>
 .Host::before {
-  font-family: FontAwesome;
-  padding-right: 0.2em;
-  position: relative;
   top: 0.04em;
-  content: "\f109";
+  content: '\f109';
 }
 </style>

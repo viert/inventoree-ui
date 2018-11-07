@@ -2,12 +2,12 @@
   <picker
     inputClass="form-control"
     inputPickedClass="is-valid"
-    placeholder="Project Name"
-    :suggestions="projects"
+    placeholder="ServerGroup Name"
+    :suggestions="server_groups"
     :value="filter"
     :getValue="getValue"
     :getIndex="getIndex"
-    :pickedItem="project"
+    :pickedItem="serverGroup"
     @change="inputChanged"
     @clear="$emit('clear')"
     @pick="$emit('pick', $event)" />
@@ -19,7 +19,7 @@ import Api from '@/api'
 
 export default {
   props: {
-    project: {
+    serverGroup: {
       type: Object,
       default: () => {}
     }
@@ -27,30 +27,25 @@ export default {
   components: {
     Picker
   },
-  data () {
+  data() {
     return {
-      projects: [],
+      server_groups: [],
       filter: ''
     }
   },
   methods: {
-    inputChanged (newVal) {
+    inputChanged(newVal) {
       this.filter = newVal
-      Api.Projects.List(1, newVal, ['_id', 'name'], 5)
-        .then(response => {
-          this.projects = response.data.data
-        })
+      Api.ServerGroups.List(1, newVal, ['_id', 'name'], 5).then(response => {
+        this.server_groups = response.data.data
+      })
     },
-    getValue (s) {
+    getValue(s) {
       return s.name
     },
-    getIndex (s) {
+    getIndex(s) {
       return s._id
     }
   }
 }
 </script>
-
-<style>
-
-</style>

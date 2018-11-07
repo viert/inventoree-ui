@@ -3,9 +3,6 @@ import Router from 'vue-router'
 import GroupList from '@/components/Groups/GroupList'
 import GroupView from '@/components/Groups/GroupView'
 import GroupEdit from '@/components/Groups/GroupEdit'
-import ProjectList from '@/components/Projects/ProjectList'
-import ProjectView from '@/components/Projects/ProjectView'
-import ProjectEdit from '@/components/Projects/ProjectEdit'
 import DatacenterList from '@/components/Datacenters/DatacenterList'
 import DatacenterView from '@/components/Datacenters/DatacenterView'
 import DatacenterEdit from '@/components/Datacenters/DatacenterEdit'
@@ -15,6 +12,11 @@ import UserEdit from '@/components/Users/UserEdit'
 import HostList from '@/components/Hosts/HostList'
 import HostView from '@/components/Hosts/HostView'
 import HostEdit from '@/components/Hosts/HostEdit'
+import WorkGroupList from '@/components/WorkGroups/WorkGroupList'
+import WorkGroupView from '@/components/WorkGroups/WorkGroupView'
+import WorkGroupEdit from '@/components/WorkGroups/WorkGroupEdit'
+import NetworkGroupList from '@/components/NetworkGroups/NetworkGroupList'
+import NetworkGroupView from '@/components/NetworkGroups/NetworkGroupView'
 import ActionList from '@/components/Actions/ActionList'
 import ActionView from '@/components/Actions/ActionView'
 
@@ -31,6 +33,16 @@ export default new Router({
       path: '/actions/:actionId',
       name: 'action_view',
       component: ActionView
+    },
+    {
+      path: '/network_groups',
+      name: 'network_group_list',
+      component: NetworkGroupList
+    },
+    {
+      path: '/network_groups/:networkGroupName',
+      name: 'network_group_view',
+      component: NetworkGroupView
     },
     {
       path: '/groups',
@@ -107,27 +119,27 @@ export default new Router({
       }
     },
     {
-      path: '/projects',
-      name: 'project_list',
-      component: ProjectList
+      path: '/work_groups',
+      name: 'work_group_list',
+      component: WorkGroupList
     },
     {
-      path: '/projects/:projectName',
-      name: 'project_view',
-      component: ProjectView
+      path: '/work_groups/:workGroupName',
+      name: 'work_group_view',
+      component: WorkGroupView
     },
     {
-      path: '/projects/++/edit',
-      name: 'project_create',
-      component: ProjectEdit,
+      path: '/work_groups/++/edit',
+      name: 'work_group_create',
+      component: WorkGroupEdit,
       props: {
         create: true
       }
     },
     {
-      path: '/projects/:projectName/edit',
-      name: 'project_edit',
-      component: ProjectEdit,
+      path: '/work_groups/:workGroupName/edit',
+      name: 'work_group_edit',
+      component: WorkGroupEdit,
       props: {
         create: false
       }

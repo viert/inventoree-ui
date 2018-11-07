@@ -22,7 +22,7 @@ export default {
     }
   },
   computed: {
-    userLink () {
+    userLink() {
       return `/users/${this.username}`
     }
   }
@@ -31,10 +31,7 @@ export default {
 
 <style>
 .User::before {
-    font-family: FontAwesome;
-    padding-right: 0.2em;
-    position: relative;
-    top: 0;
-    content: "\f007";
+  top: 0;
+  content: '\f007';
 }
 </style>

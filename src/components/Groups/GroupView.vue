@@ -22,7 +22,7 @@
             <div class="Card_Field">{{ group.description }}</div>
           </div>
           <div class="row">
-            <div class="col-sm-5">
+            <div class="col-sm-6">
               <div class="Card_Field">
                 <label class="Card_FieldLabel">Id</label>
                 <div @click="selectAll">{{group._id}}</div>
@@ -46,10 +46,10 @@
                   :cfValue="cf.value" />
               </div>
             </div>
-            <div class="col-sm-7">
+            <div class="col-sm-6">
               <div class="Card_Field">
-                <label class="Card_FieldLabel">Project</label>
-                <div><project :name="group.project_name" /></div>
+                <label class="Card_FieldLabel">WorkGroup</label>
+                <div><work-group :name="group.work_group_name" /></div>
               </div>
               <div class="Card_Field">
                 <label class="Card_FieldLabel">Children</label>
@@ -96,7 +96,7 @@ export default {
       group: {
         name: '',
         description: '',
-        project_name: '',
+        work_group_name: '',
         children: [],
         hosts: [],
         all_tags: [],

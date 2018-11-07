@@ -1,6 +1,6 @@
 {
-  "name": "conductor-front-vue",
-  "version": "1.0.0",
+  "name": "inventoree-ui",
+  "version": "1.1.0",
   "description": "A Vue.js project",
   "author": "Pavel Vorobyov <p.vorobyov@corp.mail.ru>",
   "private": true,

@@ -1,14 +1,14 @@
 <template>
   <div class="Card">
     <div class="CardHeader">
-      <h3>Action: change project owner</h3>
+      <h3>Action: change workgroup owner</h3>
       <div class="Card_Field">Invoked by <user :username="action.username" :link="false" />, {{ actionDatetime }}</div>
     </div>
     <div class="row">
       <div class="col-sm-6">
         <div class="Card_Field">
-          <label class="Card_FieldLabel">Project</label>
-          <project :name="action.computed.project_name" :link="false" />
+          <label class="Card_FieldLabel">WorkGroup</label>
+          <work-group :name="action.computed.work_group_name" :link="false" />
         </div>
         <div class="Card_Field">
           <label class="Card_FieldLabel">New Owner</label>
@@ -26,8 +26,6 @@
 <script>
 import ActionViewMixin from '@/mixins/ActionViewMixin'
 export default {
-  mixins: [
-    ActionViewMixin
-  ]
+  mixins: [ActionViewMixin]
 }
 </script>

@@ -46,24 +46,24 @@
             </div>
             <div class="col-sm-7">
               <div class="Card_Field">
-                <label class="Card_FieldLabel">Projects Owned</label>
+                <label class="Card_FieldLabel">WorkGroups Owned</label>
                 <ul class="RelationsList">
                   <li
-                    v-for="project in user.projects_owned"
+                    v-for="wg in user.work_groups_owned"
                     class="RelationsList_Item"
-                    :key="project._id">
-                    <project :name="project.name" />
+                    :key="wg._id">
+                    <work-group :name="wg.name" />
                   </li>
                 </ul>
               </div>
               <div class="Card_Field">
-                <label class="Card_FieldLabel">Projects Participated In</label>
+                <label class="Card_FieldLabel">WorkGroups Participated In</label>
                 <ul class="RelationsList">
                   <li
-                    v-for="project in user.projects_included_into"
+                    v-for="wg in user.work_groups_included_into"
                     class="RelationsList_Item"
-                    :key="project._id">
-                    <project :name="project.name" />
+                    :key="wg._id">
+                    <work-group :name="wg.name" />
                   </li>
                 </ul>
               </div>
@@ -89,8 +89,8 @@ export default {
         first_name: '',
         last_name: '',
         email: '',
-        projects_owned: [],
-        projects_included_into: [],
+        work_groups_owned: [],
+        work_groups_included_into: [],
         auth_token: '',
         modification_allowed: false,
         supervisor: false

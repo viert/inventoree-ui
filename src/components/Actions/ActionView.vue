@@ -23,6 +23,7 @@ import ModelMassMove from './Views/ModelMassMove'
 import ModelMassDelete from './Views/ModelMassDelete'
 import ModelMassSetDatacenter from './Views/ModelMassSetDatacenter'
 import ModelSetSupervisor from './Views/ModelSetSupervisor'
+import ModelSetSystem from './Views/ModelSetSystem'
 import ModelSetPassword from './Views/ModelSetPassword'
 import ModelSetParent from './Views/ModelSetParent'
 import ModelSetChildren from './Views/ModelSetChildren'
@@ -35,6 +36,15 @@ import ModelAddTags from './Views/ModelAddTags'
 import ModelRemoveTags from './Views/ModelRemoveTags'
 import ModelSetCustomFields from './Views/ModelSetCustomFields'
 import ModelRemoveCustomFields from './Views/ModelRemoveCustomFields'
+
+const ModelNames = [
+  'work_group',
+  'user',
+  'host',
+  'group',
+  'datacenter',
+  'network_group'
+]
 
 export default {
   beforeCreate() {},
@@ -53,6 +63,7 @@ export default {
     ModelMassDelete,
     ModelMassSetDatacenter,
     ModelSetSupervisor,
+    ModelSetSystem,
     ModelSetChildren,
     ModelSetHosts,
     ModelSetParent,
@@ -85,13 +96,19 @@ export default {
   },
   computed: {
     modelName() {
-      return this.action.action_type && this.action.action_type.split('_')[0]
+      if (this.action.action_type) {
+        for (let i = 0; i < ModelNames.length; i++) {
+          if (this.action.action_type.startsWith(ModelNames[i])) {
+            return ModelNames[i]
+          }
+        }
+      }
     },
     modelAction() {
-      return (
-        this.action.action_type &&
-        this.action.action_type.slice(this.action.action_type.indexOf('_') + 1)
-      )
+      let mn = this.modelName
+      if (mn) {
+        return this.action.action_type.replace(this.modelName + '_', '')
+      }
     },
     componentName() {
       return 'model-' + this.modelAction.replace(/_/g, '-')
