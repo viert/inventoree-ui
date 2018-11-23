@@ -82,7 +82,7 @@ export default {
 
 <style scoped>
 .col-datetime {
-  width: 140px;
+  width: 155px;
 }
 .col-username {
   width: 200px;
