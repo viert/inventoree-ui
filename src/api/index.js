@@ -42,8 +42,7 @@ export const DefaultFields = {
       'description',
       'children',
       'parents',
-      'modification_allowed',
-      'hosts'
+      'modification_allowed'
     ]
   },
   Hosts: {
@@ -59,6 +58,7 @@ export const DefaultFields = {
       'group_name',
       'network_group_name'
     ],
+    ListByGroupId: ['_id', 'fqdn'],
     Get: [
       '_id',
       'fqdn',
@@ -229,6 +229,20 @@ const Api = {
       let url = `/api/v1/hosts/?_fields=${fields.join(
         ','
       )}&_page=${page}&_filter=${filter}`
+      if (limit) {
+        url += `&_limit=${limit}`
+      }
+      return wrap(axios.get(url))
+    },
+    ListByGroupId: (
+      groupId,
+      page,
+      fields = DefaultFields.Hosts.List,
+      limit = 40
+    ) => {
+      let url = `/api/v1/hosts/?group_id=${groupId}&_fields=${fields.join(
+        ','
+      )}&_page=${page}`
       if (limit) {
         url += `&_limit=${limit}`
       }
