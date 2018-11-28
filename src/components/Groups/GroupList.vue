@@ -8,21 +8,20 @@
             <i class="fa fa-plus"></i> Create
           </router-link>
         </div>
-        <filter-field :change="filterChanged" :value="filter" />
+        <filter-field :change="filterChanged" :value="filter"/>
       </div>
       <item-list :count="items.length" :filter="filter">
-
         <table class="ModelList">
-          <col class="col-check" />
-          <col class="col-name" />
-          <col class="col-workgroup" />
-          <col class="col-tags" />
-          <col class="col-cf" />
-          <col v-if="itemsSelected.length === 0" class="col-desc" />
+          <col class="col-check">
+          <col class="col-name">
+          <col class="col-workgroup">
+          <col class="col-tags">
+          <col class="col-cf">
+          <col v-if="itemsSelected.length === 0" class="col-desc">
           <thead>
             <tr>
               <th class="ModelList_Select">
-                <fa-checkbox :checked="allSelected" @trigger="toggleAll" />
+                <fa-checkbox :checked="allSelected" @trigger="toggleAll"/>
               </th>
               <th>Name</th>
               <th>WorkGroup</th>
@@ -38,26 +37,28 @@
               :key="group._id"
               :hide-desc="itemsSelected.length > 0"
               @toggle-select="toggleItem"
-              @start-selection="startSelection" />
+              @start-selection="startSelection"
+            />
           </tbody>
         </table>
-        <pagination
-          :current="page"
-          :total="totalPages"
-          @page="pageChanged" />
-
+        <pagination :current="page" :total="totalPages" @page="pageChanged"/>
       </item-list>
     </main>
     <aside v-if="itemsSelected.length > 0" class="SelectPanel">
       <h2 class="ContentHeader_Title">Mass actions</h2>
       <ul class="ListSelected">
-        <li @click="deselectItem(sgroup)" class="ListSelected_Item" v-for="sgroup in itemsSelected" :key="sgroup._id">{{sgroup.name}}</li>
+        <li
+          @click="deselectItem(sgroup)"
+          class="ListSelected_Item"
+          v-for="sgroup in itemsSelected"
+          :key="sgroup._id"
+        >{{sgroup.name}}</li>
       </ul>
       <div class="Form">
         <div class="Form_Field">
           <label class="Form_FieldLabel">Move groups to workgroup</label>
           <div class="input-group">
-            <work-group-picker @pick="workGroupPicked" />
+            <work-group-picker @pick="workGroupPicked"/>
             <div class="input-group-append">
               <button @click="massMoveToWorkGroup" class="btn btn-outline-primary">Move</button>
             </div>
@@ -101,14 +102,19 @@ export default {
   },
   methods: {
     loadData() {
-      return Api.Groups.List(this.page, this.filter).then(response => {
-        this.page = response.data.page
-        this.totalPages = response.data.total_pages
-        this.items = response.data.data.map(item => {
-          item._selected = this.shouldBeSelected(item)
-          return item
+      return Api.Groups.List(this.page, this.filter)
+        .then(this.fixPage)
+        .then(response => {
+          this.items = response.data.data.map(item => {
+            item._selected = this.shouldBeSelected(item)
+            return item
+          })
         })
-      })
+        .catch(e => {
+          if (e && e.message !== 'page_change') {
+            return Promise.reject(e)
+          }
+        })
     },
     startSelection() {
       this.$store.commit('setSelectMode', true)

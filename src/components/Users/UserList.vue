@@ -8,15 +8,15 @@
             <i class="fa fa-plus"></i> Create
           </router-link>
         </div>
-        <filter-field :change="filterChanged" :value="filter" />
+        <filter-field :change="filterChanged" :value="filter"/>
       </div>
       <item-list :count="items.length" :filter="filter">
         <table class="ModelList">
-          <col class="col-username" />
-          <col class="col-fullname" />
-          <col class="col-email" />
-          <col class="col-supervisor" />
-          <col class="col-system" />
+          <col class="col-username">
+          <col class="col-fullname">
+          <col class="col-email">
+          <col class="col-supervisor">
+          <col class="col-system">
           <thead>
             <tr>
               <th>Username</th>
@@ -27,16 +27,10 @@
             </tr>
           </thead>
           <tbody>
-            <user-list-item
-              v-for="user in items"
-              :user="user"
-              :key="user._id" />
+            <user-list-item v-for="user in items" :user="user" :key="user._id"/>
           </tbody>
         </table>
-        <pagination
-          :current="page"
-          :total="totalPages"
-          @page="pageChanged" />
+        <pagination :current="page" :total="totalPages" @page="pageChanged"/>
       </item-list>
     </main>
   </div>
@@ -61,11 +55,16 @@ export default {
   mixins: [FilteredDataMixin],
   methods: {
     loadData() {
-      return Api.Users.List(this.page, this.filter).then(response => {
-        this.items = response.data.data
-        this.page = response.data.page
-        this.totalPages = response.data.total_pages
-      })
+      return Api.Users.List(this.page, this.filter)
+        .then(this.fixPage)
+        .then(response => {
+          this.items = response.data.data
+        })
+        .catch(e => {
+          if (e && e.message !== 'page_change') {
+            return Promise.reject(e)
+          }
+        })
     }
   }
 }

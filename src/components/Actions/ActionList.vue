@@ -4,16 +4,14 @@
       <div class="ContentHeader">
         <h2 class="ContentHeader_Title ContentHeader_Title--Grow">User Action List</h2>
         <div class="ContentHeader_ActionTypeField">
-          <action-type-picker
-            @pick="actionTypePicked"
-            @clear="actionTypeCleared" />
+          <action-type-picker @pick="actionTypePicked" @clear="actionTypeCleared"/>
         </div>
       </div>
       <item-list :filter="actionTypeFilter" :count="items.length">
         <table class="ModelList">
-          <col class="col-datetime"/>
-          <col class="col-username"/>
-          <col class="col-action"/>
+          <col class="col-datetime">
+          <col class="col-username">
+          <col class="col-action">
           <thead>
             <tr>
               <th>Date/Time</th>
@@ -22,17 +20,10 @@
             </tr>
           </thead>
           <tbody>
-            <action-list-item
-              v-for="item in items"
-              :key="item._id"
-              :action="item"
-              />
+            <action-list-item v-for="item in items" :key="item._id" :action="item"/>
           </tbody>
         </table>
-        <pagination
-          :current="page"
-          :total="totalPages"
-          @page="pageChanged" />
+        <pagination :current="page" :total="totalPages" @page="pageChanged"/>
       </item-list>
     </main>
   </div>
@@ -62,11 +53,16 @@ export default {
     loadData() {
       let actionTypes =
         this.actionTypeFilter === '' ? [] : [this.actionTypeFilter]
-      Api.Actions.List(this.page, actionTypes).then(response => {
-        this.items = response.data.data
-        this.page = response.data.page
-        this.totalPages = response.data.total_pages
-      })
+      Api.Actions.List(this.page, actionTypes)
+        .then(this.fixPage)
+        .then(response => {
+          this.items = response.data.data
+        })
+        .catch(e => {
+          if (e && e.message !== 'page_change') {
+            return Promise.reject(e)
+          }
+        })
     },
     actionTypePicked(aType) {
       this.actionTypeFilter = aType.name

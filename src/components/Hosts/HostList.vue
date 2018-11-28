@@ -8,21 +8,21 @@
             <i class="fa fa-plus"></i> Create
           </router-link>
         </div>
-        <filter-field :change="filterChanged" :value="filter" />
+        <filter-field :change="filterChanged" :value="filter"/>
       </div>
       <item-list :count="items.length" :filter="filter">
         <table class="ModelList">
-          <col class="col-check" />
-          <col class="col-fqdn" />
-          <col class="col-dc" />
-          <col class="col-group" />
-          <col class="col-tags" />
-          <col class="col-cf" />
-          <col v-if="itemsSelected.length === 0" class="col-desc" />
+          <col class="col-check">
+          <col class="col-fqdn">
+          <col class="col-dc">
+          <col class="col-group">
+          <col class="col-tags">
+          <col class="col-cf">
+          <col v-if="itemsSelected.length === 0" class="col-desc">
           <thead>
             <tr>
               <th class="ModelList_Select">
-                <fa-checkbox :checked="allSelected" @trigger="toggleAll" />
+                <fa-checkbox :checked="allSelected" @trigger="toggleAll"/>
               </th>
               <th>FQDN</th>
               <th>Datacenter</th>
@@ -39,25 +39,28 @@
               :key="host._id"
               :hide-desc="itemsSelected.length > 0"
               @toggle-select="toggleItem"
-              @start-selection="startSelection" />
+              @start-selection="startSelection"
+            />
           </tbody>
         </table>
-        <pagination
-          :current="page"
-          :total="totalPages"
-          @page="pageChanged" />
+        <pagination :current="page" :total="totalPages" @page="pageChanged"/>
       </item-list>
     </main>
     <aside v-if="itemsSelected.length > 0" class="SelectPanel">
       <h2 class="ContentHeader_Title">Mass actions</h2>
       <ul class="ListSelected">
-        <li @click="deselectItem(shost)" class="ListSelected_Item" v-for="shost in itemsSelected" :key="shost._id">{{shost.fqdn}}</li>
+        <li
+          @click="deselectItem(shost)"
+          class="ListSelected_Item"
+          v-for="shost in itemsSelected"
+          :key="shost._id"
+        >{{shost.fqdn}}</li>
       </ul>
       <div class="Form">
         <div class="Form_Field">
           <label class="Form_FieldLabel">Move hosts to group</label>
           <div class="input-group">
-            <group-picker @pick="destGroup = $event" @clear="destGroup = null" />
+            <group-picker @pick="destGroup = $event" @clear="destGroup = null"/>
             <div class="input-group-append">
               <button @click="massMoveToGroup" class="btn btn-outline-primary">Move</button>
             </div>
@@ -66,7 +69,7 @@
         <div class="Form_Field">
           <label class="Form_FieldLabel">Move hosts to datacenter</label>
           <div class="input-group">
-            <datacenter-picker @pick="destDatacenter = $event" @clear="destDatacenter = null" />
+            <datacenter-picker @pick="destDatacenter = $event" @clear="destDatacenter = null"/>
             <div class="input-group-append">
               <button @click="massMoveToDatacenter" class="btn btn-outline-primary">Move</button>
             </div>
@@ -116,14 +119,31 @@ export default {
   },
   methods: {
     loadData() {
-      return Api.Hosts.List(this.page, this.filter).then(response => {
-        this.page = response.data.page
-        this.totalPages = response.data.total_pages
-        this.items = response.data.data.map(item => {
-          item._selected = this.shouldBeSelected(item)
-          return item
+      return Api.Hosts.List(this.page, this.filter)
+        .then(this.postLoad)
+        .then(response => {
+          this.items = response.data.data.map(item => {
+            item._selected = this.shouldBeSelected(item)
+            return item
+          })
         })
-      })
+        .catch(e => {
+          if (e && e.message !== 'page_change') {
+            return Promise.reject(e)
+          }
+        })
+    },
+    postLoad(response) {
+      if (
+        response.data.total_pages > 0 &&
+        response.data.page > response.data.total_pages
+      ) {
+        this.pageChanged(response.data.total_pages)
+        return Promise.reject(new Error('page_change'))
+      }
+      this.page = response.data.page
+      this.totalPages = response.data.total_pages
+      return Promise.resolve(response)
     },
     startSelection() {
       this.$store.commit('setSelectMode', true)

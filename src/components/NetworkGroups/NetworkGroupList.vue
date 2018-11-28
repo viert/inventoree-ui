@@ -3,15 +3,14 @@
     <main class="PageMain">
       <div class="ContentHeader">
         <h2 class="ContentHeader_Title">Network Group List</h2>
-        <div class="ContentHeader_Buttons">
-        </div>
-        <filter-field :change="filterChanged" :value="filter" />
+        <div class="ContentHeader_Buttons"></div>
+        <filter-field :change="filterChanged" :value="filter"/>
       </div>
       <item-list :count="items.length" :filter="filter">
         <table class="ModelList">
-          <col class="col-name" />
-          <col class="col-workgroup" />
-          <col class="col-master" />
+          <col class="col-name">
+          <col class="col-workgroup">
+          <col class="col-master">
           <thead>
             <tr>
               <th>Name</th>
@@ -23,13 +22,11 @@
             <network-group-list-item
               v-for="network_group in items"
               :network_group="network_group"
-              :key="network_group._id" />
+              :key="network_group._id"
+            />
           </tbody>
         </table>
-        <pagination
-          :current="page"
-          :total="totalPages"
-          @page="pageChanged" />
+        <pagination :current="page" :total="totalPages" @page="pageChanged"/>
       </item-list>
     </main>
   </div>
@@ -54,11 +51,16 @@ export default {
   mixins: [FilteredDataMixin],
   methods: {
     loadData() {
-      return Api.NetworkGroups.List(this.page, this.filter).then(response => {
-        this.items = response.data.data
-        this.page = response.data.page
-        this.totalPages = response.data.total_pages
-      })
+      return Api.NetworkGroups.List(this.page, this.filter)
+        .then(this.fixPage)
+        .then(response => {
+          this.items = response.data.data
+        })
+        .catch(e => {
+          if (e && e.message !== 'page_change') {
+            return Promise.reject(e)
+          }
+        })
     }
   }
 }
