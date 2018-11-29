@@ -133,18 +133,6 @@ export default {
           }
         })
     },
-    postLoad(response) {
-      if (
-        response.data.total_pages > 0 &&
-        response.data.page > response.data.total_pages
-      ) {
-        this.pageChanged(response.data.total_pages)
-        return Promise.reject(new Error('page_change'))
-      }
-      this.page = response.data.page
-      this.totalPages = response.data.total_pages
-      return Promise.resolve(response)
-    },
     startSelection() {
       this.$store.commit('setSelectMode', true)
     },
