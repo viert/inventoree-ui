@@ -120,7 +120,7 @@ export default {
   methods: {
     loadData() {
       return Api.Hosts.List(this.page, this.filter)
-        .then(this.postLoad)
+        .then(this.fixPage)
         .then(response => {
           this.items = response.data.data.map(item => {
             item._selected = this.shouldBeSelected(item)
