@@ -1,10 +1,24 @@
 <template>
   <div class="row">
-    <div class="col-sm-4">
-      <input class="form-control" placeholder="Key" :value="field.key" name="cfkey" @input="handleChange" type="text" />
+    <div class="col-sm-5">
+      <input
+        class="form-control"
+        placeholder="Key"
+        :value="field.key"
+        name="cfkey"
+        @input="handleChange"
+        type="text"
+      >
     </div>
-    <div class="col-sm-8">
-      <input class="form-control" placeholder="Value" :value="field.value" name="cfvalue" @input="handleChange" type="text" />
+    <div class="col-sm-7">
+      <input
+        class="form-control"
+        placeholder="Value"
+        :value="field.value"
+        name="cfvalue"
+        @input="handleChange"
+        type="text"
+      >
     </div>
   </div>
 </template>
@@ -14,12 +28,14 @@ export default {
   props: {
     field: {
       type: Object,
-      default: () => { return { key: '', value: '' } }
+      default: () => {
+        return { key: '', value: '' }
+      }
     }
   },
   methods: {
-    handleChange (e) {
-      let field = {...this.field}
+    handleChange(e) {
+      let field = { ...this.field }
       switch (e.target.name) {
         case 'cfkey':
           field.key = e.target.value
@@ -35,5 +51,4 @@ export default {
 </script>
 
 <style>
-
 </style>

@@ -38,7 +38,7 @@ export const DefaultFields = {
       'custom_fields',
       'tags',
       'all_tags',
-      'all_custom_fields',
+      'custom_data',
       'description',
       'children',
       'parents',
