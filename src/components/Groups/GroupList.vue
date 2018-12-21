@@ -16,7 +16,6 @@
           <col class="col-name">
           <col class="col-workgroup">
           <col class="col-tags">
-          <col class="col-cf">
           <col v-if="itemsSelected.length === 0" class="col-desc">
           <thead>
             <tr>
@@ -26,7 +25,6 @@
               <th>Name</th>
               <th>WorkGroup</th>
               <th>Tags</th>
-              <th>Custom Fields</th>
               <th v-if="itemsSelected.length === 0">Description</th>
             </tr>
           </thead>

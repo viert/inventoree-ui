@@ -76,6 +76,12 @@
                       >
                         <group :name="child.name"/>
                       </li>
+                      <li v-if="hasMoreChildren">
+                        <button
+                          @click.prevent="loadChildren(groupPage+1)"
+                          class="btn-outline-secondary btn btn-sm btn-block btn-hasmore"
+                        >More children...</button>
+                      </li>
                     </ul>
                   </div>
                   <div class="Card_Field">
@@ -137,6 +143,8 @@ export default {
       },
       hostPage: null,
       hostTotalPages: null,
+      groupPage: null,
+      groupTotalPages: null,
       yamlData: ''
     }
   },
@@ -153,6 +161,13 @@ export default {
         this.hostTotalPages &&
         this.hostPage < this.hostTotalPages
       )
+    },
+    hasMoreChildren() {
+      return (
+        this.groupPage &&
+        this.groupTotalPages &&
+        this.groupPage < this.groupTotalPages
+      )
     }
   },
   methods: {
@@ -163,6 +178,7 @@ export default {
           this.group = response.data.data[0]
           this.createYaml()
           this.loadHosts()
+          this.loadChildren()
         })
         .catch(status => {
           if (status === 404) {
@@ -184,6 +200,19 @@ export default {
         this.$set(this.group, 'hosts', hosts)
         this.hostPage = response.data.page
         this.hostTotalPages = response.data.total_pages
+      })
+    },
+    loadChildren(page = 1) {
+      Api.Groups.ListByParentId(this.group._id, page).then(response => {
+        let groups
+        if (!this.group.children || this.group.children.length === 0) {
+          groups = response.data.data
+        } else {
+          groups = [...this.group.children, ...response.data.data]
+        }
+        this.$set(this.group, 'children', groups)
+        this.groupPage = response.data.page
+        this.groupTotalPages = response.data.total_pages
       })
     }
   },

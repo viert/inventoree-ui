@@ -93,8 +93,8 @@
                 <tag-editor :tags="host.tags" @add="addTag" @remove="removeTag"/>
               </div>
               <div class="Form_Field Form_Field--CFE">
-                <label class="Form_FieldLabel">Custom Fields</label>
-                <custom-field-editor :fields="host.custom_fields" @change="cfChange"/>
+                <label class="Form_FieldLabel">Custom Data</label>
+                <yaml-editor :value="yamlData" @change="handleCustomDataChange"/>
               </div>
               <div class="Form_Buttons">
                 <button type="submit" class="btn btn-primary" @click="handleSave">Save</button>
@@ -154,12 +154,13 @@
 </template>
 
 <script>
+import yaml from 'js-yaml'
 import Api from '@/api'
 import GroupPicker from '@/components/Picker/GroupPicker'
 import DatacenterPicker from '@/components/Picker/DatacenterPicker'
 import ServerGroupPicker from '@/components/Picker/ServerGroupPicker'
 import TagEditor from '@/components/Common/TagEditor'
-import CustomFieldEditor from '@/components/Common/CustomFieldEditor/CustomFieldEditor'
+import YamlEditor from '@/components/Common/YamlEditor'
 import ListEditor from '@/components/Common/ListEditor'
 import { hasValidPatterns, expandPattern } from '@/lib/Permutation'
 
@@ -170,7 +171,7 @@ const editorFields = [
   'group',
   'tags',
   'server_group',
-  'custom_fields',
+  'local_custom_data',
   'aliases',
   'description'
 ]
@@ -190,8 +191,8 @@ export default {
     GroupPicker,
     DatacenterPicker,
     ServerGroupPicker,
+    YamlEditor,
     TagEditor,
-    CustomFieldEditor,
     ListEditor
   },
   data() {
@@ -201,25 +202,31 @@ export default {
         fqdn: '',
         description: '',
         tags: [],
-        custom_fields: [],
+        local_custom_data: {},
         aliases: [],
         group: null,
         datacenter: null,
         server_group: null
       },
-      hostList: []
+      hostList: [],
+      yamlData: ''
     }
   },
   created() {
     this.reload()
   },
   methods: {
+    handleCustomDataChange(value) {
+      this.yamlData = value
+      this.host.local_custom_data = yaml.safeLoad(value)
+    },
     reload() {
       if (!this.create) {
         let { hostName } = this.$route.params
         Api.Hosts.Get(hostName, editorFields)
           .then(response => {
             this.host = response.data.data[0]
+            this.createYaml()
           })
           .catch(status => {
             if (status === 404) {
@@ -232,12 +239,16 @@ export default {
           fqdn: '',
           description: '',
           tags: [],
-          custom_fields: [],
+          local_custom_data: {},
           aliases: [],
           group: null,
           datacenter: null
         }
+        this.createYaml()
       }
+    },
+    createYaml() {
+      this.yamlData = yaml.safeDump(this.host.local_custom_data)
     },
     addTag(tag) {
       this.host.tags.push(tag)
@@ -267,7 +278,7 @@ export default {
 
       let payload = {
         tags: [...this.host.tags],
-        custom_fields: [...this.host.custom_fields],
+        local_custom_data: { ...this.host.local_custom_data },
         aliases: [...this.host.aliases],
         description,
         group_id: group ? group._id : null,

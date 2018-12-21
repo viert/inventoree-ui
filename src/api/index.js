@@ -28,19 +28,17 @@ export const DefaultFields = {
       'custom_fields',
       'tags',
       'all_tags',
-      'all_custom_fields',
       'description'
     ],
+    ListByParentId: ['_id', 'name'],
     Get: [
       '_id',
       'name',
       'work_group_name',
-      'custom_fields',
       'tags',
       'all_tags',
       'custom_data',
       'description',
-      'children',
       'parents',
       'modification_allowed'
     ]
@@ -50,10 +48,8 @@ export const DefaultFields = {
       '_id',
       'fqdn',
       'datacenter_name',
-      'custom_fields',
       'tags',
       'all_tags',
-      'all_custom_fields',
       'description',
       'group_name',
       'network_group_name'
@@ -63,10 +59,9 @@ export const DefaultFields = {
       '_id',
       'fqdn',
       'datacenter_name',
-      'custom_fields',
       'tags',
       'all_tags',
-      'all_custom_fields',
+      'custom_data',
       'modification_allowed',
       'description',
       'group_name',
@@ -161,6 +156,20 @@ const Api = {
       }
       return wrap(axios.get(url))
     },
+    ListByParentId: (
+      groupId,
+      page,
+      fields = DefaultFields.Groups.ListByParentId,
+      limit = 40
+    ) => {
+      let url = `/api/v1/groups/?parent_id=${groupId}&_fields=${fields.join(
+        ','
+      )}&_page=${page}`
+      if (limit) {
+        url += `&_limit=${limit}`
+      }
+      return wrap(axios.get(url))
+    },
     Get: (groupName, fields = DefaultFields.Groups.Get) => {
       let url = `/api/v1/groups/${groupName}?_fields=${fields.join(',')}`
       return wrap(axios.get(url))
@@ -237,7 +246,7 @@ const Api = {
     ListByGroupId: (
       groupId,
       page,
-      fields = DefaultFields.Hosts.List,
+      fields = DefaultFields.Hosts.ListByGroupId,
       limit = 40
     ) => {
       let url = `/api/v1/hosts/?group_id=${groupId}&_fields=${fields.join(

@@ -17,7 +17,6 @@
           <col class="col-dc">
           <col class="col-group">
           <col class="col-tags">
-          <col class="col-cf">
           <col v-if="itemsSelected.length === 0" class="col-desc">
           <thead>
             <tr>
@@ -28,7 +27,6 @@
               <th>Datacenter</th>
               <th>Group</th>
               <th>Tags</th>
-              <th>Custom Fields</th>
               <th v-if="itemsSelected.length === 0">Description</th>
             </tr>
           </thead>

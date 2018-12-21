@@ -73,6 +73,14 @@
                   </div>
                 </div>
               </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="Form_Buttons">
+                    <button type="submit" class="btn btn-primary" @click="handleSave">Save</button>
+                    <confirm-button class="btn btn-danger" @confirm="handleDestroy">Destroy</confirm-button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div v-if="!create && !clone" class="col-sm-5">
@@ -131,14 +139,6 @@
                   </ul>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="Form_Buttons">
-              <button type="submit" class="btn btn-primary" @click="handleSave">Save</button>
-              <confirm-button class="btn btn-danger" @confirm="handleDestroy">Destroy</confirm-button>
             </div>
           </div>
         </div>
