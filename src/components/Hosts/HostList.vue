@@ -8,6 +8,14 @@
             <i class="fa fa-plus"></i> Create
           </router-link>
         </div>
+        <div class="text-right">
+          <button-switch
+            class="btn-group-sm"
+            @change="handleMineFilterClick"
+            :buttons="mineFilterButtons"
+            :value="mineFilterValue"
+          />
+        </div>
         <filter-field :change="filterChanged" :value="filter"/>
       </div>
       <item-list :count="items.length" :filter="filter">
@@ -92,6 +100,7 @@ import FaCheckbox from '@/components/Common/FaCheckbox'
 import HostListItem from './HostListItem'
 import GroupPicker from '@/components/Picker/GroupPicker'
 import Pagination from '@/components/Common/Pagination'
+import ButtonSwitch from '@/components/Common/ButtonSwitch'
 import DatacenterPicker from '@/components/Picker/DatacenterPicker'
 import FilteredDataMixin from '@/mixins/FilteredDataMixin'
 import MassSelect from '@/mixins/MassSelect'
@@ -104,12 +113,14 @@ export default {
     FaCheckbox,
     GroupPicker,
     DatacenterPicker,
+    ButtonSwitch,
     Pagination
   },
   data() {
     return {
       destGroup: null,
-      destDatacenter: null
+      destDatacenter: null,
+      mineFilter: true
     }
   },
   computed: {
@@ -117,7 +128,7 @@ export default {
   },
   methods: {
     loadData() {
-      return Api.Hosts.List(this.page, this.filter)
+      return Api.Hosts.List(this.page, this.filter, this.mineFilter)
         .then(this.fixPage)
         .then(response => {
           this.items = response.data.data.map(item => {

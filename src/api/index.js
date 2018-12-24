@@ -147,10 +147,16 @@ export const DefaultFields = {
 
 const Api = {
   Groups: {
-    List: (page, filter, fields = DefaultFields.Groups.List, limit = null) => {
+    List: (
+      page,
+      filter,
+      mineFilter = false,
+      fields = DefaultFields.Groups.List,
+      limit = null
+    ) => {
       let url = `/api/v1/groups/?_fields=${fields.join(
         ','
-      )}&_page=${page}&_filter=${filter}`
+      )}&_page=${page}&_filter=${filter}&_mine=${mineFilter}`
       if (limit) {
         url += `&_limit=${limit}`
       }
@@ -234,10 +240,16 @@ const Api = {
     }
   },
   Hosts: {
-    List: (page, filter, fields = DefaultFields.Hosts.List, limit = null) => {
+    List: (
+      page,
+      filter,
+      mineFilter = false,
+      fields = DefaultFields.Hosts.List,
+      limit = null
+    ) => {
       let url = `/api/v1/hosts/?_fields=${fields.join(
         ','
-      )}&_page=${page}&_filter=${filter}`
+      )}&_page=${page}&_filter=${filter}&_mine=${mineFilter}`
       if (limit) {
         url += `&_limit=${limit}`
       }
