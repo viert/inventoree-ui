@@ -1,3 +1,5 @@
+const mineFilterButtons = ['mine', 'all']
+
 const FilteredDataMixin = {
   data() {
     let page = this.$route.query._page ? parseInt(this.$route.query._page) : 1
@@ -7,6 +9,8 @@ const FilteredDataMixin = {
       filterDirty: false,
       page,
       totalPages,
+      mineFilterButtons,
+      mineFilter: false,
       _tm: null
     }
   },
@@ -17,6 +21,11 @@ const FilteredDataMixin = {
   beforeDestroy() {
     clearInterval(this._tm)
     this._tm = null
+  },
+  computed: {
+    mineFilterValue() {
+      return this.mineFilter ? 'mine' : 'all'
+    }
   },
   methods: {
     updateData() {
@@ -29,6 +38,9 @@ const FilteredDataMixin = {
         })
       }
     },
+    handleMineFilterClick(value) {
+      this.mineFilterChanged(value === 'mine')
+    },
     setQuery() {
       let query = {
         _page: this.page
@@ -36,10 +48,18 @@ const FilteredDataMixin = {
       if (this.filter) {
         query._filter = this.filter
       }
+      if (!this.mineFilter) {
+        query.all = true
+      }
       this.$router.replace({ query })
     },
     filterChanged(e) {
       this.filter = e.target.value
+      this.filterDirty = true
+      this.setQuery()
+    },
+    mineFilterChanged(value) {
+      this.mineFilter = value
       this.filterDirty = true
       this.setQuery()
     },

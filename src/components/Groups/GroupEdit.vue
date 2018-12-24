@@ -4,50 +4,86 @@
       <div class="ContentHeader">
         <h2 class="ContentHeader_Title">Edit Group</h2>
         <div class="ContentHeader_Buttons">
-          <router-link v-if="!create && !clone" :to="cloneLink" class="btn btn-success btn-sm text-uppercase">
+          <router-link
+            v-if="!create && !clone"
+            :to="cloneLink"
+            class="btn btn-success btn-sm text-uppercase"
+          >
             <i class="fa fa-copy"></i> Clone
           </router-link>
-          <router-link v-if="!create" to="/groups/++/edit" class="btn btn-success btn-sm text-uppercase">
+          <router-link
+            v-if="!create"
+            to="/groups/++/edit"
+            class="btn btn-success btn-sm text-uppercase"
+          >
             <i class="fa fa-plus"></i> New
           </router-link>
         </div>
       </div>
       <div class="PageContentContainer">
         <div class="row">
-          <div class="col-sm-4">
+          <div class="col-sm-7">
             <h5>Properties</h5>
             <div class="Form">
-              <div class="Form_Field">
-                <label class="Form_FieldLabel">Name</label>
-                <input class="form-control" type="text" v-model="group.name" />
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="Form_Field">
+                    <label class="Form_FieldLabel">Name</label>
+                    <input class="form-control" type="text" v-model="group.name">
+                  </div>
+                </div>
               </div>
-              <div class="Form_Field">
-                <label class="Form_FieldLabel">Description</label>
-                <input class="form-control" type="text" v-model="group.description" />
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="Form_Field">
+                    <label class="Form_FieldLabel">Description</label>
+                    <input class="form-control" type="text" v-model="group.description">
+                  </div>
+                </div>
               </div>
-              <div v-if="create || clone" class="Form_Field">
-                <label class="Form_FieldLabel">Parent Group</label>
-                <group-picker :group="parent" @pick="parentPicked" />
+              <div v-if="create || clone" class="row">
+                <div class="col-sm-6">
+                  <div class="Form_Field">
+                    <label class="Form_FieldLabel">Parent Group</label>
+                    <group-picker :group="parent" @pick="parentPicked"/>
+                  </div>
+                </div>
               </div>
-              <div class="Form_Field">
-                <label class="Form_FieldLabel">WorkGroup</label>
-                <work-group-picker :work-group="group.work_group" @pick="workGroupPicked" />
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="Form_Field">
+                    <label class="Form_FieldLabel">WorkGroup</label>
+                    <work-group-picker :work-group="group.work_group" @pick="workGroupPicked"/>
+                  </div>
+                </div>
               </div>
-              <div class="Form_Field">
-                <label class="Form_FieldLabel">Tags</label>
-                <tag-editor :tags="group.tags" @add="addTag" @remove="removeTag" />
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="Form_Field">
+                    <label class="Form_FieldLabel">Tags</label>
+                    <tag-editor :tags="group.tags" @add="addTag" @remove="removeTag"/>
+                  </div>
+                </div>
               </div>
-              <div class="Form_Field Form_Field--CFE">
-                <label class="Form_FieldLabel">Custom Fields</label>
-                <custom-field-editor :fields="group.custom_fields" @change="cfChange" />
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="Form_Field">
+                    <label class="Form_FieldLabel">Custom Data</label>
+                    <yaml-editor :value="yamlData" @change="handleCustomDataChange"/>
+                  </div>
+                </div>
               </div>
-              <div class="Form_Buttons">
-                <button type="submit" class="btn btn-primary" @click="handleSave">Save</button>
-                <confirm-button class="btn btn-danger" @confirm="handleDestroy">Destroy</confirm-button>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="Form_Buttons">
+                    <button type="submit" class="btn btn-primary" @click="handleSave">Save</button>
+                    <confirm-button class="btn btn-danger" @confirm="handleDestroy">Destroy</confirm-button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div v-if="!create && !clone" class="col-sm-7 offset-sm-1">
+          <div v-if="!create && !clone" class="col-sm-5">
             <div class="RelationsHeader">
               <h5 class="RelationsHeader_Title">Relations</h5>
               <div class="RelationsHeader_Buttons">
@@ -56,9 +92,8 @@
                   class="btn btn-xs"
                   :class="{'btn-warning': relationsModified}"
                   :disabled="!relationsModified"
-                  @click="handleSaveRelations">
-                  Save Changes
-                </button>
+                  @click="handleSaveRelations"
+                >Save Changes</button>
               </div>
             </div>
             <div class="Form">
@@ -71,16 +106,16 @@
                       :inline="true"
                       :isSelected="isSelected"
                       @add="addChild"
-                      @remove="removeChild" />
+                      @remove="removeChild"
+                    />
                   </div>
                   <ul class="ListSelected">
                     <li
                       v-for="cgroup in group.children"
                       :key="cgroup._id"
                       @click="removeChild(cgroup)"
-                      class="ListSelected_Item">
-                      {{cgroup.name}}
-                    </li>
+                      class="ListSelected_Item"
+                    >{{cgroup.name}}</li>
                   </ul>
                 </div>
                 <div class="col-sm-6">
@@ -91,10 +126,16 @@
                       :inline="true"
                       :isSelected="isHostSelected"
                       @add="addHost"
-                      @remove="removeHost" />
+                      @remove="removeHost"
+                    />
                   </div>
                   <ul class="ListSelected">
-                    <li @click="removeHost(chost)" class="ListSelected_Item" v-for="chost in group.hosts" :key="chost._id">{{chost.fqdn}}</li>
+                    <li
+                      @click="removeHost(chost)"
+                      class="ListSelected_Item"
+                      v-for="chost in group.hosts"
+                      :key="chost._id"
+                    >{{chost.fqdn}}</li>
                   </ul>
                 </div>
               </div>
@@ -107,12 +148,13 @@
 </template>
 
 <script>
+import yaml from 'js-yaml'
 import Api from '@/api'
 import WorkGroupPicker from '@/components/Picker/WorkGroupPicker'
 import GroupPicker from '@/components/Picker/GroupPicker'
 import HostPicker from '@/components/Picker/HostPicker'
 import TagEditor from '@/components/Common/TagEditor'
-import CustomFieldEditor from '@/components/Common/CustomFieldEditor/CustomFieldEditor'
+import YamlEditor from '@/components/Common/YamlEditor'
 
 const editorFields = [
   '_id',
@@ -121,7 +163,7 @@ const editorFields = [
   'children',
   'hosts',
   'tags',
-  'custom_fields',
+  'local_custom_data',
   'work_group'
 ]
 
@@ -141,7 +183,7 @@ export default {
     GroupPicker,
     HostPicker,
     TagEditor,
-    CustomFieldEditor
+    YamlEditor
   },
   data() {
     return {
@@ -152,33 +194,42 @@ export default {
         children: [],
         hosts: [],
         tags: [],
-        custom_fields: [],
+        local_custom_data: {},
         work_group: null
       },
       parent: null,
       childrenMap: {},
       hostMap: {},
-      relationsModified: false
+      relationsModified: false,
+      yamlData: ''
     }
   },
   created() {
     this.reload()
   },
   methods: {
+    handleCustomDataChange(value) {
+      this.yamlData = value
+      this.group.local_custom_data = yaml.safeLoad(value)
+    },
+    handleResponse(group) {
+      this.group = group
+      this.childrenMap = this.group.children.reduce((acc, i) => {
+        acc[i._id] = i
+        return acc
+      }, {})
+      this.hostMap = this.group.hosts.reduce((acc, i) => {
+        acc[i._id] = i
+        return acc
+      }, {})
+      this.createYaml()
+    },
     reload() {
       if (!this.create) {
         let { groupName } = this.$route.params
         Api.Groups.Get(groupName, editorFields)
           .then(response => {
-            this.group = response.data.data[0]
-            this.childrenMap = this.group.children.reduce((acc, i) => {
-              acc[i._id] = i
-              return acc
-            }, {})
-            this.hostMap = this.group.hosts.reduce((acc, i) => {
-              acc[i._id] = i
-              return acc
-            }, {})
+            this.handleResponse(response.data.data[0])
           })
           .catch(status => {
             if (status === 404) {
@@ -193,12 +244,16 @@ export default {
           children: [],
           hosts: [],
           tags: [],
-          custom_fields: [],
+          local_custom_data: {},
           work_group: null
         }
         this.childrenMap = {}
         this.hostMap = {}
+        this.createYaml()
       }
+    },
+    createYaml() {
+      this.yamlData = yaml.safeDump(this.group.local_custom_data)
     },
     addTag(tag) {
       this.group.tags.push(tag)
@@ -220,16 +275,13 @@ export default {
         this.group.work_group = response.data.data[0]
       })
     },
-    cfChange(fields) {
-      this.group.custom_fields = fields
-    },
     handleSave() {
       let { name, description, tags } = this.group
       let payload = {
         name,
         description,
         tags,
-        custom_fields: this.group.custom_fields,
+        local_custom_data: this.group.local_custom_data,
         work_group_id: this.group.work_group ? this.group.work_group._id : null
       }
       if (this.create || this.clone) {
@@ -247,6 +299,7 @@ export default {
       } else {
         Api.Groups.Update(this.group._id, payload, editorFields).then(
           response => {
+            this.handleResponse(response.data.data)
             this.$store.dispatch(
               'info',
               `Group ${name} has been updated, be sure to save group's relations if you made any changes`

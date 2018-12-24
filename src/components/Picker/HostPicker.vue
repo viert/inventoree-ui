@@ -15,7 +15,8 @@
     @add="$emit('add', $event)"
     @remove="$emit('remove', $event)"
     @clear="$emit('clear', $event)"
-    @pick="$emit('pick', $event)" />
+    @pick="$emit('pick', $event)"
+  />
 </template>
 
 <script>
@@ -43,24 +44,23 @@ export default {
   components: {
     Picker
   },
-  data () {
+  data() {
     return {
       hosts: [],
       filter: ''
     }
   },
   methods: {
-    inputChanged (newVal) {
+    inputChanged(newVal) {
       this.filter = newVal
-      Api.Hosts.List(1, newVal, ['_id', 'fqdn'], 5)
-        .then(response => {
-          this.hosts = response.data.data
-        })
+      Api.Hosts.List(1, newVal, false, ['_id', 'fqdn'], 5).then(response => {
+        this.hosts = response.data.data
+      })
     },
-    getValue (s) {
+    getValue(s) {
       return s.fqdn
     },
-    getIndex (s) {
+    getIndex(s) {
       return s._id
     }
   }

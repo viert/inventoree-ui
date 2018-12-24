@@ -15,7 +15,8 @@
     @add="$emit('add', $event)"
     @remove="$emit('remove', $event)"
     @clear="$emit('clear', $event)"
-    @pick="$emit('pick', $event)"/>
+    @pick="$emit('pick', $event)"
+  />
 </template>
 
 <script>
@@ -52,11 +53,15 @@ export default {
   methods: {
     inputChanged(newVal) {
       this.filter = newVal
-      Api.Groups.List(1, newVal, ['_id', 'name', 'work_group_id'], 5).then(
-        response => {
-          this.groups = response.data.data
-        }
-      )
+      Api.Groups.List(
+        1,
+        newVal,
+        false,
+        ['_id', 'name', 'work_group_id'],
+        5
+      ).then(response => {
+        this.groups = response.data.data
+      })
     },
     getValue(s) {
       return s.name
