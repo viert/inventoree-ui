@@ -1,6 +1,6 @@
 <template>
   <div class="TagEditor" :class="{ 'TagEditor--Focused': focused }" @click="$refs.tagInput.focus()">
-    <tag v-for="tag in tags" :name="tag" :key="tag" :cross="true" @close="removeTag(tag)" />
+    <tag v-for="tag in tags" :name="tag" :key="tag" :cross="true" @close="removeTag(tag)"/>
     <input
       ref="tagInput"
       type="text"
@@ -13,7 +13,8 @@
       @keydown.tab="tabHandler"
       @keydown.delete="backspaceHandler"
       @focus="focused = true"
-      @blur="onBlur" />
+      @blur="onBlur"
+    >
   </div>
 </template>
 
@@ -88,7 +89,7 @@ export default {
 
 <style>
 .TagEditor {
-  min-height: 32px;
+  min-height: 36px;
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 6px 12px 2px;
@@ -118,7 +119,7 @@ export default {
   border: 1px solid #ccc;
   background-color: #e0ffe0;
   margin-right: 4px;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
   overflow-wrap: normal;
   line-height: 1.5em;
   position: relative;

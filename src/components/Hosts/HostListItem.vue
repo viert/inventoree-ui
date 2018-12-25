@@ -1,22 +1,24 @@
 <template>
   <tr>
     <td class="ModelList_Select">
-      <fa-checkbox :checked="host._selected" @trigger="toggleSelected" />
+      <fa-checkbox :checked="host._selected" @trigger="toggleSelected"/>
     </td>
     <td>
-      <host :fqdn="host.fqdn" :icon="false" />
+      <host :fqdn="host.fqdn" :icon="false"/>
     </td>
     <td>
-      <datacenter v-if="host.datacenter_name" :name="host.datacenter_name" :icon="false" />
+      <datacenter v-if="host.datacenter_name" :name="host.datacenter_name" :icon="false"/>
     </td>
     <td>
       <span v-if="host.group_name">{{host.group_name}}</span>
     </td>
     <td class="ModelList_Item--MayBeLong">
-      <tag v-for="tag in allTagsSorted" :name="tag" :key="tag" :derived="!(host.tags.includes(tag))"/>
-    </td>
-    <td class="ModelList_Item--MayBeLong">
-      <custom-field v-for="cf in host.all_custom_fields" :cf-key="cf.key" :cf-value="cf.value" :key="cf.key" />
+      <tag
+        v-for="tag in allTagsSorted"
+        :name="tag"
+        :key="tag"
+        :derived="!(host.tags.includes(tag))"
+      />
     </td>
     <td v-if="!hideDesc">{{ host.description }}</td>
   </tr>
@@ -24,7 +26,6 @@
 
 <script>
 import Tag from '@/components/Common/Tag'
-import CustomField from '@/components/Common/CustomField'
 import FaCheckbox from '@/components/Common/FaCheckbox'
 export default {
   props: {
@@ -39,7 +40,6 @@ export default {
   },
   components: {
     Tag,
-    CustomField,
     FaCheckbox
   },
   computed: {

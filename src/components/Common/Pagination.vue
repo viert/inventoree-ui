@@ -4,7 +4,8 @@
       <li
         v-for="page in pages"
         :key="page.id"
-        :class="{ 'page-item': true, 'active': page.page === current, disabled: page.disabled }">
+        :class="{ 'page-item': true, 'active': page.page === current, disabled: page.disabled }"
+      >
         <a class="page-link" @click.prevent="pageClick(page)" v-if="page.id === 'prev'">&larr;</a>
         <a class="page-link" @click.prevent="pageClick(page)" v-else-if="page.id === 'next'">&rarr;</a>
         <a class="page-link" @click.prevent="pageClick(page)" v-else>{{page.page}}</a>
@@ -30,7 +31,7 @@ export default {
     }
   },
   methods: {
-    pageClick (page) {
+    pageClick(page) {
       if (page.disabled) return
       var newPage
       switch (page.page) {
@@ -47,12 +48,12 @@ export default {
     }
   },
   computed: {
-    needPagination () {
+    needPagination() {
       if (this.total > 1) return true
       if (this.total === 1 && this.current !== this.total) return true
       return false
     },
-    pages () {
+    pages() {
       let { current, total, spread } = this
 
       // always show the first page
@@ -62,7 +63,7 @@ export default {
       ]
 
       let i = 2
-      if ((current - spread) > 2) {
+      if (current - spread > 2) {
         result.push({ id: 2, page: '...', disabled: true })
         i = current - spread
       }
@@ -87,31 +88,32 @@ export default {
 
 <style>
 .Pagination {
-    margin: 30px auto 0;
-    display: flex;
-    justify-content: space-around;
+  margin: 30px auto 0;
+  display: flex;
+  justify-content: space-around;
 }
 
-.page-link, .page-item.disabled .page-link {
-    background: white;
-    border: 1px solid #ddd;
-    color: black;
+.page-link,
+.page-item.disabled .page-link {
+  background: white;
+  border: 1px solid #ddd;
+  color: black;
 }
 
 .page-item.disabled .page-link {
-    color: #999;
+  color: #999;
 }
 
 .page-link:hover {
-    background: #999;
+  background: #999;
 }
 
 .page-item:not(:first-child) .page-link {
-    border-left: none;
+  border-left: none;
 }
 
 .page-item.active .page-link {
-    background: #18BC9C;
-    color: white;
+  background: #18bc9c;
+  color: white;
 }
 </style>

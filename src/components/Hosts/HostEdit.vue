@@ -4,50 +4,97 @@
       <div class="ContentHeader">
         <h2 class="ContentHeader_Title">Edit Host</h2>
         <div class="ContentHeader_Buttons">
-          <router-link v-if="!create && !clone" :to="cloneLink" class="btn btn-success btn-sm text-uppercase">
+          <router-link
+            v-if="!create && !clone"
+            :to="cloneLink"
+            class="btn btn-success btn-sm text-uppercase"
+          >
             <i class="fa fa-copy"></i> Clone
           </router-link>
-          <router-link v-if="!create" to="/hosts/++/edit" class="btn btn-success btn-sm text-uppercase">
+          <router-link
+            v-if="!create"
+            to="/hosts/++/edit"
+            class="btn btn-success btn-sm text-uppercase"
+          >
             <i class="fa fa-plus"></i> New
           </router-link>
         </div>
       </div>
-      <div class="PageContentContainer" :class="{ 'PageContentContainer--Half': !clone && !create }">
+      <div
+        class="PageContentContainer"
+        :class="{ 'PageContentContainer--Half': !clone && !create }"
+      >
         <div class="row">
-          <div :class="{ 'col-sm-12': !clone && !create, 'col-sm-4': clone || create }">
+          <div :class="{ 'col-sm-12': !clone && !create, 'col-sm-6': clone || create }">
             <h5>Properties</h5>
             <div class="Form">
-              <div class="Form_Field">
-                <label class="Form_FieldLabel">Fqdn</label>
-                <input class="form-control" type="text" v-model="host.fqdn" />
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="Form_Field">
+                    <label class="Form_FieldLabel">Fqdn</label>
+                    <input class="form-control" type="text" v-model="host.fqdn">
+                  </div>
+                </div>
               </div>
-              <div class="Form_Field">
-                <label class="Form_FieldLabel">Description</label>
-                <input class="form-control" type="text" v-model="host.description" />
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="Form_Field">
+                    <label class="Form_FieldLabel">Description</label>
+                    <input class="form-control" type="text" v-model="host.description">
+                  </div>
+                </div>
               </div>
-              <div class="Form_Field">
-                <label class="Form_FieldLabel">Group</label>
-                <group-picker :group="host.group" @clear="host.group = null" @pick="groupPicked" />
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="Form_Field">
+                    <label class="Form_FieldLabel">Group</label>
+                    <group-picker
+                      :group="host.group"
+                      @clear="host.group = null"
+                      @pick="groupPicked"
+                    />
+                  </div>
+                </div>
               </div>
-              <div class="Form_Field">
-                <label class="Form_FieldLabel">Datacenter</label>
-                <datacenter-picker :datacenter="host.datacenter" @clear="host.datacenter = null" @pick="datacenterPicked" />
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="Form_Field">
+                    <label class="Form_FieldLabel">Datacenter</label>
+                    <datacenter-picker
+                      :datacenter="host.datacenter"
+                      @clear="host.datacenter = null"
+                      @pick="datacenterPicked"
+                    />
+                  </div>
+                </div>
               </div>
-              <div class="Form_Field">
-                <label class="Form_FieldLabel">Server Group</label>
-                <server-group-picker :server-group="host.server_group" @clear="host.server_group = null" @pick="serverGroupPicked" />
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="Form_Field">
+                    <label class="Form_FieldLabel">Server Group</label>
+                    <server-group-picker
+                      :server-group="host.server_group"
+                      @clear="host.server_group = null"
+                      @pick="serverGroupPicked"
+                    />
+                  </div>
+                </div>
               </div>
-              <div class="Form_Field">
-                <label class="Form_FieldLabel">Aliases</label>
-                <list-editor :items="host.aliases" @change="aliasesChange" />
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="Form_Field">
+                    <label class="Form_FieldLabel">Aliases</label>
+                    <list-editor :items="host.aliases" @change="aliasesChange"/>
+                  </div>
+                </div>
               </div>
               <div class="Form_Field">
                 <label class="Form_FieldLabel">Tags</label>
-                <tag-editor :tags="host.tags" @add="addTag" @remove="removeTag" />
+                <tag-editor :tags="host.tags" @add="addTag" @remove="removeTag"/>
               </div>
               <div class="Form_Field Form_Field--CFE">
-                <label class="Form_FieldLabel">Custom Fields</label>
-                <custom-field-editor :fields="host.custom_fields" @change="cfChange" />
+                <label class="Form_FieldLabel">Custom Data</label>
+                <yaml-editor :value="yamlData" @change="handleCustomDataChange"/>
               </div>
               <div class="Form_Buttons">
                 <button type="submit" class="btn btn-primary" @click="handleSave">Save</button>
@@ -55,35 +102,41 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-7 offset-sm-1" v-if="clone || create">
+          <div class="col-sm-6" v-if="clone || create">
             <div v-if="hostList.length === 0">
               <h5>How to create multiple host records</h5>
               <p>
                 You can create multiple records in one step. To do it use hostname patterns instead of fqdn.
                 Available patterns are described below:
               </p>
-              <p>
-                <pre style="display: inline">[<span style="color: red">VAL1</span>-<span style="color: red">VAL2</span>]</pre> will interpolate
-                from VAL1 to VAL2, i.e. [0-9] will produce 0,1,2,3,...,9
-              </p>
-              <p>
-                <pre style="display: inline">[<span style="color: red">VAL1</span>,<span style="color: red">VAL2</span>,<span style="color: red">VAL3</span>]</pre>
-                will produce a sequence, i.e. [0,3,8,b] will produce 0,3,8,b
-              </p>
+              <p></p>
+              <pre style="display: inline">[<span style="color: red">VAL1</span>-<span style="color: red">VAL2</span>]</pre>will interpolate
+              from VAL1 to VAL2, i.e. [0-9] will produce 0,1,2,3,...,9
+              <p></p>
+              <pre style="display: inline">[<span style="color: red">VAL1</span>,<span style="color: red">VAL2</span>,<span style="color: red">VAL3</span>]</pre>will produce a sequence, i.e. [0,3,8,b] will produce 0,3,8,b
               <p>
                 Combining those you can produce long and complex list of hostnames in a flexible way.
-                Try typing something like <pre style="display: inline">srv[00-12][a,b,f].example.com</pre> and see the result
+                Try typing something like
               </p>
+              <pre style="display: inline">srv[00-12][a,b,f].example.com</pre>and see the result
               <h5>Aliases with multiple host creation</h5>
               <p>
                 You can still use aliases with multiple hosts.
-                Use <span style="color: red">$1</span>, <span style="color: red">$2</span> etc. syntax to match your FQDN pattern expressions.<br/>
-
-                For example, for pattern <pre style="display: inline">srv[00-12][a,b,f].example.com</pre> the first host generated will be
-                <pre style="display: inline">srv00a.example.com</pre> and thus, there will be vars available: <span style="color: red">$0</span> = srv00a.example.com, <span style="color: red">$1</span> = 00, <span style="color: red">$2</span> = a.
-                <br/>
-                Alias pattern <pre style="display: inline">int.srv$1$2.mycompany.io</pre> will generate <pre style="display: inline">int.srv00a.mycopmany.io</pre> correspondingly.
+                Use
+                <span
+                  style="color: red"
+                >$1</span>,
+                <span style="color: red">$2</span> etc. syntax to match your FQDN pattern expressions.
+                <br>For example, for pattern
               </p>
+              <pre style="display: inline">srv[00-12][a,b,f].example.com</pre>the first host generated will be
+              <pre style="display: inline">srv00a.example.com</pre>and thus, there will be vars available:
+              <span style="color: red">$0</span> = srv00a.example.com,
+              <span style="color: red">$1</span> = 00,
+              <span style="color: red">$2</span> = a.
+              <br>Alias pattern
+              <pre style="display: inline">int.srv$1$2.mycompany.io</pre>will generate
+              <pre style="display: inline">int.srv00a.mycopmany.io</pre>correspondingly.
             </div>
             <div v-else>
               <h5>Multiple host records will be created</h5>
@@ -101,12 +154,13 @@
 </template>
 
 <script>
+import yaml from 'js-yaml'
 import Api from '@/api'
 import GroupPicker from '@/components/Picker/GroupPicker'
 import DatacenterPicker from '@/components/Picker/DatacenterPicker'
 import ServerGroupPicker from '@/components/Picker/ServerGroupPicker'
 import TagEditor from '@/components/Common/TagEditor'
-import CustomFieldEditor from '@/components/Common/CustomFieldEditor/CustomFieldEditor'
+import YamlEditor from '@/components/Common/YamlEditor'
 import ListEditor from '@/components/Common/ListEditor'
 import { hasValidPatterns, expandPattern } from '@/lib/Permutation'
 
@@ -117,7 +171,7 @@ const editorFields = [
   'group',
   'tags',
   'server_group',
-  'custom_fields',
+  'local_custom_data',
   'aliases',
   'description'
 ]
@@ -137,8 +191,8 @@ export default {
     GroupPicker,
     DatacenterPicker,
     ServerGroupPicker,
+    YamlEditor,
     TagEditor,
-    CustomFieldEditor,
     ListEditor
   },
   data() {
@@ -148,25 +202,31 @@ export default {
         fqdn: '',
         description: '',
         tags: [],
-        custom_fields: [],
+        local_custom_data: {},
         aliases: [],
         group: null,
         datacenter: null,
         server_group: null
       },
-      hostList: []
+      hostList: [],
+      yamlData: ''
     }
   },
   created() {
     this.reload()
   },
   methods: {
+    handleCustomDataChange(value) {
+      this.yamlData = value
+      this.host.local_custom_data = yaml.safeLoad(value)
+    },
     reload() {
       if (!this.create) {
         let { hostName } = this.$route.params
         Api.Hosts.Get(hostName, editorFields)
           .then(response => {
             this.host = response.data.data[0]
+            this.createYaml()
           })
           .catch(status => {
             if (status === 404) {
@@ -179,12 +239,16 @@ export default {
           fqdn: '',
           description: '',
           tags: [],
-          custom_fields: [],
+          local_custom_data: {},
           aliases: [],
           group: null,
           datacenter: null
         }
+        this.createYaml()
       }
+    },
+    createYaml() {
+      this.yamlData = yaml.safeDump(this.host.local_custom_data)
     },
     addTag(tag) {
       this.host.tags.push(tag)
@@ -214,7 +278,7 @@ export default {
 
       let payload = {
         tags: [...this.host.tags],
-        custom_fields: [...this.host.custom_fields],
+        local_custom_data: { ...this.host.local_custom_data },
         aliases: [...this.host.aliases],
         description,
         group_id: group ? group._id : null,

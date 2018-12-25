@@ -8,34 +8,32 @@
             <i class="fa fa-plus"></i> Create
           </router-link>
         </div>
-        <filter-field :change="filterChanged" :value="filter" />
+        <filter-field :change="filterChanged" :value="filter"/>
       </div>
-        <item-list :count="items.length" :filter="filter">
-          <table class="ModelList">
-            <col class="col-name" />
-            <col class="col-owner" />
-            <col class="col-email" />
-            <col class="col-desc" />
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Owner</th>
-                <th>Email</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <work-group-list-item
-                v-for="work_group in items"
-                :work_group="work_group"
-                :key="work_group._id" />
-            </tbody>
-          </table>
-        <pagination
-          :current="page"
-          :total="totalPages"
-          @page="pageChanged" />
-        </item-list>
+      <item-list :count="items.length" :filter="filter">
+        <table class="ModelList">
+          <col class="col-name">
+          <col class="col-owner">
+          <col class="col-email">
+          <col class="col-desc">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Owner</th>
+              <th>Email</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <work-group-list-item
+              v-for="work_group in items"
+              :work_group="work_group"
+              :key="work_group._id"
+            />
+          </tbody>
+        </table>
+        <pagination :current="page" :total="totalPages" @page="pageChanged"/>
+      </item-list>
     </main>
   </div>
 </template>
@@ -59,11 +57,16 @@ export default {
   mixins: [FilteredDataMixin],
   methods: {
     loadData() {
-      return Api.WorkGroups.List(this.page, this.filter).then(response => {
-        this.items = response.data.data
-        this.page = response.data.page
-        this.totalPages = response.data.total_pages
-      })
+      return Api.WorkGroups.List(this.page, this.filter)
+        .then(this.fixPage)
+        .then(response => {
+          this.items = response.data.data
+        })
+        .catch(e => {
+          if (e && e.message !== 'page_change') {
+            return Promise.reject(e)
+          }
+        })
     }
   }
 }

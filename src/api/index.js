@@ -28,21 +28,19 @@ export const DefaultFields = {
       'custom_fields',
       'tags',
       'all_tags',
-      'all_custom_fields',
       'description'
     ],
+    ListByParentId: ['_id', 'name'],
     Get: [
       '_id',
       'name',
       'work_group_name',
-      'custom_fields',
       'tags',
       'all_tags',
-      'all_custom_fields',
+      'custom_data',
       'description',
-      'children',
-      'modification_allowed',
-      'hosts'
+      'parents',
+      'modification_allowed'
     ]
   },
   Hosts: {
@@ -50,22 +48,20 @@ export const DefaultFields = {
       '_id',
       'fqdn',
       'datacenter_name',
-      'custom_fields',
       'tags',
       'all_tags',
-      'all_custom_fields',
       'description',
       'group_name',
       'network_group_name'
     ],
+    ListByGroupId: ['_id', 'fqdn'],
     Get: [
       '_id',
       'fqdn',
       'datacenter_name',
-      'custom_fields',
       'tags',
       'all_tags',
-      'all_custom_fields',
+      'custom_data',
       'modification_allowed',
       'description',
       'group_name',
@@ -151,10 +147,30 @@ export const DefaultFields = {
 
 const Api = {
   Groups: {
-    List: (page, filter, fields = DefaultFields.Groups.List, limit = null) => {
+    List: (
+      page,
+      filter,
+      mineFilter = false,
+      fields = DefaultFields.Groups.List,
+      limit = null
+    ) => {
       let url = `/api/v1/groups/?_fields=${fields.join(
         ','
-      )}&_page=${page}&_filter=${filter}`
+      )}&_page=${page}&_filter=${filter}&_mine=${mineFilter}`
+      if (limit) {
+        url += `&_limit=${limit}`
+      }
+      return wrap(axios.get(url))
+    },
+    ListByParentId: (
+      groupId,
+      page,
+      fields = DefaultFields.Groups.ListByParentId,
+      limit = 40
+    ) => {
+      let url = `/api/v1/groups/?parent_id=${groupId}&_fields=${fields.join(
+        ','
+      )}&_page=${page}`
       if (limit) {
         url += `&_limit=${limit}`
       }
@@ -224,10 +240,30 @@ const Api = {
     }
   },
   Hosts: {
-    List: (page, filter, fields = DefaultFields.Hosts.List, limit = null) => {
+    List: (
+      page,
+      filter,
+      mineFilter = false,
+      fields = DefaultFields.Hosts.List,
+      limit = null
+    ) => {
       let url = `/api/v1/hosts/?_fields=${fields.join(
         ','
-      )}&_page=${page}&_filter=${filter}`
+      )}&_page=${page}&_filter=${filter}&_mine=${mineFilter}`
+      if (limit) {
+        url += `&_limit=${limit}`
+      }
+      return wrap(axios.get(url))
+    },
+    ListByGroupId: (
+      groupId,
+      page,
+      fields = DefaultFields.Hosts.ListByGroupId,
+      limit = 40
+    ) => {
+      let url = `/api/v1/hosts/?group_id=${groupId}&_fields=${fields.join(
+        ','
+      )}&_page=${page}`
       if (limit) {
         url += `&_limit=${limit}`
       }
