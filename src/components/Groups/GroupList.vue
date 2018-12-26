@@ -157,9 +157,6 @@ export default {
         this.clearSelection()
         this.loadData()
       })
-    },
-    handleMineFilterClick(value) {
-      this.mineFilterChanged(value === 'mine')
     }
   }
 }

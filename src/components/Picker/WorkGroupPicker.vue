@@ -10,7 +10,8 @@
     :pickedItem="workGroup"
     @change="inputChanged"
     @clear="$emit('clear')"
-    @pick="$emit('pick', $event)" />
+    @pick="$emit('pick', $event)"
+  />
 </template>
 
 <script>
@@ -36,9 +37,11 @@ export default {
   methods: {
     inputChanged(newVal) {
       this.filter = newVal
-      Api.WorkGroups.List(1, newVal, ['_id', 'name'], 5).then(response => {
-        this.work_groups = response.data.data
-      })
+      Api.WorkGroups.List(1, newVal, false, ['_id', 'name'], 5).then(
+        response => {
+          this.work_groups = response.data.data
+        }
+      )
     },
     getValue(s) {
       return s.name
