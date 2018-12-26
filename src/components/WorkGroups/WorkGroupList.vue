@@ -8,6 +8,14 @@
             <i class="fa fa-plus"></i> Create
           </router-link>
         </div>
+        <div class="text-right">
+          <button-switch
+            class="btn-group-sm"
+            @change="handleMineFilterClick"
+            :buttons="mineFilterButtons"
+            :value="mineFilterValue"
+          />
+        </div>
         <filter-field :change="filterChanged" :value="filter"/>
       </div>
       <item-list :count="items.length" :filter="filter">
@@ -41,23 +49,26 @@
 <script>
 import FilteredDataMixin from '@/mixins/FilteredDataMixin'
 import Pagination from '@/components/Common/Pagination'
+import ButtonSwitch from '@/components/Common/ButtonSwitch'
 import WorkGroupListItem from './WorkGroupListItem'
 import Api from '@/api'
 
 export default {
   data() {
     return {
-      items: []
+      items: [],
+      mineFilter: true
     }
   },
   components: {
     WorkGroupListItem,
-    Pagination
+    Pagination,
+    ButtonSwitch
   },
   mixins: [FilteredDataMixin],
   methods: {
     loadData() {
-      return Api.WorkGroups.List(this.page, this.filter)
+      return Api.WorkGroups.List(this.page, this.filter, this.mineFilter)
         .then(this.fixPage)
         .then(response => {
           this.items = response.data.data

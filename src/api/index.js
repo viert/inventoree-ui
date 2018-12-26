@@ -305,12 +305,13 @@ const Api = {
     List: (
       page,
       filter,
+      mineFilter = false,
       fields = DefaultFields.WorkGroups.List,
       limit = null
     ) => {
       let url = `/api/v1/work_groups/?_fields=${fields.join(
         ','
-      )}&_page=${page}&_filter=${filter}`
+      )}&_page=${page}&_filter=${filter}&_mine=${mineFilter}`
       if (limit) {
         url += `&_limit=${limit}`
       }
