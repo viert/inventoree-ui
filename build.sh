@@ -5,10 +5,6 @@ export REPOHOST=pkg.corp.mail.ru
 export BUILDROOT=/buildroot
 export WWWDIR=$BUILDROOT/var/www/inventoree
 
-npm_dependencies() {
-  npm i
-}
-
 build() {
   npm run build
 }
@@ -46,7 +42,6 @@ pushrpm() {
   rsync "$PKGNAME" mntdev@${REPOHOST}::${REPONAME}/ && echo ${REPONAME} | nc ${REPOHOST} 15222
 }
 
-npm_dependencies
 build
 install
 rpm
