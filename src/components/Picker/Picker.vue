@@ -12,16 +12,20 @@
       @keydown.esc="handleEscape"
       :class="inputClassComputed"
       :placeholder="placeholder"
-      type="text" />
-    <ul v-if="showSuggestionsComputed" class="autosuggest" :class="{ 'autosuggest-multi': multi, 'autosuggest-inline': inline }">
+      type="text"
+    >
+    <ul
+      v-if="showSuggestionsComputed"
+      class="autosuggest"
+      :class="{ 'autosuggest-multi': multi, 'autosuggest-inline': inline }"
+    >
       <li
         v-for="(suggestion, i) in suggestions"
         :class="{ active: i === selectIndex, selected: multi && isSelected(suggestion) }"
         :key="getIndex(suggestion)"
         @mousedown="pickItem"
-        @mouseover="selectIndex = i">
-        {{ getValue(suggestion) }}
-      </li>
+        @mouseover="selectIndex = i"
+      >{{ getValue(suggestion) }}</li>
     </ul>
   </div>
 </template>
@@ -75,12 +79,12 @@ export default {
   },
   methods: {
     inputValueChanged(e) {
+      if (this.picked) this.$emit('clear')
       this.picked = false
       this.inputValue = e.target.value
       this.typedValue = e.target.value
       this.showSuggestions = true
       this.$emit('change', e.target.value)
-      this.$emit('clear')
     },
     inputFocus() {
       this.showSuggestions = true
