@@ -4,11 +4,12 @@
       <div class="ContentHeader">
         <h2 class="ContentHeader_Title">View User Action</h2>
       </div>
-      <div v-if="action.action_type !== null" class="PageContentContainer" :class="{ 'ActionFailure': action.status !== 'success' }">
-        <component
-          :is="componentName"
-          :action="action"
-          :model="modelName" />
+      <div
+        v-if="action.action_type !== null"
+        class="PageContentContainer"
+        :class="{ 'ActionFailure': action.status !== 'success' }"
+      >
+        <component :is="componentName" :action="action" :model="modelName"/>
       </div>
     </main>
   </div>
@@ -36,6 +37,9 @@ import ModelAddTags from './Views/ModelAddTags'
 import ModelRemoveTags from './Views/ModelRemoveTags'
 import ModelSetCustomFields from './Views/ModelSetCustomFields'
 import ModelRemoveCustomFields from './Views/ModelRemoveCustomFields'
+import ModelAddCustomData from './Views/ModelAddCustomData'
+import ModelRemoveCustomData from './Views/ModelRemoveCustomData'
+import ModelDiscover from './Views/ModelDiscover'
 
 const ModelNames = [
   'work_group',
@@ -75,7 +79,10 @@ export default {
     ModelAddTags,
     ModelRemoveTags,
     ModelSetCustomFields,
-    ModelRemoveCustomFields
+    ModelRemoveCustomFields,
+    ModelAddCustomData,
+    ModelRemoveCustomData,
+    ModelDiscover
   },
   created() {
     this.loadData()

@@ -201,6 +201,20 @@
         </router-link>
         <host :fqdn="action.computed.host_fqdn" :link="false"/>
       </span>
+      <span v-else-if="action.action_type == 'host_add_custom_data'">
+        <router-link :to="viewLink">
+          <span v-if="action.status == 'success'">added custom data to</span>
+          <span v-else>failed to add custom data to</span>
+        </router-link>
+        <host :fqdn="action.computed.host_fqdn" :link="false"/>
+      </span>
+      <span v-else-if="action.action_type == 'host_remove_custom_data'">
+        <router-link :to="viewLink">
+          <span v-if="action.status == 'success'">removed custom data key(s) from</span>
+          <span v-else>failed to remove custom data key(s) from</span>
+        </router-link>
+        <host :fqdn="action.computed.host_fqdn" :link="false"/>
+      </span>
       <span v-else-if="action.action_type == 'host_remove_custom_fields'">
         <router-link :to="viewLink">
           <span v-if="action.status == 'success'">removed custom fields from</span>
@@ -329,7 +343,6 @@
         </router-link>
         <network-group :name="action.computed.network_group_name" :link="false"/>
       </span>
-      
       <span v-else>{{action.action_type}}</span>
     </td>
   </tr>
