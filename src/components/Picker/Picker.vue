@@ -81,14 +81,30 @@ export default {
       default: false
     }
   },
+  mounted() {
+    this.ticker = setInterval(this.tick, 200)
+    this.dirty = false
+  },
+  beforeDestroy() {
+    if (this.ticker) {
+      clearInterval(this.ticker)
+    }
+    this.ticker = null
+  },
   methods: {
+    tick() {
+      if (this.dirty) {
+        this.$emit('change', this.typedValue)
+        this.dirty = false
+      }
+    },
     inputValueChanged(e) {
       if (this.picked) this.$emit('clear')
       this.picked = false
       this.inputValue = e.target.value
       this.typedValue = e.target.value
       this.showSuggestions = true
-      this.$emit('change', e.target.value)
+      this.dirty = true
     },
     inputFocus() {
       this.showSuggestions = true
@@ -235,7 +251,8 @@ export default {
   color: #18bc9c;
 }
 
-.ContentHeader_ActionTypeField .input-group-wrap.picked::after {
+.ContentHeader_ActionTypeField .input-group-wrap.picked::after,
+.ContentHeader_AdditionalFilter .input-group-wrap.picked::after {
   top: 4px;
 }
 

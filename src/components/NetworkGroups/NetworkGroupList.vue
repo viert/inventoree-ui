@@ -3,7 +3,14 @@
     <main class="PageMain">
       <div class="ContentHeader">
         <h2 class="ContentHeader_Title">Network Group List</h2>
-        <div class="ContentHeader_Buttons"></div>
+        <div class="ContentHeader_Buttons"/>
+        <div class="ContentHeader_AdditionalFilter">
+          <work-group-picker
+            :work-group="workGroup"
+            @pick="workGroupPicked"
+            @clear="workGroupCleared"
+          />
+        </div>
         <filter-field :change="filterChanged" :value="filter"/>
       </div>
       <item-list :count="items.length" :filter="filter">
@@ -36,22 +43,47 @@
 import FilteredDataMixin from '@/mixins/FilteredDataMixin'
 import Pagination from '@/components/Common/Pagination'
 import NetworkGroupListItem from './NetworkGroupListItem'
+import WorkGroupPicker from '@/components/Picker/WorkGroupPicker'
 import Api from '@/api'
 
 export default {
   data() {
     return {
+      workGroup: null,
       items: []
     }
   },
   components: {
     NetworkGroupListItem,
-    Pagination
+    Pagination,
+    WorkGroupPicker
+  },
+  mounted() {
+    if (this.$route.query.work_group_id) {
+      Api.WorkGroups.Get(this.$route.query.work_group_id, ['_id', 'name'])
+        .then(response => {
+          console.log('workgroup set')
+          this.workGroup = response.data.data[0]
+        })
+        .catch(() => {
+          this.workGroup = null
+        })
+    }
   },
   mixins: [FilteredDataMixin],
   methods: {
+    getComponentOwnQuery() {
+      return this.workGroup ? { work_group_id: this.workGroup._id } : {}
+    },
     loadData() {
-      return Api.NetworkGroups.List(this.page, this.filter)
+      const workGroupId = this.workGroup && this.workGroup._id
+      return Api.NetworkGroups.List(
+        this.page,
+        this.filter,
+        undefined,
+        undefined,
+        workGroupId
+      )
         .then(this.fixPage)
         .then(response => {
           this.items = response.data.data
@@ -61,6 +93,16 @@ export default {
             return Promise.reject(e)
           }
         })
+    },
+    workGroupPicked(workGroup) {
+      this.workGroup = workGroup
+      this.setQuery()
+      this.filterDirty = true
+    },
+    workGroupCleared() {
+      this.workGroup = null
+      this.setQuery()
+      this.filterDirty = true
     }
   }
 }

@@ -222,13 +222,17 @@ const Api = {
       page,
       filter,
       fields = DefaultFields.NetworkGroups.List,
-      limit = null
+      limit = null,
+      workGroupId = null
     ) => {
       let url = `/api/v1/network_groups/?_fields=${fields.join(
         ','
       )}&_page=${page}&_filter=${filter}`
       if (limit) {
         url += `&_limit=${limit}`
+      }
+      if (workGroupId) {
+        url += `&work_group_id=${workGroupId}`
       }
       return wrap(axios.get(url))
     },

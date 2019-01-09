@@ -1,9 +1,12 @@
 <template>
   <div id="app" @mouseup="stopSelection">
-    <div v-if="auth.state === 'authenticating'" class="SiteLoading">Starting Inventoree app, please be patient...</div>
+    <div
+      v-if="auth.state === 'authenticating'"
+      class="SiteLoading"
+    >Starting Inventoree app, please be patient...</div>
     <login-page v-else-if="auth.state == 'login'"></login-page>
     <layout v-else/>
-    <alert-box />
+    <alert-box/>
   </div>
 </template>
 
@@ -148,6 +151,16 @@ table.ModelList {
 .ContentHeader_Buttons {
   margin: 0 20px;
   flex-grow: 1;
+}
+
+.ContentHeader_AdditionalFilter {
+  width: 240px;
+}
+
+.ContentHeader_AdditionalFilter input {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8203125rem;
+  line-height: 1.5;
 }
 
 .ContentHeader_Buttons .btn {

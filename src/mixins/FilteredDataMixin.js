@@ -42,9 +42,11 @@ const FilteredDataMixin = {
       this.mineFilterChanged(value === 'mine')
     },
     setQuery() {
-      let query = {
-        _page: this.page
+      let query = {}
+      if (this.getComponentOwnQuery) {
+        query = this.getComponentOwnQuery()
       }
+      query._page = this.page
       if (this.filter) {
         query._filter = this.filter
       }
