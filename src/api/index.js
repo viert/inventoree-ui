@@ -228,7 +228,7 @@ const Api = {
         ','
       )}&_page=${page}&_filter=${filter}`
       if (limit) {
-        url += `&limit=${limit}`
+        url += `&_limit=${limit}`
       }
       return wrap(axios.get(url))
     },

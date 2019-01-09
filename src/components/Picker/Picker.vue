@@ -64,6 +64,10 @@ export default {
     placeholder: {
       default: ''
     },
+    clearInputOnUnpick: {
+      type: Boolean,
+      default: true
+    },
     pickedItem: {
       type: Object,
       default: null
@@ -173,8 +177,10 @@ export default {
         this.typedValue = this.getValue(newVal)
         this.picked = true
       } else {
-        this.inputValue = ''
-        this.typedValue = ''
+        if (this.clearInputOnUnpick) {
+          this.inputValue = ''
+          this.typedValue = ''
+        }
         this.picked = false
       }
     }
