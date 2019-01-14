@@ -40,6 +40,7 @@ import ModelRemoveCustomFields from './Views/ModelRemoveCustomFields'
 import ModelAddCustomData from './Views/ModelAddCustomData'
 import ModelRemoveCustomData from './Views/ModelRemoveCustomData'
 import ModelSetPackages from './Views/ModelSetPackages'
+import ModelImport from './Views/ModelImport'
 import ModelDiscover from './Views/ModelDiscover'
 
 const ModelNames = [
@@ -48,6 +49,8 @@ const ModelNames = [
   'host',
   'group',
   'datacenter',
+  'package',
+  'repository',
   'network_group'
 ]
 
@@ -84,6 +87,7 @@ export default {
     ModelAddCustomData,
     ModelRemoveCustomData,
     ModelSetPackages,
+    ModelImport,
     ModelDiscover
   },
   created() {

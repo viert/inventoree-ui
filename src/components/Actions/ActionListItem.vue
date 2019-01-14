@@ -350,6 +350,13 @@
         </router-link>
         <network-group :name="action.computed.network_group_name" :link="false"/>
       </span>
+      <span v-else-if="action.action_type == 'package_import'">
+        <router-link :to="viewLink">
+          <span v-if="action.status == 'success'">imported</span>
+          <span v-else>failed to import</span>
+        </router-link>
+        {{ action.computed.packages_updated.length + action.computed.packages_created.length }} package(s)
+      </span>
       <span v-else>{{action.action_type}}</span>
     </td>
   </tr>
