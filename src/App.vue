@@ -401,6 +401,7 @@ table.ModelList > tbody > tr:hover > td.ModelList_Item--MayBeLong::after {
 }
 
 .Group::before,
+.Package::before,
 .WorkGroup::before,
 .NetworkGroup::before,
 .User::before,

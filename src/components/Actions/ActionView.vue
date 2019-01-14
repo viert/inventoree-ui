@@ -39,6 +39,7 @@ import ModelSetCustomFields from './Views/ModelSetCustomFields'
 import ModelRemoveCustomFields from './Views/ModelRemoveCustomFields'
 import ModelAddCustomData from './Views/ModelAddCustomData'
 import ModelRemoveCustomData from './Views/ModelRemoveCustomData'
+import ModelSetPackages from './Views/ModelSetPackages'
 import ModelDiscover from './Views/ModelDiscover'
 
 const ModelNames = [
@@ -82,6 +83,7 @@ export default {
     ModelRemoveCustomFields,
     ModelAddCustomData,
     ModelRemoveCustomData,
+    ModelSetPackages,
     ModelDiscover
   },
   created() {

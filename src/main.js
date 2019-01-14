@@ -10,6 +10,7 @@ import WorkGroup from '@/components/WorkGroups/WorkGroup'
 import User from '@/components/Users/User'
 import Datacenter from '@/components/Datacenters/Datacenter'
 import NetworkGroup from '@/components/NetworkGroups/NetworkGroup'
+import Package from '@/components/Packages/Package'
 import FilterField from '@/components/Common/FilterField'
 import ConfirmButton from '@/components/Common/ConfirmButton'
 import ItemList from '@/components/Common/ItemList'
@@ -23,6 +24,7 @@ Vue.component('network-group', NetworkGroup)
 Vue.component('filter-field', FilterField)
 Vue.component('confirm-button', ConfirmButton)
 Vue.component('item-list', ItemList)
+Vue.component('package', Package)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

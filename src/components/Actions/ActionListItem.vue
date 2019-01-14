@@ -243,6 +243,13 @@
         </router-link>
         <host :fqdn="action.computed.host_fqdn" :link="false"/>
       </span>
+      <span v-else-if="action.action_type == 'host_set_packages'">
+        <router-link :to="viewLink">
+          <span v-if="action.status == 'success'">set packages on host</span>
+          <span v-else>failed to set packages on host</span>
+        </router-link>
+        <host :fqdn="action.computed.host_fqdn" :link="false"/>
+      </span>
       <span v-else-if="action.action_type == 'host_mass_delete'">
         <router-link :to="viewLink">
           <span
