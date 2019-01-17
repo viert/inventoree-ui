@@ -303,6 +303,11 @@ const Api = {
       let payload = { host_ids: hostIds, datacenter_id: datacenterId }
       let url = '/api/v1/hosts/mass_set_datacenter'
       return wrap(axios.post(url, payload))
+    },
+    MassDetach: hostIds => {
+      let payload = { host_ids: hostIds }
+      let url = '/api/v1/hosts/mass_detach'
+      return wrap(axios.post(url, payload))
     }
   },
   WorkGroups: {
