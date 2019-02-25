@@ -22,6 +22,7 @@
         <table class="ModelList">
           <col class="col-check">
           <col class="col-fqdn">
+          <col class="col-extid">
           <col class="col-dc">
           <col class="col-group">
           <col class="col-tags">
@@ -32,6 +33,7 @@
                 <fa-checkbox :checked="allSelected" @trigger="toggleAll"/>
               </th>
               <th>FQDN</th>
+              <th>ExtID</th>
               <th>Datacenter</th>
               <th>Group</th>
               <th>Tags</th>
@@ -208,12 +210,15 @@ export default {
   width: 32px;
 }
 
-.col-fqdn,
-.col-group {
-  width: 13%;
+.col-fqdn {
+  width: 14%;
+}
+.col-group,
+.col-extid {
+  width: 12%;
 }
 
 .col-dc {
-  width: 7%;
+  width: 70px;
 }
 </style>

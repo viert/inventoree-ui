@@ -24,6 +24,10 @@
           <div class="CardHeader">
             <h3>
               <host :fqdn="host.fqdn" :link="false"/>
+              <span v-if="host.ext_id" class="CardHeader_Small">
+                Ext ID:
+                <span>{{ host.ext_id }}</span>
+              </span>
             </h3>
             <div class="Card_Field">{{host.description}}</div>
           </div>
@@ -106,6 +110,7 @@ export default {
     return {
       host: {
         fqdn: '',
+        ext_id: '',
         description: '',
         tags: [],
         all_tags: [],
@@ -156,4 +161,8 @@ export default {
 </script>
 
 <style>
+.CardHeader_Small {
+  font-size: 0.5em;
+  font-weight: lighter;
+}
 </style>

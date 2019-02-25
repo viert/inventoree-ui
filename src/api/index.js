@@ -47,6 +47,7 @@ export const DefaultFields = {
     List: [
       '_id',
       'fqdn',
+      'ext_id',
       'datacenter_name',
       'tags',
       'all_tags',
@@ -58,6 +59,7 @@ export const DefaultFields = {
     Get: [
       '_id',
       'fqdn',
+      'ext_id',
       'datacenter_name',
       'tags',
       'all_tags',
