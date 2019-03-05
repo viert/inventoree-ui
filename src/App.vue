@@ -139,6 +139,18 @@ table.ModelList {
   display: flex;
 }
 
+.ContentHeader .btn.btn-primary::before {
+  content: '\f14a';
+  padding-right: 4px;
+  font-family: 'Font Awesome 5 Free';
+}
+
+.ContentHeader .btn.btn-outline-primary::before {
+  content: '\f0c8';
+  padding-right: 4px;
+  font-family: 'Font Awesome 5 Free';
+}
+
 .ContentHeader_Title {
   margin: -2px 0 16px;
   font-size: 26px;
