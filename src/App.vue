@@ -139,13 +139,13 @@ table.ModelList {
   display: flex;
 }
 
-.ContentHeader .btn.btn-primary::before {
+.ContentHeader_MineSwitch .btn.btn-primary::before {
   content: '\f14a';
   padding-right: 4px;
   font-family: 'Font Awesome 5 Free';
 }
 
-.ContentHeader .btn.btn-outline-primary::before {
+.ContentHeader_MineSwitch .btn.btn-outline-primary::before {
   content: '\f0c8';
   padding-right: 4px;
   font-family: 'Font Awesome 5 Free';
