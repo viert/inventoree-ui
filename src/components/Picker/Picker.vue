@@ -12,16 +12,20 @@
       @keydown.esc="handleEscape"
       :class="inputClassComputed"
       :placeholder="placeholder"
-      type="text" />
-    <ul v-if="showSuggestionsComputed" class="autosuggest" :class="{ 'autosuggest-multi': multi, 'autosuggest-inline': inline }">
+      type="text"
+    >
+    <ul
+      v-if="showSuggestionsComputed"
+      class="autosuggest"
+      :class="{ 'autosuggest-multi': multi, 'autosuggest-inline': inline }"
+    >
       <li
         v-for="(suggestion, i) in suggestions"
         :class="{ active: i === selectIndex, selected: multi && isSelected(suggestion) }"
         :key="getIndex(suggestion)"
         @mousedown="pickItem"
-        @mouseover="selectIndex = i">
-        {{ getValue(suggestion) }}
-      </li>
+        @mouseover="selectIndex = i"
+      >{{ getValue(suggestion) }}</li>
     </ul>
   </div>
 </template>
@@ -60,6 +64,10 @@ export default {
     placeholder: {
       default: ''
     },
+    clearInputOnUnpick: {
+      type: Boolean,
+      default: true
+    },
     pickedItem: {
       type: Object,
       default: null
@@ -73,14 +81,30 @@ export default {
       default: false
     }
   },
+  mounted() {
+    this.ticker = setInterval(this.tick, 200)
+    this.dirty = false
+  },
+  beforeDestroy() {
+    if (this.ticker) {
+      clearInterval(this.ticker)
+    }
+    this.ticker = null
+  },
   methods: {
+    tick() {
+      if (this.dirty) {
+        this.$emit('change', this.typedValue)
+        this.dirty = false
+      }
+    },
     inputValueChanged(e) {
+      if (this.picked) this.$emit('clear')
       this.picked = false
       this.inputValue = e.target.value
       this.typedValue = e.target.value
       this.showSuggestions = true
-      this.$emit('change', e.target.value)
-      this.$emit('clear')
+      this.dirty = true
     },
     inputFocus() {
       this.showSuggestions = true
@@ -169,8 +193,10 @@ export default {
         this.typedValue = this.getValue(newVal)
         this.picked = true
       } else {
-        this.inputValue = ''
-        this.typedValue = ''
+        if (this.clearInputOnUnpick) {
+          this.inputValue = ''
+          this.typedValue = ''
+        }
         this.picked = false
       }
     }
@@ -225,7 +251,8 @@ export default {
   color: #18bc9c;
 }
 
-.ContentHeader_ActionTypeField .input-group-wrap.picked::after {
+.ContentHeader_ActionTypeField .input-group-wrap.picked::after,
+.ContentHeader_AdditionalFilter .input-group-wrap.picked::after {
   top: 4px;
 }
 

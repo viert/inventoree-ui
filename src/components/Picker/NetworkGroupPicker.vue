@@ -2,15 +2,16 @@
   <picker
     inputClass="form-control"
     inputPickedClass="is-valid"
-    placeholder="ServerGroup Name"
-    :suggestions="server_groups"
+    placeholder="NetworkGroup Name"
+    :suggestions="network_groups"
     :value="filter"
     :getValue="getValue"
     :getIndex="getIndex"
-    :pickedItem="serverGroup"
+    :pickedItem="networkGroup"
     @change="inputChanged"
     @clear="$emit('clear')"
-    @pick="$emit('pick', $event)" />
+    @pick="$emit('pick', $event)"
+  />
 </template>
 
 <script>
@@ -19,7 +20,7 @@ import Api from '@/api'
 
 export default {
   props: {
-    serverGroup: {
+    networkGroup: {
       type: Object,
       default: () => {}
     }
@@ -29,15 +30,15 @@ export default {
   },
   data() {
     return {
-      server_groups: [],
+      network_groups: [],
       filter: ''
     }
   },
   methods: {
     inputChanged(newVal) {
       this.filter = newVal
-      Api.ServerGroups.List(1, newVal, ['_id', 'name'], 5).then(response => {
-        this.server_groups = response.data.data
+      Api.NetworkGroups.List(1, newVal, ['_id', 'name'], 5).then(response => {
+        this.network_groups = response.data.data
       })
     },
     getValue(s) {

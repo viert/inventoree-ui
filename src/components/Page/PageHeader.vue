@@ -1,23 +1,36 @@
 <template>
   <header class="PageHeader">
     <div class="PageHeader_Brand">
-      <h1><router-link to="/">INVENTOREE</router-link></h1>
+      <h1>
+        <router-link to="/">INVENTOREE</router-link>
+      </h1>
     </div>
     <nav class="PageHeader_Mainmenu">
       <ul class="PageHeader_Mainmenu_List">
-        <li><router-link to="/datacenters">Datacenters</router-link></li>
-        <li><router-link to="/groups">Groups</router-link></li>
-        <li><router-link to="/hosts">Hosts</router-link></li>
-        <li><router-link to="/users">Users</router-link></li>
-        <li><router-link to="/work_groups">WorkGroups</router-link></li>
-        <li><router-link to="/network_groups">Network Groups</router-link></li>
-        <li><router-link to="/actions">Actions</router-link></li>
+        <li>
+          <router-link to="/datacenters">Datacenters</router-link>
+        </li>
+        <li>
+          <router-link to="/groups">Groups</router-link>
+        </li>
+        <li>
+          <router-link to="/hosts">Hosts</router-link>
+        </li>
+        <li>
+          <router-link to="/users">Users</router-link>
+        </li>
+        <li>
+          <router-link to="/work_groups">WorkGroups</router-link>
+        </li>
+        <li>
+          <router-link to="/network_groups">Network Groups</router-link>
+        </li>
       </ul>
     </nav>
     <div v-if="isLoading" class="PageHeader_LoadSpinner">
       <i class="fa fa-spin fa-spinner"></i>
     </div>
-    <account :user="currentUser" />
+    <account :user="currentUser"/>
   </header>
 </template>
 

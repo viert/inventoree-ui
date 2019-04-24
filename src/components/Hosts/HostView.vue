@@ -24,6 +24,10 @@
           <div class="CardHeader">
             <h3>
               <host :fqdn="host.fqdn" :link="false"/>
+              <span v-if="host.ext_id" class="CardHeader_Small">
+                Ext ID:
+                <span>{{ host.ext_id }}</span>
+              </span>
             </h3>
             <div class="Card_Field">{{host.description}}</div>
           </div>
@@ -42,7 +46,7 @@
                       <host :link="false" :fqdn="alias"/>
                     </div>
                   </div>
-                  <div class="Card_Field">
+                  <div v-if="host.all_tags && host.all_tags.length" class="Card_Field">
                     <label class="Card_FieldLabel">Tags</label>
                     <div class="Card_TagList">
                       <tag
@@ -72,6 +76,19 @@
                     <div>
                       <server-group :name="host.server_group_name"/>
                     </div>
+                  </div>
+                  <div class="Card_Field" v-if="host.hw_addrs.length">
+                    <label class="Card_FieldLabel">Hardware Addresses</label>
+                    <ul class="HardwareAddresses">
+                      <li
+                        class="HardwareAddresses_Item"
+                        v-for="hwaddr in host.hw_addrs"
+                        :key="hwaddr.hw_addr"
+                      >
+                        <b>{{hwaddr.iface_name}}:</b>
+                        {{hwaddr.hw_addr}}
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -106,11 +123,12 @@ export default {
     return {
       host: {
         fqdn: '',
+        ext_id: '',
         description: '',
         tags: [],
         all_tags: [],
-        custom_fields: [],
         custom_data: [],
+        hw_addrs: [],
         group_name: null,
         modification_allowed: false,
         datacenter_name: null
@@ -156,4 +174,18 @@ export default {
 </script>
 
 <style>
+.CardHeader_Small {
+  font-size: 0.5em;
+  font-weight: lighter;
+}
+
+ul.HardwareAddresses {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.HardwareAddresses_Item > b {
+  font-weight: bold;
+}
 </style>

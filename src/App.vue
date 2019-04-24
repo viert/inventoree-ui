@@ -1,9 +1,12 @@
 <template>
   <div id="app" @mouseup="stopSelection">
-    <div v-if="auth.state === 'authenticating'" class="SiteLoading">Starting Inventoree app, please be patient...</div>
+    <div
+      v-if="auth.state === 'authenticating'"
+      class="SiteLoading"
+    >Starting Inventoree app, please be patient...</div>
     <login-page v-else-if="auth.state == 'login'"></login-page>
     <layout v-else/>
-    <alert-box />
+    <alert-box/>
   </div>
 </template>
 
@@ -136,6 +139,18 @@ table.ModelList {
   display: flex;
 }
 
+.ContentHeader_MineSwitch .btn.btn-primary::before {
+  content: '\f14a';
+  padding-right: 4px;
+  font-family: 'Font Awesome 5 Free';
+}
+
+.ContentHeader_MineSwitch .btn.btn-outline-primary::before {
+  content: '\f0c8';
+  padding-right: 4px;
+  font-family: 'Font Awesome 5 Free';
+}
+
 .ContentHeader_Title {
   margin: -2px 0 16px;
   font-size: 26px;
@@ -148,6 +163,16 @@ table.ModelList {
 .ContentHeader_Buttons {
   margin: 0 20px;
   flex-grow: 1;
+}
+
+.ContentHeader_AdditionalFilter {
+  width: 240px;
+}
+
+.ContentHeader_AdditionalFilter input {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8203125rem;
+  line-height: 1.5;
 }
 
 .ContentHeader_Buttons .btn {
@@ -388,6 +413,7 @@ table.ModelList > tbody > tr:hover > td.ModelList_Item--MayBeLong::after {
 }
 
 .Group::before,
+.Package::before,
 .WorkGroup::before,
 .NetworkGroup::before,
 .User::before,

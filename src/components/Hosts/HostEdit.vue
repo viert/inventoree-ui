@@ -71,11 +71,11 @@
               <div class="row">
                 <div class="col-sm-6">
                   <div class="Form_Field">
-                    <label class="Form_FieldLabel">Server Group</label>
-                    <server-group-picker
-                      :server-group="host.server_group"
-                      @clear="host.server_group = null"
-                      @pick="serverGroupPicked"
+                    <label class="Form_FieldLabel">Network Group</label>
+                    <network-group-picker
+                      :network-group="host.network_group"
+                      @clear="host.network_group = null"
+                      @pick="networkGroupPicked"
                     />
                   </div>
                 </div>
@@ -158,7 +158,7 @@ import yaml from 'js-yaml'
 import Api from '@/api'
 import GroupPicker from '@/components/Picker/GroupPicker'
 import DatacenterPicker from '@/components/Picker/DatacenterPicker'
-import ServerGroupPicker from '@/components/Picker/ServerGroupPicker'
+import NetworkGroupPicker from '@/components/Picker/NetworkGroupPicker'
 import TagEditor from '@/components/Common/TagEditor'
 import YamlEditor from '@/components/Common/YamlEditor'
 import ListEditor from '@/components/Common/ListEditor'
@@ -170,7 +170,7 @@ const editorFields = [
   'datacenter',
   'group',
   'tags',
-  'server_group',
+  'network_group',
   'local_custom_data',
   'aliases',
   'description'
@@ -190,7 +190,7 @@ export default {
   components: {
     GroupPicker,
     DatacenterPicker,
-    ServerGroupPicker,
+    NetworkGroupPicker,
     YamlEditor,
     TagEditor,
     ListEditor
@@ -206,7 +206,7 @@ export default {
         aliases: [],
         group: null,
         datacenter: null,
-        server_group: null
+        network_group: null
       },
       hostList: [],
       yamlData: ''
@@ -259,8 +259,8 @@ export default {
     groupPicked(group) {
       this.host.group = group
     },
-    serverGroupPicked(serverGroup) {
-      this.host.server_group = serverGroup
+    networkGroupPicked(networkGroup) {
+      this.host.network_group = networkGroup
     },
     datacenterPicked(dc) {
       this.host.datacenter = dc
@@ -274,7 +274,7 @@ export default {
     handleSave() {
       const { _id, fqdn, datacenter, group, description } = this.host
 
-      const serverGroup = this.host.server_group
+      const networkGroup = this.host.network_group
 
       let payload = {
         tags: [...this.host.tags],
@@ -283,7 +283,7 @@ export default {
         description,
         group_id: group ? group._id : null,
         datacenter_id: datacenter ? datacenter._id : null,
-        server_group_id: serverGroup ? serverGroup._id : null
+        network_group_id: networkGroup ? networkGroup._id : null
       }
       if (this.create || this.clone) {
         if (this.hostList.length > 0) {

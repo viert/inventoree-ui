@@ -8,7 +8,7 @@
             <i class="fa fa-plus"></i> Create
           </router-link>
         </div>
-        <div class="text-right">
+        <div class="ContentHeader_MineSwitch text-right">
           <button-switch
             class="btn-group-sm"
             @change="handleMineFilterClick"

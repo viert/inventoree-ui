@@ -3,9 +3,10 @@
     <td class="ModelList_Select">
       <fa-checkbox :checked="host._selected" @trigger="toggleSelected"/>
     </td>
-    <td>
+    <td class="ModelList_Item--MayBeLong">
       <host :fqdn="host.fqdn" :icon="false"/>
     </td>
+    <td>{{ host.ext_id }}</td>
     <td>
       <datacenter v-if="host.datacenter_name" :name="host.datacenter_name" :icon="false"/>
     </td>

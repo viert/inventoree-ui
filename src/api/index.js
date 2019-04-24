@@ -21,15 +21,7 @@ const wrap = axiosRequest => {
 
 export const DefaultFields = {
   Groups: {
-    List: [
-      '_id',
-      'name',
-      'work_group_name',
-      'custom_fields',
-      'tags',
-      'all_tags',
-      'description'
-    ],
+    List: ['_id', 'name', 'work_group_name', 'tags', 'all_tags', 'description'],
     ListByParentId: ['_id', 'name'],
     Get: [
       '_id',
@@ -47,6 +39,7 @@ export const DefaultFields = {
     List: [
       '_id',
       'fqdn',
+      'ext_id',
       'datacenter_name',
       'tags',
       'all_tags',
@@ -58,10 +51,12 @@ export const DefaultFields = {
     Get: [
       '_id',
       'fqdn',
+      'ext_id',
       'datacenter_name',
       'tags',
       'all_tags',
       'custom_data',
+      'hw_addrs',
       'modification_allowed',
       'description',
       'group_name',
@@ -222,13 +217,17 @@ const Api = {
       page,
       filter,
       fields = DefaultFields.NetworkGroups.List,
-      limit = null
+      limit = null,
+      workGroupId = null
     ) => {
       let url = `/api/v1/network_groups/?_fields=${fields.join(
         ','
       )}&_page=${page}&_filter=${filter}`
       if (limit) {
-        url += `&limit=${limit}`
+        url += `&_limit=${limit}`
+      }
+      if (workGroupId) {
+        url += `&work_group_id=${workGroupId}`
       }
       return wrap(axios.get(url))
     },
@@ -298,6 +297,11 @@ const Api = {
     MassSetDatacenter: (hostIds, datacenterId) => {
       let payload = { host_ids: hostIds, datacenter_id: datacenterId }
       let url = '/api/v1/hosts/mass_set_datacenter'
+      return wrap(axios.post(url, payload))
+    },
+    MassDetach: hostIds => {
+      let payload = { host_ids: hostIds }
+      let url = '/api/v1/hosts/mass_detach'
       return wrap(axios.post(url, payload))
     }
   },
