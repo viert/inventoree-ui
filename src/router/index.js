@@ -17,23 +17,11 @@ import WorkGroupView from '@/components/WorkGroups/WorkGroupView'
 import WorkGroupEdit from '@/components/WorkGroups/WorkGroupEdit'
 import NetworkGroupList from '@/components/NetworkGroups/NetworkGroupList'
 import NetworkGroupView from '@/components/NetworkGroups/NetworkGroupView'
-import ActionList from '@/components/Actions/ActionList'
-import ActionView from '@/components/Actions/ActionView'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
-    {
-      path: '/actions',
-      name: 'action_list',
-      component: ActionList
-    },
-    {
-      path: '/actions/:actionId',
-      name: 'action_view',
-      component: ActionView
-    },
     {
       path: '/network_groups',
       name: 'network_group_list',

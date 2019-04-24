@@ -26,9 +26,6 @@
         <li>
           <router-link to="/network_groups">Network Groups</router-link>
         </li>
-        <li>
-          <router-link to="/actions">Actions</router-link>
-        </li>
       </ul>
     </nav>
     <div v-if="isLoading" class="PageHeader_LoadSpinner">
