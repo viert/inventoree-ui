@@ -21,15 +21,7 @@ const wrap = axiosRequest => {
 
 export const DefaultFields = {
   Groups: {
-    List: [
-      '_id',
-      'name',
-      'work_group_name',
-      'custom_fields',
-      'tags',
-      'all_tags',
-      'description'
-    ],
+    List: ['_id', 'name', 'work_group_name', 'tags', 'all_tags', 'description'],
     ListByParentId: ['_id', 'name'],
     Get: [
       '_id',
@@ -64,6 +56,7 @@ export const DefaultFields = {
       'tags',
       'all_tags',
       'custom_data',
+      'hw_addrs',
       'modification_allowed',
       'description',
       'group_name',

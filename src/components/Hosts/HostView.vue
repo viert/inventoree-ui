@@ -46,7 +46,7 @@
                       <host :link="false" :fqdn="alias"/>
                     </div>
                   </div>
-                  <div class="Card_Field">
+                  <div v-if="host.all_tags && host.all_tags.length" class="Card_Field">
                     <label class="Card_FieldLabel">Tags</label>
                     <div class="Card_TagList">
                       <tag
@@ -76,6 +76,19 @@
                     <div>
                       <server-group :name="host.server_group_name"/>
                     </div>
+                  </div>
+                  <div class="Card_Field" v-if="host.hw_addrs.length">
+                    <label class="Card_FieldLabel">Hardware Addresses</label>
+                    <ul class="HardwareAddresses">
+                      <li
+                        class="HardwareAddresses_Item"
+                        v-for="hwaddr in host.hw_addrs"
+                        :key="hwaddr.hw_addr"
+                      >
+                        <b>{{hwaddr.iface_name}}:</b>
+                        {{hwaddr.hw_addr}}
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -114,8 +127,8 @@ export default {
         description: '',
         tags: [],
         all_tags: [],
-        custom_fields: [],
         custom_data: [],
+        hw_addrs: [],
         group_name: null,
         modification_allowed: false,
         datacenter_name: null
@@ -164,5 +177,15 @@ export default {
 .CardHeader_Small {
   font-size: 0.5em;
   font-weight: lighter;
+}
+
+ul.HardwareAddresses {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.HardwareAddresses_Item > b {
+  font-weight: bold;
 }
 </style>
